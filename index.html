@@ -224,59 +224,220 @@
 </div>
 </div>
 </div>
-<!-- SHARED ENGINE SELECTOR TABS -->
-<div class="mb-8 border-b border-slate-200 flex overflow-x-auto no-scrollbar gap-4" x-cloak="" x-show="['spark-plug', 'pcc', 'valve', 'shutdowns'].includes(currentView)">
-<template x-for="i in 12">
-<button :class="selectedGts === i ? 'tab-active' : 'text-slate-400'" @click="selectedGts = i" class="pb-2 px-2 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all border-b-2 border-transparent" x-text="'GTS ' + i"></button>
-</template>
-</div>
-<!-- VALVE MEASUREMENT -->
+<!-- VALVE MEASUREMENT (Restored layout with A1-B9 as columns) -->
 <div class="space-y-8" x-cloak="" x-show="currentView === 'valve'">
 <div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearance (0.01 mm) - GTS ' + selectedGts"></h2>
-<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200 hover:bg-slate-200 transition-colors">Export Report</button>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Valve Clearances (0.01 mm)</h2>
+<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200 hover:bg-slate-200">Export Report</button>
 </div>
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto">
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto no-scrollbar">
 <template x-for="bank in ['A', 'B']">
 <template x-for="cyl in 9">
-</template></template><table class="w-full text-[11px] border-collapse">
-<thead class="bg-slate-50 border-b border-slate-200">
+</template></template><template x-for="v in ['Inlet V1', 'Inlet V2', 'Exhaust V3', 'Exhaust V4']">
+</template><template x-for="i in 18">
+</template><table class="w-full text-[10px] border-collapse">
+<thead class="bg-slate-100 border-b border-slate-200 font-black">
 <tr>
-<th class="p-3 border-r bg-slate-100 w-32 font-black text-primary">CYLINDER</th>
-<th class="p-3 text-center border-r text-primary font-black" colspan="2">INTAKE VALVES</th>
-<th class="p-3 text-center text-primary font-black" colspan="2">EXHAUST VALVES</th>
-</tr>
-<tr class="text-slate-500 bg-slate-50/50 border-b border-slate-200 text-[9px] uppercase font-bold">
-<th class="p-2 border-r bg-slate-100">Index</th>
-<th class="p-2 border-r">Valve A</th>
-<th class="p-2 border-r">Valve B</th>
-<th class="p-2 border-r">Valve C</th>
-<th class="p-2">Valve D</th>
+<th class="p-2 border-r bg-slate-200 text-primary sticky left-0 z-10">VALVE</th>
+<th class="p-2 border-r text-center min-w-[50px]" x-text="cyl + bank"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-sky-50/30 transition-colors">
-<td class="p-3 border-r bg-slate-50 text-center font-black text-primary" x-text="cyl + bank"></td>
+<tr>
+<td class="p-2 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="v"></td>
 <td class="p-0 border-r">
-<input :class="getToleranceClass(0.45)" class="grid-cell-input" type="text" value="0.45"/>
-</td>
-<td class="p-0 border-r">
-<input :class="getToleranceClass(0.42)" class="grid-cell-input" type="text" value="0.42"/>
-</td>
-<td class="p-0 border-r">
-<input :class="getToleranceClass(0.90)" class="grid-cell-input" type="text" value="0.90"/>
-</td>
-<td class="p-0">
-<input :class="getToleranceClass(1.02)" class="grid-cell-input" type="text" value="1.02"/>
+<input :class="v.includes('Exhaust') ? 'text-red-600' : 'text-sky-700'" :value="v.includes('Inlet') ? '0.45' : '0.90'" class="grid-cell-input h-8 font-bold" type="text"/>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div class="flex justify-end">
-<button class="premium-gradient text-white px-8 py-3 rounded text-[10px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-transform">Save Measurement Data</button>
+<!-- FWG (Restored content) -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'fwg'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Fresh Water Generators (FWG)</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<template x-for="i in 4">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<div class="flex justify-between items-center mb-4">
+<p class="text-[10px] font-black text-primary uppercase" x-text="'FWG UNIT ' + i"></p>
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[11px]">
+<span class="text-slate-400 uppercase font-bold">Daily Output</span>
+<span class="text-primary font-black">24.5 m³</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-slate-400 uppercase font-bold">Salinity</span>
+<span class="text-emerald-600 font-black">0.4 ppm</span>
+</div>
+<div class="pt-2 border-t border-slate-100">
+<p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
+<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2023-11-05"/>
+</div>
+</div>
+</div>
+</template>
+</div>
+</div>
+<!-- SW PUMPS (Restored 16 pumps) -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'sw-pumps'">
+<div class="flex justify-between items-end border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Sea Water Pumps &amp; Filtration</h2>
+<span class="text-[10px] font-bold text-error uppercase">2 Filters Overdue</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+<template x-for="i in 16">
+<div :class="(i === 4 || i === 9) ? 'border-red-300 bg-red-50' : 'border-slate-100 bg-white'" class="p-4 rounded-xl border shadow-sm text-center group cursor-pointer transition-all">
+<p class="text-[8px] font-black text-slate-400 uppercase mb-2" x-text="'PUMP ' + i"></p>
+<div :class="(i === 4 || i === 9) ? 'text-red-600' : 'text-emerald-600'" class="w-10 h-10 rounded-full mx-auto flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">rotate_right</span>
+</div>
+<input :value="(i === 4 || i === 9) ? 'OVERDUE' : 'RUNNING'" class="w-full text-center text-[9px] font-black border-none bg-transparent p-0 mb-1" type="text"/>
+<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2023-11-10"/>
+</div>
+</template>
+</div>
+</div>
+<!-- LUBE OIL SYSTEM (Restored 12 engines data) -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'lube-oil'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil Consumption &amp; Analysis</h2>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar">
+<template x-for="i in 12">
+</template><table class="w-full text-[10px] font-bold border-collapse">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr class="text-slate-400 uppercase tracking-widest text-center">
+<th class="p-4 text-left border-r sticky left-0 bg-slate-50 min-w-[100px]">GTS UNIT</th>
+<th class="p-4 border-r">Top-up (L/24h)</th>
+<th class="p-4 border-r">Viscosity @ 40°C</th>
+<th class="p-4 border-r">TBN (BN)</th>
+<th class="p-4 border-r">Water %</th>
+<th class="p-4 border-r">Flash Point °C</th>
+<th class="p-4">Last Sample</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-sky-50/30 transition-colors text-center">
+<td class="p-4 font-black border-r text-primary text-left sticky left-0 bg-white" x-text="'GTS ' + i"></td>
+<td class="p-2 border-r"><input class="grid-cell-input font-black" type="number" value="120"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="105.4"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input text-sky-600" type="text" value="32.5"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="0.01"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="225"/></td>
+<td class="p-2 text-slate-400">2023-11-01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- CLEANING (Restored all items) -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'cleaning'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Engine Room Hygiene Log</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<template x-for="task in [
+                    'Engine Room Floor Plates &amp; Gratings',
+                    'GTS Enclosures Exterior &amp; Interior',
+                    'PCC Cubicle Filters &amp; Fans',
+                    'Compressor Room &amp; Air Receivers',
+                    'Oil Mist Separators &amp; Drain Pots',
+                    'Tool Storage &amp; Workshop Area',
+                    'MDO Transfer Pump Skids',
+                    'Lube Oil Transfer System',
+                    'Steam Traps &amp; EGB Drain Lines'
+                ]">
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-sky-500 transition-colors">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">cleaning_services</span>
+</div>
+<div>
+<p class="text-[10px] font-black text-primary uppercase" x-text="task"></p>
+<p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Daily Routine</p>
+</div>
+</div>
+<input checked="" class="rounded text-sky-600 focus:ring-sky-500 h-5 w-5 border-slate-300" type="checkbox"/>
+</div>
+</template>
+</div>
+</div>
+<!-- BOILER (Restored 12 units) -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'boiler'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Exhaust Gas Boiler (EGB) Tracking</h2>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<template x-for="i in 12">
+<div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+<div class="flex justify-between items-center mb-4">
+<p class="text-[10px] font-black text-primary uppercase" x-text="'EGB UNIT ' + i"></p>
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-[11px] font-bold">
+<span class="text-slate-400 uppercase">Damper Check</span>
+<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2023-11-08"/>
+</div>
+<div class="flex justify-between text-[11px] font-bold">
+<span class="text-slate-400 uppercase text-[9px]">Weekly Soot Blow</span>
+<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black text-primary" type="datetime-local"/>
+</div>
+</div>
+</div>
+</template>
+</div>
+</div>
+<!-- SPARK PLUG -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'spark-plug'">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Replacement - GTS ' + selectedGts"></h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<template x-for="bank in ['A', 'B']">
+<div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
+<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4" x-text="'BANK ' + bank + ' - Cylinders 1-9'"></h3>
+<div class="grid grid-cols-3 gap-3">
+<template x-for="cyl in 9">
+<div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-black text-primary uppercase" x-text="'CYL ' + cyl + bank"></span>
+<span :class="cyl % 3 == 0 ? 'bg-orange-500' : 'bg-emerald-500'" class="w-2 h-2 rounded-full"></span>
+</div>
+<input class="w-full text-[10px] border-none bg-transparent p-0 mb-1 font-medium" type="date" value="2023-11-01"/>
+<div class="flex items-center gap-1">
+<input :value="1200 + (cyl * 10)" class="w-full text-[10px] border-none bg-transparent p-0 font-black text-primary" type="number"/>
+<span class="text-[8px] text-slate-400 font-bold">HRS</span>
+</div>
+</div>
+</template>
+</div>
+</div>
+</template>
+</div>
+</div>
+<!-- PCC -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'pcc'">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Power Control Center (PCC) - GTS ' + selectedGts"></h2>
+</div>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
+<template x-for="i in 18">
+<div class="bg-slate-50 border border-slate-200 p-3 rounded text-center">
+<p class="text-[10px] font-black text-primary mb-2" x-text="'CYL ' + (i &lt;= 9 ? i : i-9) + (i &lt;= 9 ? 'A' : 'B')"></p>
+<div class="space-y-1">
+<div class="flex flex-col">
+<span class="text-[8px] uppercase text-slate-400 font-bold">KW</span>
+<input class="bg-transparent border-none p-0 text-center text-xs font-black text-primary outline-none focus:bg-white" type="text" value="915"/>
+</div>
+<div class="flex flex-col border-t border-slate-200 pt-1">
+<span class="text-[8px] uppercase text-slate-400 font-bold">TEMP</span>
+<input class="bg-transparent border-none p-0 text-center text-xs font-black text-emerald-600 outline-none focus:bg-white" type="text" value="412°C"/>
+</div>
+</div>
+</div>
+</template>
+</div>
 </div>
 </div>
 <!-- STARTING AIR COMPRESSORS -->
@@ -284,32 +445,31 @@
 <h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Starting Air Compressors (30 Bar)</h2>
 <div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
 <div class="p-4 bg-primary text-white text-xs font-black uppercase tracking-widest flex justify-between items-center">
-<span>Comprehensive Maintenance Log (4 Units)</span>
-<span class="text-[10px] font-normal opacity-70 uppercase tracking-widest">Master Template v3.0</span>
+<span>Maintenance Log (4 Units)</span>
 </div>
 <div class="overflow-x-auto no-scrollbar">
 <template x-for="task in startingAirTasks">
-</template><template x-for="c in 4">
+</template><template x-for="u in 4">
 </template><table class="w-full text-[11px] border-collapse">
-<thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200">
+<thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200 text-center">
 <tr>
-<th class="p-4 text-left border-r sticky left-0 bg-slate-50 min-w-[200px]">Maintenance Task</th>
-<th class="p-4 border-r text-center">Interval (Hrs)</th>
-<th class="p-4 border-r bg-sky-50 text-primary text-center">Unit 1.1</th>
-<th class="p-4 border-r bg-sky-50 text-primary text-center">Unit 1.2</th>
-<th class="p-4 border-r bg-sky-50 text-primary text-center">Unit 2.1</th>
-<th class="p-4 bg-sky-50 text-primary text-center">Unit 2.2</th>
+<th class="p-4 text-left border-r sticky left-0 bg-slate-50">Maintenance Task</th>
+<th class="p-4 border-r">Interval (Hrs)</th>
+<th class="p-4 border-r bg-sky-50 text-primary">Unit 1.1</th>
+<th class="p-4 border-r bg-sky-50 text-primary">Unit 1.2</th>
+<th class="p-4 border-r bg-sky-50 text-primary">Unit 2.1</th>
+<th class="p-4 bg-sky-50 text-primary">Unit 2.2</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="group hover:bg-slate-50/50">
+<tr class="hover:bg-slate-50/50">
 <td class="p-3 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="task.name"></td>
 <td class="p-3 border-r text-center font-bold text-slate-400" x-text="task.interval"></td>
 <td class="p-2 border-r bg-white text-center">
 <div class="flex flex-col items-center">
-<input class="w-full text-center text-[10px] font-black text-primary border-none p-0 outline-none focus:bg-sky-50" type="text" value="429"/>
+<input class="w-full text-center text-[10px] font-black text-primary border-none p-0 outline-none" type="text" value="429"/>
 <div class="h-px bg-slate-100 w-full my-1"></div>
-<input class="w-full text-center text-[10px] text-slate-400 font-medium border-none p-0 outline-none focus:bg-sky-50" type="text" value="831"/>
+<input class="w-full text-center text-[10px] text-slate-400 font-medium border-none p-0 outline-none" type="text" value="831"/>
 </div>
 </td>
 </tr>
@@ -380,58 +540,7 @@
 </template>
 </div>
 </div>
-<!-- OTHER SECTIONS (SPARK PLUG, PCC, ETC.) -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'spark-plug'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Replacement - GTS ' + selectedGts"></h2>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<template x-for="bank in ['A', 'B']">
-<div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4" x-text="'BANK ' + bank + ' - Cylinders 1-9'"></h3>
-<div class="grid grid-cols-3 gap-3">
-<template x-for="cyl in 9">
-<div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
-<div class="flex justify-between items-center mb-2">
-<span class="text-[10px] font-black text-primary uppercase" x-text="'CYL ' + cyl + bank"></span>
-<span :class="cyl % 3 == 0 ? 'bg-orange-500' : 'bg-emerald-500'" class="w-2 h-2 rounded-full"></span>
-</div>
-<input class="w-full text-[10px] border-none bg-transparent p-0 mb-1 font-medium" type="date" value="2023-11-01"/>
-<div class="flex items-center gap-1">
-<input :value="1200 + (cyl * 10)" class="w-full text-[10px] border-none bg-transparent p-0 font-black text-primary" type="number"/>
-<span class="text-[8px] text-slate-400 font-bold">HRS</span>
-</div>
-</div>
-</template>
-</div>
-</div>
-</template>
-</div>
-</div>
-<div class="space-y-8" x-cloak="" x-show="currentView === 'pcc'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Power Control Center (PCC) - GTS ' + selectedGts"></h2>
-</div>
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-<div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
-<template x-for="i in 18">
-<div class="bg-slate-50 border border-slate-200 p-3 rounded text-center">
-<p class="text-[10px] font-black text-primary mb-2" x-text="'CYL ' + (i &lt;= 9 ? i : i-9) + (i &lt;= 9 ? 'A' : 'B')"></p>
-<div class="space-y-1">
-<div class="flex flex-col">
-<span class="text-[8px] uppercase text-slate-400 font-bold">KW</span>
-<input class="bg-transparent border-none p-0 text-center text-xs font-black text-primary outline-none focus:bg-white" type="text" value="915"/>
-</div>
-<div class="flex flex-col border-t border-slate-200 pt-1">
-<span class="text-[8px] uppercase text-slate-400 font-bold">TEMP</span>
-<input class="bg-transparent border-none p-0 text-center text-xs font-black text-emerald-600 outline-none focus:bg-white" type="text" value="412°C"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-</div>
+<!-- SHUTDOWNS -->
 <div class="space-y-8" x-cloak="" x-show="currentView === 'shutdowns'">
 <div class="flex items-center gap-3 border-l-4 border-error pl-4">
 <span class="material-symbols-outlined text-error font-black">power_settings_new</span>
@@ -440,17 +549,17 @@
 <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-300">
 <table class="w-full text-left">
 <thead>
-<tr class="bg-slate-100 text-primary border-b border-slate-300">
-<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest w-32 border-r">Unit</th>
-<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest border-r">Reason</th>
-<th class="px-6 py-4 text-[10px] font-black uppercase tracking-widest">Action Taken</th>
+<tr class="bg-slate-100 text-primary border-b border-slate-300 font-black text-[10px] uppercase">
+<th class="px-6 py-4 w-32 border-r">Unit</th>
+<th class="px-6 py-4 border-r">Reason</th>
+<th class="px-6 py-4">Action Taken</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-200">
 <tr :class="selectedGts === 4 ? 'bg-red-50' : ''">
 <td class="px-6 py-4 font-black text-sm border-r text-primary" x-text="'GTS ' + selectedGts"></td>
 <td class="px-6 py-4 border-r">
-<input :class="selectedGts === 4 ? 'text-error' : ''" :value="selectedGts === 4 ? 'Low Lube Oil Pressure' : 'Normal Operational'" class="w-full bg-transparent border-none focus:ring-0 text-sm font-bold" type="text"/>
+<input :class="selectedGts === 4 ? 'text-error' : ''" :value="selectedGts === 4 ? 'Low Lube Oil Pressure' : 'Normal'" class="w-full bg-transparent border-none focus:ring-0 text-sm font-bold" type="text"/>
 </td>
 <td class="px-6 py-4">
 <input class="w-full bg-transparent border-none focus:ring-0 text-sm" placeholder="Details..." type="text"/>
@@ -460,11 +569,34 @@
 </table>
 </div>
 </div>
-<!-- PLACEHOLDER FOR REMAINING SECTIONS -->
-<div class="flex flex-col items-center justify-center py-20 text-slate-300" x-cloak="" x-show="['fwg', 'sw-pumps', 'lube-oil', 'cleaning', 'boiler', 'reports'].includes(currentView)">
-<span class="material-symbols-outlined text-6xl mb-4">settings_suggest</span>
-<p class="text-sm font-black uppercase tracking-widest" x-text="currentView.replace('-', ' ') + ' SECTION ACTIVE'"></p>
-<p class="text-[10px] mt-2">Real-time Telemetry Processing</p>
+<!-- REPORTS -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'reports'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Technical Reports Hub</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<template x-for="report in [
+                    {name: 'Monthly Operational', icon: 'assignment', color: 'text-blue-500'},
+                    {name: 'Daily Sounding', icon: 'analytics', color: 'text-emerald-500'},
+                    {name: 'Thermal Analysis', icon: 'thermostat', color: 'text-orange-500'},
+                    {name: 'Maintenance Summary', icon: 'construction', color: 'text-purple-500'}
+                ]">
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span :class="report.color" class="material-symbols-outlined text-4xl" x-text="report.icon"></span>
+<h3 class="font-black text-primary text-sm uppercase" x-text="report.name"></h3>
+</div>
+<button class="w-full py-2 bg-primary text-white text-[9px] font-black uppercase rounded shadow-sm hover:opacity-90">Submit Report</button>
+</div>
+</template>
+</div>
+</div>
+<!-- SHARED ENGINE SELECTOR TABS (Only for specific views) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['spark-plug', 'pcc', 'shutdowns'].includes(currentView)">
+<span class="text-[9px] font-black text-slate-400 uppercase">Engine</span>
+<div class="flex gap-2">
+<template x-for="i in 12">
+<button :class="selectedGts === i ? 'bg-primary text-white scale-110 shadow-lg' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'" @click="selectedGts = i" class="w-8 h-8 rounded-full text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
+</template>
+</div>
 </div>
 </div>
 </main>
@@ -485,6 +617,6 @@
 </div>
 </div>
 </div>
-<!-- OVERLAY -->
+<!-- OVERLAY for mobile -->
 <div @click="sidebarOpen = false" class="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" x-cloak="" x-show="sidebarOpen"></div>
 </body></html>
