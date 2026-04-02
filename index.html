@@ -48,7 +48,6 @@
         [x-cloak] { display: none !important; }
         .nav-item.active { @apply bg-primary text-white font-bold shadow-lg; }
         .nav-item.active .material-symbols-outlined { @apply text-white; }
-        .tab-active { @apply border-b-2 border-primary text-primary font-black; }
     </style>
 </head>
 <body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
@@ -73,12 +72,17 @@
             {name: 'Oil filter / Air filter change', interval: 1000},
             {name: 'Separator cartridge change', interval: 6000}
         ],
-        getToleranceClass(val) {
-            let v = parseFloat(val);
-            if (v &gt; 0.95) return 'text-error font-black bg-red-50';
-            if (v &gt; 0.85) return 'text-orange-600 font-bold bg-orange-50';
-            return 'text-emerald-700 font-bold';
-        }
+        cleaningTasks: [
+            'Engine Room Floor Plates &amp; Gratings',
+            'GTS Enclosures Exterior &amp; Interior',
+            'PCC Cubicle Filters &amp; Fans',
+            'Compressor Room &amp; Air Receivers',
+            'Oil Mist Separators &amp; Drain Pots',
+            'Tool Storage &amp; Workshop Area',
+            'MDO Transfer Pump Skids',
+            'Lube Oil Transfer System',
+            'Steam Traps &amp; EGB Drain Lines'
+        ]
       }">
 <!-- SIDEBAR -->
 <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-50 overflow-y-auto bg-slate-100 border-r border-slate-200 glass-sidebar transition-transform duration-300 lg:translate-x-0">
@@ -95,7 +99,7 @@
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
-<nav class="flex-1 space-y-1 no-scrollbar">
+<nav class="flex-1 space-y-1 no-scrollbar overflow-y-auto">
 <template x-for="item in [
             {id: 'dashboard', icon: 'dashboard', label: 'Dashboard'},
             {id: 'spark-plug', icon: 'bolt', label: 'Spark Plug'},
@@ -176,7 +180,10 @@
 <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Avg. Efficiency</p>
 <p class="text-4xl font-black text-sky-700">94.2<span class="text-lg font-bold">%</span></p>
 <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-sky-600 w-[94.2%]&lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div class=" space-y-1"="">
+<div class="h-full bg-sky-600 w-[94.2%]"></div>
+</div>
+</div>
+<div class="space-y-1">
 <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Gas Consumption</p>
 <p class="text-4xl font-black text-emerald-700">3,485<span class="text-lg font-bold">m³</span></p>
 <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
@@ -221,181 +228,6 @@
 </div>
 </div>
 </div>
-<!-- VALVE MEASUREMENT (Restructured Table: A1-B9 as rows, A-B-C-D as columns) -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'valve'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearances (0.01 mm) - GTS ' + selectedGts"></h2>
-<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200 hover:bg-slate-200">Export Report</button>
-</div>
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="bank in ['A', 'B']">
-<template x-for="cyl in 9">
-</template></template><table class="w-full text-[10px] border-collapse">
-<thead class="bg-slate-100 border-b border-slate-200 font-black">
-<tr>
-<th class="p-4 border-r bg-slate-200 text-primary sticky left-0 z-10 w-32 text-left uppercase">Cylinder</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve A (Inlet V1)</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve B (Inlet V2)</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve C (Exh V3)</th>
-<th class="p-4 text-center text-primary uppercase">Valve D (Exh V4)</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-sky-50 transition-colors">
-<td class="p-4 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="'CYLINDER ' + bank + cyl"></td>
-<td class="p-0 border-r">
-<input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/>
-</td>
-<td class="p-0 border-r">
-<input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/>
-</td>
-<td class="p-0 border-r">
-<input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/>
-</td>
-<td class="p-0">
-<input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- FWG -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'fwg'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Fresh Water Generators (FWG)</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<template x-for="i in 4">
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-<div class="flex justify-between items-center mb-4">
-<p class="text-[10px] font-black text-primary uppercase" x-text="'FWG UNIT ' + i"></p>
-<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-</div>
-<div class="space-y-3">
-<div class="flex justify-between text-[11px]">
-<span class="text-slate-400 uppercase font-bold">Daily Output</span>
-<span class="text-primary font-black">24.5 m³</span>
-</div>
-<div class="flex justify-between text-[11px]">
-<span class="text-slate-400 uppercase font-bold">Salinity</span>
-<span class="text-emerald-600 font-black">0.4 ppm</span>
-</div>
-<div class="pt-2 border-t border-slate-100">
-<p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
-<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2023-11-05"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- SW PUMPS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'sw-pumps'">
-<div class="flex justify-between items-end border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Sea Water Pumps &amp; Filtration</h2>
-<span class="text-[10px] font-bold text-error uppercase">2 Filters Overdue</span>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-<template x-for="i in 16">
-<div :class="(i === 4 || i === 9) ? 'border-red-300 bg-red-50' : 'border-slate-100 bg-white'" class="p-4 rounded-xl border shadow-sm text-center group cursor-pointer transition-all">
-<p class="text-[8px] font-black text-slate-400 uppercase mb-2" x-text="'PUMP ' + i"></p>
-<div :class="(i === 4 || i === 9) ? 'text-red-600' : 'text-emerald-600'" class="w-10 h-10 rounded-full mx-auto flex items-center justify-center mb-3">
-<span class="material-symbols-outlined text-lg">rotate_right</span>
-</div>
-<input :value="(i === 4 || i === 9) ? 'OVERDUE' : 'RUNNING'" class="w-full text-center text-[9px] font-black border-none bg-transparent p-0 mb-1" type="text"/>
-<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2023-11-10"/>
-</div>
-</template>
-</div>
-</div>
-<!-- LUBE OIL SYSTEM -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'lube-oil'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil Consumption &amp; Analysis</h2>
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="i in 12">
-</template><table class="w-full text-[10px] font-bold border-collapse">
-<thead class="bg-slate-50 border-b border-slate-200">
-<tr class="text-slate-400 uppercase tracking-widest text-center">
-<th class="p-4 text-left border-r sticky left-0 bg-slate-50 min-w-[100px]">GTS UNIT</th>
-<th class="p-4 border-r">Top-up (L/24h)</th>
-<th class="p-4 border-r">Viscosity @ 40°C</th>
-<th class="p-4 border-r">TBN (BN)</th>
-<th class="p-4 border-r">Water %</th>
-<th class="p-4 border-r">Flash Point °C</th>
-<th class="p-4">Last Sample</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-sky-50/30 transition-colors text-center">
-<td class="p-4 font-black border-r text-primary text-left sticky left-0 bg-white" x-text="'GTS ' + i"></td>
-<td class="p-2 border-r"><input class="grid-cell-input font-black" type="number" value="120"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="105.4"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input text-sky-600" type="text" value="32.5"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="0.01"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="225"/></td>
-<td class="p-2 text-slate-400">2023-11-01</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- CLEANING -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'cleaning'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Engine Room Hygiene Log</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<template x-for="task in [
-                    'Engine Room Floor Plates &amp; Gratings',
-                    'GTS Enclosures Exterior &amp; Interior',
-                    'PCC Cubicle Filters &amp; Fans',
-                    'Compressor Room &amp; Air Receivers',
-                    'Oil Mist Separators &amp; Drain Pots',
-                    'Tool Storage &amp; Workshop Area',
-                    'MDO Transfer Pump Skids',
-                    'Lube Oil Transfer System',
-                    'Steam Traps &amp; EGB Drain Lines'
-                ]">
-<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-sky-500 transition-colors">
-<div class="flex items-center gap-4">
-<div class="h-12 w-12 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined">cleaning_services</span>
-</div>
-<div>
-<p class="text-[10px] font-black text-primary uppercase" x-text="task"></p>
-<p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Daily Routine</p>
-</div>
-</div>
-<input checked="" class="rounded text-sky-600 focus:ring-sky-500 h-5 w-5 border-slate-300" type="checkbox"/>
-</div>
-</template>
-</div>
-</div>
-<!-- BOILER -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'boiler'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Exhaust Gas Boiler (EGB) Tracking</h2>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<template x-for="i in 12">
-<div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-<div class="flex justify-between items-center mb-4">
-<p class="text-[10px] font-black text-primary uppercase" x-text="'EGB UNIT ' + i"></p>
-<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-</div>
-<div class="space-y-4">
-<div class="flex justify-between text-[11px] font-bold">
-<span class="text-slate-400 uppercase">Damper Check</span>
-<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2023-11-08"/>
-</div>
-<div class="flex justify-between text-[11px] font-bold">
-<span class="text-slate-400 uppercase text-[9px]">Weekly Soot Blow</span>
-<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black text-primary" type="datetime-local"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
 <!-- SPARK PLUG -->
 <div class="space-y-8" x-cloak="" x-show="currentView === 'spark-plug'">
 <div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
@@ -404,13 +236,13 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 <template x-for="bank in ['A', 'B']">
 <div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4" x-text="'BANK ' + bank + ' - Cylinders 1-9'"></h3>
+<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4" x-text="'BANK ' + bank"></h3>
 <div class="grid grid-cols-3 gap-3">
 <template x-for="cyl in 9">
 <div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
 <div class="flex justify-between items-center mb-2">
 <span class="text-[10px] font-black text-primary uppercase" x-text="'CYL ' + cyl + bank"></span>
-<span :class="cyl % 3 == 0 ? 'bg-orange-500' : 'bg-emerald-500'" class="w-2 h-2 rounded-full"></span>
+<span :class="(cyl + (bank === 'B' ? 9 : 0)) === 4 ? 'bg-orange-500' : 'bg-emerald-500'" class="w-2 h-2 rounded-full"></span>
 </div>
 <input class="w-full text-[10px] border-none bg-transparent p-0 mb-1 font-medium" type="date" value="2023-11-01"/>
 <div class="flex items-center gap-1">
@@ -446,6 +278,39 @@
 </div>
 </div>
 </template>
+</div>
+</div>
+</div>
+<!-- VALVE MEASUREMENT -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'valve'">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearances (0.01 mm) - GTS ' + selectedGts"></h2>
+<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200 hover:bg-slate-200">Export Report</button>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar">
+<template x-for="bank in ['A', 'B']">
+<template x-for="cyl in 9">
+</template></template><table class="w-full text-[10px] border-collapse">
+<thead class="bg-slate-100 border-b border-slate-200 font-black">
+<tr>
+<th class="p-4 border-r bg-slate-200 text-primary sticky left-0 z-10 w-32 text-left uppercase">Cylinder</th>
+<th class="p-4 border-r text-center text-primary uppercase">Valve A (Inlet V1)</th>
+<th class="p-4 border-r text-center text-primary uppercase">Valve B (Inlet V2)</th>
+<th class="p-4 border-r text-center text-primary uppercase">Valve C (Exh V3)</th>
+<th class="p-4 text-center text-primary uppercase">Valve D (Exh V4)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-sky-50 transition-colors">
+<td class="p-4 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="'CYLINDER ' + bank + cyl"></td>
+<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
+<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
+<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/></td>
+<td class="p-0"><input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -549,6 +414,130 @@
 </template>
 </div>
 </div>
+<!-- FWG -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'fwg'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Fresh Water Generators (FWG)</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<template x-for="i in 4">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<div class="flex justify-between items-center mb-4">
+<p class="text-[10px] font-black text-primary uppercase" x-text="'FWG UNIT ' + i"></p>
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[11px]">
+<span class="text-slate-400 uppercase font-bold">Daily Output</span>
+<span class="text-primary font-black">24.5 m³</span>
+</div>
+<div class="flex justify-between text-[11px]">
+<span class="text-slate-400 uppercase font-bold">Salinity</span>
+<span class="text-emerald-600 font-black">0.4 ppm</span>
+</div>
+<div class="pt-2 border-t border-slate-100">
+<p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
+<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2023-11-05"/>
+</div>
+</div>
+</div>
+</template>
+</div>
+</div>
+<!-- SW PUMPS -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'sw-pumps'">
+<div class="flex justify-between items-end border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Sea Water Pumps &amp; Filtration</h2>
+<span class="text-[10px] font-bold text-error uppercase">2 Filters Overdue</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+<template x-for="i in 16">
+<div :class="(i === 4 || i === 9) ? 'border-red-300 bg-red-50' : 'border-slate-100 bg-white'" class="p-4 rounded-xl border shadow-sm text-center group cursor-pointer transition-all">
+<p class="text-[8px] font-black text-slate-400 uppercase mb-2" x-text="'PUMP ' + i"></p>
+<div :class="(i === 4 || i === 9) ? 'text-red-600' : 'text-emerald-600'" class="w-10 h-10 rounded-full mx-auto flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-lg">rotate_right</span>
+</div>
+<input :value="(i === 4 || i === 9) ? 'OVERDUE' : 'RUNNING'" class="w-full text-center text-[9px] font-black border-none bg-transparent p-0 mb-1" type="text"/>
+<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2023-11-10"/>
+</div>
+</template>
+</div>
+</div>
+<!-- LUBE OIL SYSTEM -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'lube-oil'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil Consumption &amp; Analysis</h2>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar">
+<template x-for="i in 12">
+</template><table class="w-full text-[10px] font-bold border-collapse">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr class="text-slate-400 uppercase tracking-widest text-center">
+<th class="p-4 text-left border-r sticky left-0 bg-slate-50 min-w-[100px]">GTS UNIT</th>
+<th class="p-4 border-r">Top-up (L/24h)</th>
+<th class="p-4 border-r">Viscosity @ 40°C</th>
+<th class="p-4 border-r">TBN (BN)</th>
+<th class="p-4 border-r">Water %</th>
+<th class="p-4 border-r">Flash Point °C</th>
+<th class="p-4">Last Sample</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-sky-50/30 transition-colors text-center">
+<td class="p-4 font-black border-r text-primary text-left sticky left-0 bg-white" x-text="'GTS ' + i"></td>
+<td class="p-2 border-r"><input class="grid-cell-input font-black" type="number" value="120"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="105.4"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input text-sky-600" type="text" value="32.5"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="0.01"/></td>
+<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="225"/></td>
+<td class="p-2 text-slate-400">2023-11-01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- CLEANING -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'cleaning'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Engine Room Hygiene Log</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<template x-for="task in cleaningTasks">
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-sky-500 transition-colors">
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">cleaning_services</span>
+</div>
+<div>
+<p class="text-[10px] font-black text-primary uppercase" x-text="task"></p>
+<p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Daily Routine</p>
+</div>
+</div>
+<input checked="" class="rounded text-sky-600 focus:ring-sky-500 h-5 w-5 border-slate-300" type="checkbox"/>
+</div>
+</template>
+</div>
+</div>
+<!-- BOILER -->
+<div class="space-y-8" x-cloak="" x-show="currentView === 'boiler'">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Exhaust Gas Boiler (EGB) Tracking</h2>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<template x-for="i in 12">
+<div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+<div class="flex justify-between items-center mb-4">
+<p class="text-[10px] font-black text-primary uppercase" x-text="'EGB UNIT ' + i"></p>
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-[11px] font-bold">
+<span class="text-slate-400 uppercase">Damper Check</span>
+<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2023-11-08"/>
+</div>
+<div class="flex justify-between text-[11px] font-bold">
+<span class="text-slate-400 uppercase text-[9px]">Weekly Soot Blow</span>
+<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black text-primary" type="datetime-local"/>
+</div>
+</div>
+</div>
+</template>
+</div>
+</div>
 <!-- SHUTDOWNS -->
 <div class="space-y-8" x-cloak="" x-show="currentView === 'shutdowns'">
 <div class="flex items-center gap-3 border-l-4 border-error pl-4">
@@ -556,7 +545,8 @@
 <h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Emergency Shutdown Log - GTS ' + selectedGts"></h2>
 </div>
 <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-300">
-<table class="w-full text-left">
+<template x-for="i in 12">
+</template><table class="w-full text-left">
 <thead>
 <tr class="bg-slate-100 text-primary border-b border-slate-300 font-black text-[10px] uppercase">
 <th class="px-6 py-4 w-32 border-r">Unit</th>
@@ -565,10 +555,10 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-200">
-<tr :class="selectedGts === 4 ? 'bg-red-50' : ''">
-<td class="px-6 py-4 font-black text-sm border-r text-primary" x-text="'GTS ' + selectedGts"></td>
+<tr :class="selectedGts === i ? 'bg-red-50' : 'hidden'">
+<td class="px-6 py-4 font-black text-sm border-r text-primary" x-text="'GTS ' + i"></td>
 <td class="px-6 py-4 border-r">
-<input :class="selectedGts === 4 ? 'text-error' : ''" :value="selectedGts === 4 ? 'Low Lube Oil Pressure' : 'Normal'" class="w-full bg-transparent border-none focus:ring-0 text-sm font-bold" type="text"/>
+<input :class="i === 4 ? 'text-error' : ''" :value="i === 4 ? 'Low Lube Oil Pressure' : 'Normal'" class="w-full bg-transparent border-none focus:ring-0 text-sm font-bold" type="text"/>
 </td>
 <td class="px-6 py-4">
 <input class="w-full bg-transparent border-none focus:ring-0 text-sm" placeholder="Details..." type="text"/>
@@ -593,6 +583,10 @@
 <span :class="report.color" class="material-symbols-outlined text-4xl" x-text="report.icon"></span>
 <h3 class="font-black text-primary text-sm uppercase" x-text="report.name"></h3>
 </div>
+<div class="border-2 border-dashed border-slate-200 rounded-lg p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-slate-300 mb-2">upload_file</span>
+<span class="text-[8px] font-bold text-slate-400 uppercase">Drop PDF or Excel</span>
+</div>
 <button class="w-full py-2 bg-primary text-white text-[9px] font-black uppercase rounded shadow-sm hover:opacity-90">Submit Report</button>
 </div>
 </template>
@@ -608,7 +602,7 @@
 </div>
 </div>
 </div>
-</div></div></main>
+</main>
 <!-- NOTIFICATION PANEL -->
 <div @click.away="notificationsOpen = false" class="fixed top-16 right-8 w-80 bg-white shadow-2xl rounded-xl overflow-hidden border border-slate-200 z-[60] transform origin-top-right transition-all" x-cloak="" x-show="notificationsOpen">
 <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
