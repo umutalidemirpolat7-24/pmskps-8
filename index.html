@@ -37,7 +37,7 @@
 </div>
 <nav class="flex-1 overflow-y-auto p-4 space-y-1">
 <button :class="['w-full flex items-center gap-3 px-4 py-2.5 text-[11px] rounded transition-all uppercase tracking-wider font-semibold text-left', 
-                         currentView === item.id ? 'sidebar-active' : 'text-slate-600 hover:bg-slate-200']" :key="item.id" @click="currentView = item.id" v-for="item in navItems">
+                             currentView === item.id ? 'sidebar-active' : 'text-slate-600 hover:bg-slate-200']" :key="item.id" @click="currentView = item.id" v-for="item in navItems">
 <span :style="currentView === item.id ? 'font-variation-settings: \'FILL\' 1' : ''" class="material-symbols-outlined text-lg">{{ item.icon }}</span>
 <span class="truncate">{{ item.label }}</span>
 </button>
@@ -57,7 +57,7 @@
 <!-- Header -->
 <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-40 shrink-0">
 <div class="flex items-center gap-4">
-<h2 class="text-sm font-black text-[#001f3d] uppercase tracking-widest">BRIDGE INTERFACE</h2>
+<h2 class="text-sm font-black text-[#001f3d] uppercase tracking-widest">KPS8 PMS</h2>
 <span class="text-slate-300">/</span>
 <p class="text-[11px] text-slate-500 font-bold uppercase tracking-widest">{{ currentNavItem.label }}</p>
 </div>
@@ -66,8 +66,37 @@
 <span class="material-symbols-outlined text-lg">schedule</span>
 <span class="text-[11px] font-bold">14:32 UTC</span>
 </div>
-<div class="flex gap-2">
-<button class="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"><span class="material-symbols-outlined">search</span></button>
+<div class="flex gap-2 items-center">
+<!-- Search Bar Integrated -->
+<div class="relative flex items-center">
+<div :class="['flex items-center bg-slate-100 rounded-full transition-all duration-300 overflow-hidden', searchActive ? 'w-64 px-3' : 'w-10 px-0']">
+<span @click="searchActive = !searchActive" class="material-symbols-outlined text-slate-400 text-xl cursor-pointer shrink-0">search</span>
+<input @input="performSearch" class="bg-transparent border-none focus:ring-0 text-xs font-bold text-slate-700 w-full ml-2 placeholder:text-slate-400 uppercase tracking-tighter" placeholder="SEARCH SYSTEMS..." ref="searchInput" type="text" v-if="searchActive" v-model="searchQuery"/>
+</div>
+<!-- Search Results Dropdown -->
+<div class="absolute top-12 right-0 w-80 bg-white border border-slate-200 shadow-2xl rounded-lg overflow-hidden z-[60]" v-if="searchActive &amp;&amp; searchQuery.length &gt; 1">
+<div class="p-3 border-b border-slate-100 bg-slate-50">
+<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Search Results for "{{ searchQuery }}"</p>
+</div>
+<div class="max-h-96 overflow-y-auto">
+<div :key="result.id" @click="navigateToResult(result)" class="p-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 group" v-for="result in searchResults">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded bg-slate-100 flex items-center justify-center text-[#001f3d] group-hover:bg-[#001f3d] group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">{{ result.icon }}</span>
+</div>
+<div>
+<p class="text-xs font-black text-[#001f3d] uppercase">{{ result.name }}</p>
+<p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">{{ result.category }}</p>
+</div>
+</div>
+</div>
+<div class="p-8 text-center text-slate-400" v-if="searchResults.length === 0">
+<span class="material-symbols-outlined text-3xl mb-2 opacity-20">search_off</span>
+<p class="text-[10px] font-bold uppercase tracking-widest">No matching records found</p>
+</div>
+</div>
+</div>
+</div>
 <button class="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"><span class="material-symbols-outlined">settings</span></button>
 <button class="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors relative">
 <span class="material-symbols-outlined">notifications</span>
@@ -83,7 +112,7 @@
 <div class="flex justify-between items-end">
 <div>
 <h2 class="text-3xl font-black text-[#001f3d] tracking-tight uppercase">Main Dashboard</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Vessel Wide Fleet Overview</p>
+<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">KPS8 PMS</p>
 </div>
 <div class="bg-[#001f3d] px-6 py-3 rounded text-white shadow-lg">
 <p class="text-[10px] font-bold uppercase tracking-widest opacity-60">Total Operational Units</p>
@@ -147,7 +176,7 @@
 </div>
 </div>
 </div>
-<!-- 9. REPORTS VIEW (NEW) -->
+<!-- 9. REPORTS VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'reports'">
 <div class="flex justify-between items-center">
 <div>
@@ -157,7 +186,7 @@
 <div class="flex gap-2">
 <button class="px-4 py-2 bg-[#001f3d] text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-2 shadow-lg">
 <span class="material-symbols-outlined text-sm">upload_file</span> New Report
-</button>
+                        </button>
 </div>
 </div>
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -175,13 +204,11 @@
 <span class="text-[10px] font-black text-[#001f3d] bg-slate-200 px-2 py-1 rounded">{{ cat.files.length }} FILES</span>
 </div>
 <div class="p-6">
-<!-- Drag & Drop Area -->
 <div class="border-2 border-dashed border-slate-200 rounded-lg p-8 flex flex-col items-center justify-center hover:border-[#001f3d] hover:bg-slate-50 transition-all cursor-pointer group mb-6">
 <span class="material-symbols-outlined text-3xl text-slate-300 group-hover:text-[#001f3d] mb-2">cloud_upload</span>
 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Drag files here or <span class="text-[#001f3d] underline">Browse</span></p>
 <p class="text-[8px] text-slate-400 mt-1">PDF, XLSX or JPG (MAX 25MB)</p>
 </div>
-<!-- File List -->
 <div>
 <div class="flex items-center justify-between mb-3">
 <h4 class="text-[10px] font-black text-[#001f3d] uppercase tracking-widest">Recently Uploaded</h4>
@@ -217,7 +244,7 @@
 </div>
 </div>
 </div>
-<!-- 2. SPARK PLUG / PCC / NRV VIEW -->
+<!-- SPARK PLUG / PCC / NRV VIEW -->
 <div class="space-y-8" v-else-if="['spark-plug', 'pcc', 'nrv'].includes(currentView)">
 <div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
 <div>
@@ -253,7 +280,7 @@
 </div>
 </div>
 </div>
-<!-- 3. VALVE MEASUREMENT VIEW -->
+<!-- VALVE MEASUREMENT VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'valve-measure'">
 <div class="flex justify-between items-center bg-[#001f3d] p-6 rounded-lg text-white shadow-lg">
 <div>
@@ -303,7 +330,7 @@
 </div>
 </div>
 </div>
-<!-- 4. LUBE OIL SYSTEM VIEW -->
+<!-- LUBE OIL SYSTEM VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'lube-oil'">
 <div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
 <div>
@@ -312,17 +339,16 @@
 </div>
 <div class="flex bg-white p-1 rounded-md border border-slate-200 gap-1 overflow-x-auto max-w-lg">
 <button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase whitespace-nowrap', selectedGts === n ? 'bg-[#001f3d] text-white' : 'text-slate-500 hover:bg-slate-100']" :key="n" @click="selectedGts = n" v-for="n in 12">
-            GTS {{ n }}
-        </button>
+                            GTS {{ n }}
+                        </button>
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<!-- Oil Properties / Analysis -->
 <div class="lg:col-span-1 space-y-6">
 <div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
 <h3 class="text-[11px] font-black uppercase text-[#001f3d] tracking-widest mb-6 border-b pb-4 flex items-center gap-2">
 <span class="material-symbols-outlined text-lg">science</span> Oil Analysis Values (GTS {{ selectedGts }})
-</h3>
+                            </h3>
 <div class="space-y-4">
 <div :key="key" class="space-y-1" v-for="(val, key) in lubeOilData[selectedGts-1].properties">
 <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ key.replace(/([A-Z])/g, ' $1') }}</label>
@@ -332,26 +358,12 @@
 </div>
 </div>
 </div>
-<div class="bg-[#001f3d] rounded-lg p-6 text-white shadow-lg">
-<h3 class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60 mb-4">Monthly Transfer Data</h3>
-<div class="space-y-4">
-<div class="flex justify-between items-center pb-2 border-b border-white/10">
-<span class="text-[10px] font-bold uppercase">Total Consumed (Month)</span>
-<span class="font-black">1,420 <small class="opacity-50">LTR</small></span>
 </div>
-<div class="flex justify-between items-center">
-<span class="text-[10px] font-bold uppercase">Last Sample Date</span>
-<span class="font-black text-xs">2024-05-12</span>
-</div>
-</div>
-</div>
-</div>
-<!-- Top-up Log -->
 <div class="lg:col-span-2 bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
 <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
 <h3 class="text-xs font-black uppercase text-[#001f3d] tracking-widest flex items-center gap-2">
 <span class="material-symbols-outlined text-lg">oil_barrel</span> Oil Top-up Log (GTS {{ selectedGts }})
-</h3>
+                            </h3>
 <button @click="addLubeLog(selectedGts-1)" class="text-[10px] font-black bg-[#001f3d] text-white px-3 py-1 rounded uppercase tracking-wider hover:opacity-90">Add Entry</button>
 </div>
 <div class="overflow-x-auto">
@@ -360,7 +372,6 @@
 <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
 <th class="px-6 py-4">Date</th>
 <th class="px-6 py-4">Amount (Liters)</th>
-<th class="px-6 py-4">Current Running Hours</th>
 <th class="px-6 py-4 text-right">Remarks</th>
 </tr>
 </thead>
@@ -372,13 +383,9 @@
 <td class="px-6 py-3">
 <input class="bg-transparent border-none text-xs font-black text-[#001f3d] w-20 p-0 focus:ring-0" type="number" v-model="entry.liters"/>
 </td>
-<td class="px-6 py-3 text-xs font-medium text-slate-500">{{ entry.hrs }} hrs</td>
 <td class="px-6 py-3 text-right">
 <input class="bg-transparent border-none text-[10px] font-bold text-slate-400 p-0 focus:ring-0 text-right w-full" placeholder="Optional notes..." type="text" v-model="entry.note"/>
 </td>
-</tr>
-<tr v-if="lubeOilData[selectedGts-1].logs.length === 0">
-<td class="px-6 py-8 text-center text-slate-400 text-xs italic" colspan="4">No top-up entries recorded for this unit.</td>
 </tr>
 </tbody>
 </table>
@@ -386,12 +393,12 @@
 </div>
 </div>
 </div>
-<!-- 5. STARTING AIR COMPRESSORS VIEW (Maintenance Table) -->
+<!-- STARTING AIR COMPRESSORS VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'starting-air'">
 <div class="flex justify-between items-center">
 <div>
 <h2 class="text-3xl font-black text-[#001f3d] uppercase tracking-tight">{{ currentNavItem.label }}</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Operational Parameters &amp; Detailed Maintenance Log</p>
+<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Detailed Maintenance Log</p>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -406,46 +413,8 @@
 </div>
 </div>
 </div>
-<div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-<div class="bg-[#001f3d] px-6 py-4 flex justify-between items-center">
-<h3 class="text-white text-xs font-black uppercase tracking-widest">Compressor Maintenance Schedule &amp; Log</h3>
-<div class="flex gap-4">
-<div class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-emerald-500"></span><span class="text-[9px] text-white font-bold uppercase">Healthy</span></div>
-<div class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-amber-500"></span><span class="text-[9px] text-white font-bold uppercase">Upcoming</span></div>
-<div class="flex items-center gap-2"><span class="h-3 w-3 rounded-full bg-rose-500"></span><span class="text-[9px] text-white font-bold uppercase">Due</span></div>
 </div>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead>
-<tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 bg-slate-50">
-<th class="px-6 py-4">Maintenance Task</th>
-<th class="px-6 py-4 text-center">Interval (Hrs)</th>
-<th :key="n" class="px-6 py-4 text-center" v-for="n in 4">SAC #{{ n }} Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr :key="task.name" class="hover:bg-slate-50/50" v-for="task in sacMaintenanceTasks">
-<td class="px-6 py-4">
-<p class="text-xs font-black text-[#001f3d] uppercase tracking-tight">{{ task.name }}</p>
-<p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{{ task.desc }}</p>
-</td>
-<td class="px-6 py-4 text-center font-mono font-bold text-slate-600 text-xs">{{ task.interval }}h</td>
-<td :key="n" class="px-6 py-4 text-center" v-for="n in 4">
-<div class="flex flex-col items-center gap-1">
-<span :class="['status-badge w-24 text-center', getSacTaskStatus(n, task)]">
-                                {{ getSacTaskStatusText(n, task) }}
-                            </span>
-<span class="text-[8px] font-bold text-slate-400 uppercase">Last: {{ sacMaintenanceHistory[n-1][task.id] }}h</span>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- 6. GENERIC SYSTEM VIEWS (Pumps, FWG, etc.) -->
+<!-- GENERIC SYSTEM VIEWS -->
 <div class="space-y-8" v-else-if="['service-air', 'control-air', 'denox-comp', 'fwg', 'pumps'].includes(currentView)">
 <div class="flex justify-between items-center mb-6">
 <div>
@@ -470,22 +439,17 @@
 <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
 <div :class="['h-full transition-all duration-700', getHealthColor(currentView, n)]" :style="{ width: getHealthProgress(currentView, n) + '%' }"></div>
 </div>
-<div class="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
-<span class="text-slate-400">Maintenance:</span>
-<span :class="getHealthTextClass(currentView, n)">{{ getHealthLabel(currentView, n) }}</span>
 </div>
 </div>
 </div>
 </div>
-</div>
-<!-- 7. CLEANING VIEW -->
+<!-- CLEANING VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'cleaning'">
 <div class="bg-[#001f3d] p-8 rounded-lg text-white shadow-xl flex justify-between items-center">
 <div>
 <h2 class="text-3xl font-black uppercase">Purification &amp; Cleaning</h2>
 <p class="text-xs font-bold uppercase tracking-[0.3em] opacity-60 mt-2">Filter Management &amp; Component Hygiene Log</p>
 </div>
-<button @click="currentView = 'reports'" class="bg-white text-[#001f3d] px-6 py-2 rounded font-black text-xs uppercase tracking-widest shadow-lg hover:bg-slate-100 transition-colors">Go to reports</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <div :key="idx" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm group hover:border-[#001f3d] transition-all" v-for="(item, idx) in cleaningItems">
@@ -498,28 +462,23 @@
 <h4 class="font-black text-[#001f3d] uppercase text-xs mb-6 leading-relaxed">{{ item }}</h4>
 <div class="flex gap-4">
 <button class="flex-1 py-2.5 bg-[#001f3d] text-white text-[10px] font-black uppercase rounded shadow-sm hover:opacity-90 transition-opacity">Cleaned</button>
-<button class="flex-1 py-2.5 border border-slate-200 text-[#001f3d] text-[10px] font-black uppercase rounded hover:bg-slate-50 transition-colors">Log Note</button>
 </div>
 </div>
 </div>
 </div>
-<!-- 8. BOILER VIEW -->
+<!-- BOILER VIEW -->
 <div class="space-y-8" v-else-if="currentView === 'boiler'">
 <div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
 <div>
 <h2 class="text-2xl font-black text-[#001f3d] uppercase tracking-tight">Boiler Damper Control Log</h2>
 <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Kazan Damper Kontrolü Haftalık Takip (Unit 1-12)</p>
 </div>
-<button class="px-4 py-2 bg-white border border-slate-200 rounded text-[10px] font-bold text-[#001f3d] uppercase tracking-widest hover:bg-slate-50">Export Logs</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-<div :key="n" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow" v-for="n in 12">
+<div :key="n" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm" v-for="n in 12">
 <h5 class="text-xs font-black text-[#001f3d] mb-4 uppercase tracking-widest">Boiler Unit {{ n }}</h5>
 <div class="space-y-4">
-<div>
-<label class="text-[9px] uppercase font-bold text-slate-400 tracking-widest block mb-2">Son Kontrol Tarihi</label>
 <input class="w-full bg-slate-50 border-slate-200 rounded-md py-2 px-3 text-xs font-bold text-[#001f3d] focus:ring-1 focus:ring-[#001f3d]" type="date" v-model="boilerDates[n-1]"/>
-</div>
 <label class="flex items-center gap-3 p-3 bg-slate-50 rounded-md cursor-pointer hover:bg-slate-100 transition-colors">
 <input class="h-4 w-4 rounded border-slate-300 text-[#001f3d] focus:ring-[#001f3d]" type="checkbox" v-model="boilerStatus[n-1]"/>
 <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Damper Verified</span>
@@ -562,18 +521,12 @@
                 B: Array.from({length: 9}, () => ({ vals: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 }))
             }));
             
-            // SAC Maintenance Helper
-            const sacTasks = [
-                { id: 'oilChange', name: 'Oil Change', desc: 'Drain and refill compressor oil', interval: 1000 },
-                { id: 'valveCheck', name: 'Valve Check', desc: 'Inspect inlet/outlet valves', interval: 2500 },
-                { id: 'filterClean', name: 'Filter Clean', desc: 'Suction filter cleaning/replacement', interval: 500 },
-                { id: 'coolerInsp', name: 'Cooler Inspection', desc: 'Check inter/aftercooler condition', interval: 3000 },
-                { id: 'safetyValve', name: 'Safety Valve Test', desc: 'Functional test of safety release', interval: 1500 }
-            ];
-
             return {
                 currentView: 'dashboard',
                 selectedGts: 1,
+                searchActive: false,
+                searchQuery: '',
+                searchResults: [],
                 fleetHours: [12550, 12700, 12850, 13000, 13150, 13300, 13450, 13600, 13750, 13900, 14050, 14200],
                 navItems: [
                     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
@@ -605,17 +558,8 @@
                 valveData: initValveData(),
                 lubeOilData: Array.from({length: 12}, (_, i) => ({
                     properties: { viscosity40C: '105', viscosity100C: '14.2', baseNumber: '10.5', flashPoint: '220', waterContent: '0.02' },
-                    logs: [
-                        { date: '2024-05-01', liters: 250, hrs: 12400, note: 'Normal replenishment' }
-                    ]
+                    logs: [{ date: '2024-05-01', liters: 250, hrs: 12400, note: 'Normal replenishment' }]
                 })),
-                sacMaintenanceTasks: sacTasks,
-                sacMaintenanceHistory: [
-                    { oilChange: 1400, valveCheck: 0, filterClean: 1400, coolerInsp: 0, safetyValve: 1000 },
-                    { oilChange: 2000, valveCheck: 0, filterClean: 2100, coolerInsp: 0, safetyValve: 1500 },
-                    { oilChange: 1800, valveCheck: 0, filterClean: 1900, coolerInsp: 0, safetyValve: 1000 },
-                    { oilChange: 400, valveCheck: 0, filterClean: 400, coolerInsp: 0, safetyValve: 0 }
-                ],
                 equipmentHours: {
                     'starting-air': [1482, 2100, 1950, 420],
                     'service-air': [5420, 3190],
@@ -645,32 +589,14 @@
                 reportCategories: [
                     { 
                         id: 'monthly', icon: 'calendar_month', label: 'Monthly Reports', sub: 'Aylık Raporlar',
-                        files: [
-                            { name: 'May_2024_Performance.pdf', date: '2024-05-31', author: 'C/E Smith' },
-                            { name: 'April_2024_Performance.pdf', date: '2024-04-30', author: 'C/E Smith' }
-                        ]
-                    },
-                    { 
-                        id: 'sounding', icon: 'opacity', label: 'Daily Sounding', sub: 'Günlük Sounding',
-                        files: [
-                            { name: 'Sounding_2024_06_12.xlsx', date: '2024-06-12', author: '2/E Johnson' },
-                            { name: 'Sounding_2024_06_11.xlsx', date: '2024-06-11', author: '2/E Johnson' }
-                        ]
-                    },
-                    { 
-                        id: 'thermal', icon: 'thermostat', label: 'Thermal Imaging Reports', sub: 'Termal Çekim Raporları',
-                        files: [
-                            { name: 'Main_Engine_Thermal_Q2.pdf', date: '2024-05-15', author: 'Elec Officer' }
-                        ]
-                    },
-                    { 
-                        id: 'maintenance', icon: 'engineering', label: 'GTS Engine Maintenance Reports', sub: 'GTS Engine Bakım Raporları',
-                        files: [
-                            { name: 'GTS_4_Overhaul_Summary.pdf', date: '2024-05-20', author: 'Superintendent' },
-                            { name: 'GTS_12_Valve_Timing.pdf', date: '2024-06-05', author: 'C/E Smith' }
-                        ]
+                        files: [{ name: 'May_2024_Performance.pdf', date: '2024-05-31', author: 'C/E Smith' }]
                     }
                 ]
+            }
+        },
+        watch: {
+            searchActive(val) {
+                if(val) this.$nextTick(() => this.$refs.searchInput?.focus());
             }
         },
         computed: {
@@ -679,17 +605,66 @@
             }
         },
         methods: {
+            performSearch() {
+                const query = this.searchQuery.toLowerCase().trim();
+                if (query.length < 2) {
+                    this.searchResults = [];
+                    return;
+                }
+
+                const results = [];
+
+                // 1. Search Navigation Items
+                this.navItems.forEach(item => {
+                    if (item.label.toLowerCase().includes(query)) {
+                        results.push({ id: item.id, name: item.label, category: 'Navigation Section', icon: item.icon });
+                    }
+                });
+
+                // 2. Search specific units (GTS 1-12)
+                for (let i = 1; i <= 12; i++) {
+                    if (`gts ${i}`.includes(query) || `unit ${i}`.includes(query)) {
+                        results.push({ 
+                            id: 'gts-unit', 
+                            name: `GTS UNIT ${i}`, 
+                            category: 'Engine Unit', 
+                            icon: 'settings_suggest',
+                            targetGts: i
+                        });
+                    }
+                }
+
+                // 3. Search Specific Components/Categories
+                const components = ['Filter', 'Compressor', 'Pump', 'Boiler', 'Damper', 'Air Cooler', 'Lube Oil'];
+                components.forEach(comp => {
+                    if (comp.toLowerCase().includes(query)) {
+                        const navMatch = this.navItems.find(n => n.label.toLowerCase().includes(comp.toLowerCase()));
+                        if (navMatch) {
+                            results.push({ id: navMatch.id, name: comp, category: 'System Component', icon: navMatch.icon });
+                        }
+                    }
+                });
+
+                this.searchResults = results.slice(0, 10);
+            },
+            navigateToResult(result) {
+                if (result.targetGts) {
+                    this.selectedGts = result.targetGts;
+                    // Jump to a relevant view if we are on a per-unit view, otherwise maybe dashboard
+                    if (!['spark-plug', 'pcc', 'nrv', 'valve-measure', 'lube-oil', 'boiler'].includes(this.currentView)) {
+                        this.currentView = 'dashboard';
+                    }
+                } else {
+                    this.currentView = result.id;
+                }
+                this.searchActive = false;
+                this.searchQuery = '';
+            },
             getInterval(key) {
                 return this.intervals[key] || 0;
             },
             getEquipmentCount(key) {
-                const counts = {
-                    'service-air': 2,
-                    'control-air': 2,
-                    'denox-comp': 12,
-                    'fwg': 4,
-                    'pumps': 16
-                };
+                const counts = { 'service-air': 2, 'control-air': 2, 'denox-comp': 12, 'fwg': 4, 'pumps': 16 };
                 return counts[key] || 0;
             },
             getCompStatusText(view, gts, bank, cyl) {
@@ -727,40 +702,12 @@
                 if (current >= interval * 0.85) return 'bg-amber-500';
                 return 'bg-[#001f3d]';
             },
-            getHealthLabel(key, n) {
-                const current = this.equipmentHours[key][n-1];
-                const interval = this.intervals[key];
-                if (current >= interval) return 'MAINTENANCE DUE';
-                if (current >= interval * 0.85) return 'UPCOMING TASK';
-                return 'HEALTHY';
-            },
-            getHealthTextClass(key, n) {
-                const label = this.getHealthLabel(key, n);
-                if (label === 'MAINTENANCE DUE') return 'text-rose-500';
-                if (label === 'UPCOMING TASK') return 'text-amber-500';
-                return 'text-emerald-500';
-            },
             addLubeLog(idx) {
                 this.lubeOilData[idx].logs.unshift({
                     date: new Date().toISOString().split('T')[0],
                     liters: 0,
-                    hrs: this.fleetHours[idx],
                     note: ''
                 });
-            },
-            getSacTaskStatusText(sacIdx, task) {
-                const current = this.equipmentHours['starting-air'][sacIdx-1];
-                const last = this.sacMaintenanceHistory[sacIdx-1][task.id];
-                const delta = current - last;
-                if (delta >= task.interval) return 'Due';
-                if (delta >= task.interval * 0.85) return 'Upcoming';
-                return 'Healthy';
-            },
-            getSacTaskStatus(sacIdx, task) {
-                const status = this.getSacTaskStatusText(sacIdx, task);
-                if (status === 'Due') return 'status-due';
-                if (status === 'Upcoming') return 'status-upcoming';
-                return 'status-healthy';
             }
         }
     }).mount('#app');
