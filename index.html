@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-slate-50" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KPS8 OSMAN BEY | PMS SPA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        [v-cloak] { display: none; }
+        .primary-gradient { background: linear-gradient(135deg, #003366 0%, #004d99 100%); }
+        .sidebar-active { @apply bg-white text-[#003366] shadow-sm font-bold border-l-4 border-[#003366]; }
+        
+        /* High density table styles */
+        .table-dense th, .table-dense td { padding: 0.5rem 0.75rem; }
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+        .status-badge { @apply px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-tighter border; }
+        .status-healthy { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
+        .status-upcoming { @apply bg-amber-50 text-amber-700 border-amber-200; }
+        .status-due { @apply bg-rose-50 text-rose-700 border-rose-200; }
+
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="h-full overflow-hidden text-slate-900">
+<div class="flex h-full" id="app" v-cloak="">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-slate-100 border-r border-slate-200 flex flex-col z-50 shrink-0">
+<div class="p-5 border-b border-slate-200">
+<div class="flex items-center gap-3">
+<div class="bg-[#003366] p-1.5 rounded">
+<span class="material-symbols-outlined text-white text-xl">directions_boat</span>
+</div>
+<div>
+<h1 class="text-[#003366] font-black tracking-tighter text-base leading-none uppercase">KPS8 OSMAN BEY</h1>
+<p class="text-[9px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Operational • PMS v5.0</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 space-y-0.5">
+<button :class="['w-full flex items-center gap-3 px-5 py-2.5 text-[11px] transition-all uppercase tracking-wider font-semibold text-left', 
+                             currentView === item.id ? 'sidebar-active' : 'text-slate-600 hover:bg-slate-200/60']" :key="item.id" @click="currentView = item.id" v-for="item in navItems">
+<span :style="currentView === item.id ? 'font-variation-settings: \'FILL\' 1' : ''" class="material-symbols-outlined text-lg">{{ item.icon }}</span>
+<span class="truncate">{{ item.label }}</span>
+</button>
+</nav>
+<div class="p-4 border-t border-slate-200 bg-slate-100/50">
+<div class="bg-[#003366] rounded p-3 text-white">
+<p class="text-[9px] uppercase tracking-widest font-bold opacity-60 mb-1">Fleet Sync</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] font-medium">Auto-Update Active</span>
+<div class="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden relative">
+<!-- Header -->
+<header class="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-40 shrink-0">
+<div class="flex items-center gap-4">
+<h2 class="text-sm font-black text-[#003366] uppercase tracking-tight">BRIDGE INTERFACE</h2>
+<div class="h-4 w-px bg-slate-200"></div>
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ currentNavItem.label }}</p>
+</div>
+<div class="flex items-center gap-5">
+<div class="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded text-slate-500">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span class="text-[10px] font-bold">14:32 UTC</span>
+</div>
+<button class="bg-[#003366] text-white text-[10px] font-bold px-4 py-2 rounded hover:bg-[#002244] transition-colors uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sync</span>
+                    Sync Data
+                </button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-6">
+<!-- 1. DASHBOARD -->
+<div class="space-y-6" v-if="currentView === 'dashboard'">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+<!-- Global Status Cards -->
+<div class="lg:col-span-3 bg-white border border-slate-200 rounded shadow-sm">
+<div class="px-5 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+<h3 class="text-[11px] font-black uppercase text-[#003366] tracking-widest">GTS Fleet Status (12 Units)</h3>
+<span class="text-[10px] font-bold text-slate-400 italic">Enter current running hours for each unit</span>
+</div>
+<div class="p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<div :key="'gts-'+n" class="p-3 border border-slate-100 rounded bg-slate-50/30" v-for="n in 12">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-black text-slate-500">GTS {{ n }}</span>
+<div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+</div>
+<div class="flex items-end gap-1">
+<input class="w-full bg-white border-slate-200 rounded p-1 text-xs font-bold text-[#003366] focus:ring-1 focus:ring-[#003366]" type="number" v-model="fleetHours[n-1]"/>
+<span class="text-[9px] font-bold text-slate-400 mb-1">HRS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Gas Specs Side Panel -->
+<div class="bg-white border border-slate-200 rounded shadow-sm p-5 space-y-5">
+<h3 class="text-[11px] font-black uppercase text-[#003366] tracking-widest border-b border-slate-100 pb-2">Gas Specification</h3>
+<div :key="spec.label" class="flex items-center gap-3" v-for="spec in gasSpecs">
+<div class="p-2 bg-slate-100 rounded text-slate-500"><span class="material-symbols-outlined text-lg">{{ spec.icon }}</span></div>
+<div class="flex-1">
+<p class="text-[9px] font-bold text-slate-400 uppercase leading-none mb-1">{{ spec.label }}</p>
+<p class="text-lg font-black text-[#003366] tracking-tighter">{{ spec.value }} <span class="text-[10px] font-bold opacity-40">{{ spec.unit }}</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-5 border border-slate-200 rounded shadow-sm flex items-center justify-between">
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Alerts</p>
+<p class="text-3xl font-black text-rose-600 tracking-tighter">{{ criticalAlertCount }}</p>
+</div>
+<span class="material-symbols-outlined text-rose-100 text-5xl">warning</span>
+</div>
+<div class="bg-white p-5 border border-slate-200 rounded shadow-sm flex items-center justify-between">
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Maintenance Health</p>
+<p class="text-3xl font-black text-emerald-600 tracking-tighter">{{ healthPercentage }}%</p>
+</div>
+<span class="material-symbols-outlined text-emerald-100 text-5xl">check_circle</span>
+</div>
+<div class="bg-white p-5 border border-slate-200 rounded shadow-sm flex items-center justify-between">
+<div>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Fuel Efficiency</p>
+<p class="text-3xl font-black text-[#003366] tracking-tighter">94.2%</p>
+</div>
+<span class="material-symbols-outlined text-slate-100 text-5xl">monitoring</span>
+</div>
+</div>
+</div>
+<!-- 2. CYLINDER COMPONENT VIEWS (Spark Plug, PCC, NRV) -->
+<div class="space-y-6" v-else-if="['spark-plug', 'pcc', 'nrv'].includes(currentView)">
+<div class="flex items-center justify-between bg-white p-4 border border-slate-200 rounded shadow-sm">
+<div>
+<h2 class="text-xl font-black text-[#003366] uppercase">{{ currentNavItem.label }} Tracking</h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Component Service Interval: {{ getInterval(currentView) }} HRS</p>
+</div>
+<div class="flex bg-slate-100 p-1 rounded gap-1">
+<button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase', selectedGts === n ? 'bg-[#003366] text-white' : 'text-slate-500 hover:bg-slate-200']" :key="'sel-gts-'+n" @click="selectedGts = n" v-for="n in 12">
+                            GTS {{ n }}
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Bank A -->
+<div class="space-y-4">
+<div class="bg-slate-800 text-white p-3 rounded-t flex items-center justify-between">
+<span class="text-xs font-black uppercase tracking-widest">A-BANK (CYL 1-9)</span>
+<span class="text-[10px] opacity-60">GTS {{ selectedGts }}</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div :key="'A'+c" class="bg-white p-4 border border-slate-200 rounded shadow-sm" v-for="c in 9">
+<div class="flex justify-between items-center mb-3">
+<span class="text-sm font-black text-[#003366]">CYL A{{ c }}</span>
+<span :class="['status-badge', getStatusClass(currentView, selectedGts, 'A', c)]">
+                                        {{ getStatusText(currentView, selectedGts, 'A', c) }}
+                                    </span>
+</div>
+<div class="space-y-1">
+<label class="text-[9px] font-bold text-slate-400 uppercase">Last Service Hours</label>
+<input class="w-full bg-slate-50 border-slate-200 rounded p-1.5 text-xs font-bold text-[#003366]" type="number" v-model="componentData[currentView][selectedGts-1]['A'][c-1]"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Bank B -->
+<div class="space-y-4">
+<div class="bg-slate-200 text-slate-700 p-3 rounded-t flex items-center justify-between">
+<span class="text-xs font-black uppercase tracking-widest">B-BANK (CYL 1-9)</span>
+<span class="text-[10px] opacity-60">GTS {{ selectedGts }}</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div :key="'B'+c" class="bg-white p-4 border border-slate-200 rounded shadow-sm" v-for="c in 9">
+<div class="flex justify-between items-center mb-3">
+<span class="text-sm font-black text-[#003366]">CYL B{{ c }}</span>
+<span :class="['status-badge', getStatusClass(currentView, selectedGts, 'B', c)]">
+                                        {{ getStatusText(currentView, selectedGts, 'B', c) }}
+                                    </span>
+</div>
+<div class="space-y-1">
+<label class="text-[9px] font-bold text-slate-400 uppercase">Last Service Hours</label>
+<input class="w-full bg-slate-50 border-slate-200 rounded p-1.5 text-xs font-bold text-[#003366]" type="number" v-model="componentData[currentView][selectedGts-1]['B'][c-1]"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. VALVE MEASUREMENT (High Detail) -->
+<div class="space-y-6" v-else-if="currentView === 'valve-measure'">
+<div class="bg-white p-4 border border-slate-200 rounded shadow-sm flex items-center justify-between">
+<div>
+<h2 class="text-xl font-black text-[#003366] uppercase">Valve Clearance Matrix</h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manual Input Required • Interval: 500 HRS</p>
+</div>
+<div class="flex bg-slate-100 p-1 rounded gap-1 overflow-x-auto max-w-md">
+<button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase whitespace-nowrap', selectedGts === n ? 'bg-[#003366] text-white' : 'text-slate-500 hover:bg-slate-200']" :key="'v-sel-'+n" @click="selectedGts = n" v-for="n in 12">
+                            GTS {{ n }}
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<div :key="bank" class="bg-white border border-slate-200 rounded overflow-hidden" v-for="bank in ['A', 'B']">
+<div class="bg-slate-50 px-6 py-3 border-b border-slate-200 flex justify-between items-center">
+<span class="text-xs font-black text-[#003366] uppercase">{{ bank }} Bank Cylinders</span>
+<span class="text-[10px] font-bold text-slate-400">GTS {{ selectedGts }}</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full table-dense text-left border-collapse">
+<thead>
+<tr class="text-[10px] text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
+<th class="w-24">Cylinder</th>
+<th class="text-center">Inlet 1 (mm)</th>
+<th class="text-center">Inlet 2 (mm)</th>
+<th class="text-center">Exhaust 1 (mm)</th>
+<th class="text-center">Exhaust 2 (mm)</th>
+<th class="text-center">Last Check (Hrs)</th>
+<th class="text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr :key="bank+c" class="hover:bg-slate-50/50" v-for="c in 9">
+<td class="text-xs font-black text-[#003366]">CYL {{ bank }}{{ c }}</td>
+<td :key="vIdx" class="px-2" v-for="vIdx in 4">
+<input class="w-full text-center bg-transparent border-0 border-b border-slate-100 focus:border-[#003366] text-xs font-mono p-1" step="0.01" type="number" v-model="valveMeasurements[selectedGts-1][bank][c-1].values[vIdx-1]"/>
+</td>
+<td class="px-2">
+<input class="w-full text-center bg-slate-50 border-0 rounded text-xs font-bold p-1" type="number" v-model="valveMeasurements[selectedGts-1][bank][c-1].lastHrs"/>
+</td>
+<td class="text-right">
+<span :class="['status-badge', getValveStatusClass(selectedGts, bank, c)]">
+                                                {{ getValveStatusText(selectedGts, bank, c) }}
+                                            </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. EQUIPMENT TABLES (Compressors, Pumps, FWG, etc.) -->
+<div class="space-y-6" v-else="">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-2xl font-black text-[#003366] uppercase">{{ currentNavItem.label }}</h2>
+<p class="text-slate-500 font-medium text-sm">System performance and maintenance intervals</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<div :key="n" class="bg-white border border-slate-200 rounded shadow-sm overflow-hidden flex flex-col" v-for="n in getEquipmentCount(currentView)">
+<div class="px-4 py-3 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+<span class="text-[11px] font-black text-[#003366] uppercase">{{ currentNavItem.label }} #{{ n }}</span>
+<span :class="['status-badge', getEquipmentStatusClass(currentView, n)]">
+                                {{ getEquipmentStatusText(currentView, n) }}
+                            </span>
+</div>
+<div class="p-5 flex-1 space-y-4">
+<div>
+<label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Running Hours</label>
+<div class="flex items-end gap-2">
+<input class="w-full bg-slate-100 border-transparent rounded px-2 py-1 text-lg font-black text-[#003366]" type="number" v-model="equipmentData[currentView][n-1]"/>
+<span class="text-[10px] font-bold text-slate-400 mb-1">HRS</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
+<div :class="['h-full transition-all duration-500', getEquipmentHealthColor(currentView, n)]" :style="{ width: getEquipmentHealthProgress(currentView, n) + '%' }"></div>
+</div>
+<button class="w-full border border-slate-200 py-1.5 rounded text-[9px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-colors">Log Maintenance</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="h-9 bg-slate-900 flex items-center justify-between px-6 text-[9px] text-white/50 font-black uppercase tracking-widest z-40 shrink-0">
+<div class="flex items-center gap-6">
+<p>Terminal: BRIDGE-MAIN-KPS8</p>
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-1.5 rounded-full bg-emerald-500"></div>
+<p>Network Online</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<p>System: PMS v5.0.4-STABLE</p>
+<p class="text-white/20">|</p>
+<p>User: CHIEF ENGINEER</p>
+</div>
+</footer>
+</main>
+</div>
+<!-- Vue.js SPA Logic -->
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const { createApp } = Vue;
+
+    createApp({
+        data() {
+            // Helper to init array with specific value
+            const initArr = (len, val) => Array.from({length: len}, () => val);
+            
+            // Helper to init GTS data (12 engines, 2 banks, 9 cyl)
+            const initGtsComponentData = (val) => Array.from({length: 12}, () => ({
+                A: Array.from({length: 9}, () => val),
+                B: Array.from({length: 9}, () => val)
+            }));
+
+            // Helper for Valve Measurement data
+            const initValveData = () => Array.from({length: 12}, () => ({
+                A: Array.from({length: 9}, () => ({ values: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 })),
+                B: Array.from({length: 9}, () => ({ values: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 }))
+            }));
+
+            return {
+                currentView: 'dashboard',
+                selectedGts: 1,
+                fleetHours: [12450, 11200, 13100, 9800, 14500, 12000, 11000, 10500, 9900, 12200, 11800, 13000],
+                navItems: [
+                    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+                    { id: 'spark-plug', label: 'Spark Plug', icon: 'bolt' },
+                    { id: 'pcc', label: 'PCC', icon: 'settings_input_component' },
+                    { id: 'nrv', label: 'Non Return Valve', icon: 'vertical_align_bottom' },
+                    { id: 'valve-measure', label: 'Valve Measurement', icon: 'straighten' },
+                    { id: 'starting-air', label: 'Starting Air Compressors', icon: 'compress' },
+                    { id: 'denox-comp', label: 'Denox Compressors', icon: 'air' },
+                    { id: 'control-air', label: 'Control Air Compressors', icon: 'mode_fan' },
+                    { id: 'fwg', label: 'FWG', icon: 'water_drop' },
+                    { id: 'pumps', label: 'Pumps', icon: 'cyclone' },
+                    { id: 'lube-oil', label: 'Lube Oil System', icon: 'oil_barrel' }
+                ],
+                gasSpecs: [
+                    { label: 'Supply Pressure', value: '6.8', unit: 'bar', icon: 'compress' },
+                    { label: 'Temperature', value: '42.5', unit: '°C', icon: 'thermostat' },
+                    { label: 'Calorific Value', value: '34.2', unit: 'MJ/m³', icon: 'local_fire_department' },
+                    { label: 'Methane Number', value: '82', unit: 'MN', icon: 'gas_meter' }
+                ],
+                // Core Component Data
+                componentData: {
+                    'spark-plug': initGtsComponentData(10000),
+                    'pcc': initGtsComponentData(10000),
+                    'nrv': initGtsComponentData(10000)
+                },
+                valveMeasurements: initValveData(),
+                // Auxiliary Equipment Data (Running Hours)
+                equipmentData: {
+                    'starting-air': [1200, 2400, 3100, 500],
+                    'denox-comp': initArr(12, 12000),
+                    'control-air': [4500, 4800],
+                    'fwg': initArr(4, 8000),
+                    'pumps': initArr(16, 1200),
+                    'lube-oil': [12450, 11200, 13100, 9800, 14500, 12000, 11000, 10500, 9900, 12200, 11800, 13000] // Tied to GTS fleet usually
+                },
+                intervals: {
+                    'spark-plug': 2000,
+                    'pcc': 15000,
+                    'nrv': 15000,
+                    'valve-measure': 500,
+                    'starting-air': 2500,
+                    'denox-comp': 8000,
+                    'control-air': 5000,
+                    'fwg': 10000,
+                    'pumps': 5000,
+                    'lube-oil': 15000
+                }
+            }
+        },
+        computed: {
+            currentNavItem() {
+                return this.navItems.find(i => i.id === this.currentView) || this.navItems[0];
+            },
+            criticalAlertCount() {
+                // Simplified count for demo - logic would aggregate all "Due" statuses
+                return 4;
+            },
+            healthPercentage() {
+                return 92;
+            }
+        },
+        methods: {
+            getInterval(key) {
+                return this.intervals[key] || 0;
+            },
+            getEquipmentCount(key) {
+                const counts = {
+                    'starting-air': 4,
+                    'denox-comp': 12,
+                    'control-air': 2,
+                    'fwg': 4,
+                    'pumps': 16,
+                    'lube-oil': 12
+                };
+                return counts[key] || 0;
+            },
+            // Status Calculation Logic
+            getStatus(key, currentHours, lastServiceHours) {
+                const interval = this.intervals[key];
+                const delta = currentHours - lastServiceHours;
+                if (delta >= interval) return 'due';
+                if (delta >= interval * 0.8) return 'upcoming';
+                return 'healthy';
+            },
+            getStatusText(key, gtsIdx, bank, cylIdx) {
+                const current = this.fleetHours[gtsIdx - 1];
+                const last = this.componentData[key][gtsIdx - 1][bank][cylIdx - 1];
+                const s = this.getStatus(key, current, last);
+                return s === 'due' ? 'Replacement Due' : (s === 'upcoming' ? 'Upcoming Task' : 'Healthy');
+            },
+            getStatusClass(key, gtsIdx, bank, cylIdx) {
+                const current = this.fleetHours[gtsIdx - 1];
+                const last = this.componentData[key][gtsIdx - 1][bank][cylIdx - 1];
+                const s = this.getStatus(key, current, last);
+                return s === 'due' ? 'status-due' : (s === 'upcoming' ? 'status-upcoming' : 'status-healthy');
+            },
+            // Valve Status
+            getValveStatusText(gtsIdx, bank, cylIdx) {
+                const current = this.fleetHours[gtsIdx - 1];
+                const last = this.valveMeasurements[gtsIdx - 1][bank][cylIdx - 1].lastHrs;
+                const s = this.getStatus('valve-measure', current, last);
+                return s === 'due' ? 'Check Due' : (s === 'upcoming' ? 'Review Soon' : 'Optimal');
+            },
+            getValveStatusClass(gtsIdx, bank, cylIdx) {
+                const current = this.fleetHours[gtsIdx - 1];
+                const last = this.valveMeasurements[gtsIdx - 1][bank][cylIdx - 1].lastHrs;
+                const s = this.getStatus('valve-measure', current, last);
+                return s === 'due' ? 'status-due' : (s === 'upcoming' ? 'status-upcoming' : 'status-healthy');
+            },
+            // Equipment Status (Auxiliary)
+            getEquipmentStatusText(key, n) {
+                const current = this.equipmentData[key][n - 1];
+                const interval = this.intervals[key];
+                if (current >= interval) return 'Overdue';
+                if (current >= interval * 0.85) return 'Attention';
+                return 'Operational';
+            },
+            getEquipmentStatusClass(key, n) {
+                const current = this.equipmentData[key][n - 1];
+                const interval = this.intervals[key];
+                if (current >= interval) return 'status-due';
+                if (current >= interval * 0.85) return 'status-upcoming';
+                return 'status-healthy';
+            },
+            getEquipmentHealthColor(key, n) {
+                const current = this.equipmentData[key][n - 1];
+                const interval = this.intervals[key];
+                if (current >= interval) return 'bg-rose-500';
+                if (current >= interval * 0.85) return 'bg-amber-500';
+                return 'bg-[#003366]';
+            },
+            getEquipmentHealthProgress(key, n) {
+                const current = this.equipmentData[key][n - 1];
+                const interval = this.intervals[key];
+                return Math.min(100, (current / interval) * 100);
+            }
+        }
+    }).mount('#app');
+</script>
+</body></html>
