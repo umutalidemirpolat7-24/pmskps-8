@@ -134,11 +134,84 @@
 </div>
 </div>
 </div>
-<div class="bg-slate-900 rounded-lg p-6 text-white relative overflow-hidden h-48 flex flex-col justify-end">
-<img class="absolute inset-0 w-full h-full object-cover opacity-20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoDYpH8ZGElrWNRx6CQnk7nRxvtBwm6zc9cKGvnMMEOoe9j4mYYLlTHScZH4dFmwpZv_7GGz86yharGaCiLTjqGFu_8HjYjQ4jnPNsyMdv2i-mco8TQ-hcMRfVULbkeROCd-n8XZ5MAYs9As83uFkdmL7mG3jccDkDYOLc4NviW7kb7lMXdyxE1_ntu6HptH-BldpEsSm2djD85yJfVIH-U2Wn-iDf-DGIpIWtPsOY42uoeA_zNll5M3l0I739JY7NSXbpTkyyIx4"/>
+<button @click="currentView = 'reports'" class="w-full text-left bg-slate-900 rounded-lg p-6 text-white relative overflow-hidden h-48 flex flex-col justify-end group transition-all hover:ring-4 hover:ring-sky-500/20">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoDYpH8ZGElrWNRx6CQnk7nRxvtBwm6zc9cKGvnMMEOoe9j4mYYLlTHScZH4dFmwpZv_7GGz86yharGaCiLTjqGFu_8HjYjQ4jnPNsyMdv2i-mco8TQ-hcMRfVULbkeROCd-n8XZ5MAYs9As83uFkdmL7mG3jccDkDYOLc4NviW7kb7lMXdyxE1_ntu6HptH-BldpEsSm2djD85yJfVIH-U2Wn-iDf-DGIpIWtPsOY42uoeA_zNll5M3l0I739JY7NSXbpTkyyIx4"/>
 <div class="relative z-10">
-<h3 class="text-xs font-black uppercase tracking-widest mb-2">System Status</h3>
-<p class="text-[11px] opacity-70 leading-relaxed uppercase font-medium">All auxiliary systems reporting normal operational parameters. Reporting cycle active.</p>
+<div class="flex justify-between items-center mb-2">
+<h3 class="text-xs font-black uppercase tracking-widest">System Status &amp; Reports</h3>
+<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+<p class="text-[11px] opacity-70 leading-relaxed uppercase font-medium">Click to access document management and operational reports.</p>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- 9. REPORTS VIEW (NEW) -->
+<div class="space-y-8" v-else-if="currentView === 'reports'">
+<div class="flex justify-between items-center">
+<div>
+<h2 class="text-3xl font-black text-[#001f3d] uppercase tracking-tight">Vessel Documentation &amp; Reports</h2>
+<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Professional File Management System</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-[#001f3d] text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-2 shadow-lg">
+<span class="material-symbols-outlined text-sm">upload_file</span> New Report
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<div :key="cat.id" class="bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col" v-for="cat in reportCategories">
+<div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-[#001f3d] text-white rounded flex items-center justify-center">
+<span class="material-symbols-outlined">{{ cat.icon }}</span>
+</div>
+<div>
+<h3 class="text-xs font-black text-[#001f3d] uppercase tracking-widest">{{ cat.label }}</h3>
+<p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{{ cat.sub }}</p>
+</div>
+</div>
+<span class="text-[10px] font-black text-[#001f3d] bg-slate-200 px-2 py-1 rounded">{{ cat.files.length }} FILES</span>
+</div>
+<div class="p-6">
+<!-- Drag & Drop Area -->
+<div class="border-2 border-dashed border-slate-200 rounded-lg p-8 flex flex-col items-center justify-center hover:border-[#001f3d] hover:bg-slate-50 transition-all cursor-pointer group mb-6">
+<span class="material-symbols-outlined text-3xl text-slate-300 group-hover:text-[#001f3d] mb-2">cloud_upload</span>
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Drag files here or <span class="text-[#001f3d] underline">Browse</span></p>
+<p class="text-[8px] text-slate-400 mt-1">PDF, XLSX or JPG (MAX 25MB)</p>
+</div>
+<!-- File List -->
+<div>
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-[10px] font-black text-[#001f3d] uppercase tracking-widest">Recently Uploaded</h4>
+<button class="text-[9px] font-black text-sky-600 uppercase">See All</button>
+</div>
+<div class="overflow-hidden rounded border border-slate-100">
+<table class="w-full text-left text-[10px]">
+<thead class="bg-slate-50 border-b border-slate-100">
+<tr class="font-black text-slate-400 uppercase tracking-tighter">
+<th class="px-4 py-2">File Name</th>
+<th class="px-4 py-2">Date</th>
+<th class="px-4 py-2">Author</th>
+<th class="px-4 py-2 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr :key="f.name" class="hover:bg-slate-50/50 transition-colors" v-for="f in cat.files">
+<td class="px-4 py-3 font-bold text-[#001f3d]">{{ f.name }}</td>
+<td class="px-4 py-3 text-slate-500">{{ f.date }}</td>
+<td class="px-4 py-3 text-slate-500 uppercase font-medium">{{ f.author }}</td>
+<td class="px-4 py-3 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-200 rounded text-slate-600 transition-colors" title="View"><span class="material-symbols-outlined text-sm">visibility</span></button>
+<button class="p-1.5 hover:bg-slate-200 rounded text-[#001f3d] transition-colors" title="Download"><span class="material-symbols-outlined text-sm">download</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -412,7 +485,7 @@
 <h2 class="text-3xl font-black uppercase">Purification &amp; Cleaning</h2>
 <p class="text-xs font-bold uppercase tracking-[0.3em] opacity-60 mt-2">Filter Management &amp; Component Hygiene Log</p>
 </div>
-<button class="bg-white text-[#001f3d] px-6 py-2 rounded font-black text-xs uppercase tracking-widest shadow-lg hover:bg-slate-100 transition-colors">Generate Weekly Report</button>
+<button @click="currentView = 'reports'" class="bg-white text-[#001f3d] px-6 py-2 rounded font-black text-xs uppercase tracking-widest shadow-lg hover:bg-slate-100 transition-colors">Go to reports</button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 <div :key="idx" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm group hover:border-[#001f3d] transition-all" v-for="(item, idx) in cleaningItems">
@@ -516,7 +589,8 @@
                     { id: 'pumps', label: 'Pumps', icon: 'waves' },
                     { id: 'lube-oil', label: 'Lube Oil System', icon: 'oil_barrel' },
                     { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
-                    { id: 'boiler', label: 'Boiler', icon: 'hvac' }
+                    { id: 'boiler', label: 'Boiler', icon: 'hvac' },
+                    { id: 'reports', label: 'Reports', icon: 'folder_open' }
                 ],
                 gasSpecs: [
                     { label: 'Inlet Pressure', value: '4.2', unit: 'bar' },
@@ -567,7 +641,36 @@
                     "Steam Trap Controls", "Hot Water Filter", "Hydrophore Filter"
                 ],
                 boilerDates: initArr(12, new Date().toISOString().split('T')[0]),
-                boilerStatus: initArr(12, true)
+                boilerStatus: initArr(12, true),
+                reportCategories: [
+                    { 
+                        id: 'monthly', icon: 'calendar_month', label: 'Monthly Reports', sub: 'Aylık Raporlar',
+                        files: [
+                            { name: 'May_2024_Performance.pdf', date: '2024-05-31', author: 'C/E Smith' },
+                            { name: 'April_2024_Performance.pdf', date: '2024-04-30', author: 'C/E Smith' }
+                        ]
+                    },
+                    { 
+                        id: 'sounding', icon: 'opacity', label: 'Daily Sounding', sub: 'Günlük Sounding',
+                        files: [
+                            { name: 'Sounding_2024_06_12.xlsx', date: '2024-06-12', author: '2/E Johnson' },
+                            { name: 'Sounding_2024_06_11.xlsx', date: '2024-06-11', author: '2/E Johnson' }
+                        ]
+                    },
+                    { 
+                        id: 'thermal', icon: 'thermostat', label: 'Thermal Imaging Reports', sub: 'Termal Çekim Raporları',
+                        files: [
+                            { name: 'Main_Engine_Thermal_Q2.pdf', date: '2024-05-15', author: 'Elec Officer' }
+                        ]
+                    },
+                    { 
+                        id: 'maintenance', icon: 'engineering', label: 'GTS Engine Maintenance Reports', sub: 'GTS Engine Bakım Raporları',
+                        files: [
+                            { name: 'GTS_4_Overhaul_Summary.pdf', date: '2024-05-20', author: 'Superintendent' },
+                            { name: 'GTS_12_Valve_Timing.pdf', date: '2024-06-05', author: 'C/E Smith' }
+                        ]
+                    }
+                ]
             }
         },
         computed: {
