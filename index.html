@@ -1,715 +1,523 @@
 <!DOCTYPE html>
 
-<html class="h-full bg-slate-50" lang="en"><head>
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS</title>
+<title>KPS8 OSMAN BEY PMS - The Digital Bridge</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#592300",
+              "on-secondary-fixed": "#021f29",
+              "outline-variant": "#c3c6d1",
+              "on-secondary": "#ffffff",
+              "primary-container": "#003461",
+              "surface-bright": "#f4faff",
+              "surface-container-low": "#e9f6fd",
+              "secondary-fixed-dim": "#afcbd8",
+              "primary": "#001f3d",
+              "on-background": "#111d23",
+              "secondary-container": "#cbe7f5",
+              "primary-fixed": "#d3e4ff",
+              "surface-dim": "#cfdce4",
+              "surface-container-high": "#ddeaf2",
+              "on-secondary-container": "#4e6874",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#ffb690",
+              "on-tertiary-fixed-variant": "#723610",
+              "secondary": "#48626e",
+              "on-primary-fixed-variant": "#004882",
+              "on-error-container": "#93000a",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "tertiary-fixed": "#ffdbca",
+              "on-tertiary": "#ffffff",
+              "on-surface": "#111d23",
+              "secondary-fixed": "#cbe7f5",
+              "surface-variant": "#d7e4ec",
+              "on-tertiary-container": "#d8885c",
+              "background": "#f4faff",
+              "on-secondary-fixed-variant": "#304a55",
+              "on-surface-variant": "#43474f",
+              "outline": "#737780",
+              "surface-container-lowest": "#ffffff",
+              "primary-fixed-dim": "#a3c9ff",
+              "on-tertiary-fixed": "#341100",
+              "tertiary": "#381300",
+              "surface-container-highest": "#d7e4ec",
+              "surface-container": "#e3f0f8",
+              "surface-tint": "#27609d",
+              "inverse-primary": "#a3c9ff",
+              "inverse-on-surface": "#e6f3fb",
+              "inverse-surface": "#263238",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#6b9edf",
+              "on-primary-fixed": "#001c38",
+              "surface": "#f4faff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
 <style>
-        body { font-family: 'Inter', sans-serif; }
-        [v-cloak] { display: none; }
-        .sidebar-active { @apply bg-[#001f3d] text-white shadow-md font-bold; }
-        
-        input[type="number"]::-webkit-inner-spin-button, 
-        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-
-        .status-badge { @apply px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tight border; }
-        .status-healthy { @apply bg-emerald-500 text-white border-emerald-600; }
-        .status-upcoming { @apply bg-amber-500 text-white border-amber-600; }
-        .status-due { @apply bg-rose-500 text-white border-rose-600; }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
-        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-sidebar { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .premium-gradient { background: linear-gradient(135deg, #001f3d 0%, #003461 100%); }
+        [data-view] { display: none; }
+        [data-view].active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="h-full overflow-hidden text-slate-900 selection:bg-sky-200">
-<div class="flex h-full" id="app" v-cloak="">
-<!-- Side Navigation -->
-<aside class="w-72 bg-slate-100 border-r border-slate-200 flex flex-col z-50 shrink-0">
-<div class="p-6 border-b border-slate-200 bg-white">
-<h1 class="text-xl font-black text-[#001f3d] uppercase tracking-tighter leading-tight">KPS8 OSMAN BEY PMS</h1>
-<p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Vessel Bridge Control</p>
-</div>
-<nav class="flex-1 overflow-y-auto p-4 space-y-1">
-<button :class="['w-full flex items-center gap-3 px-4 py-2.5 text-[11px] rounded transition-all uppercase tracking-wider font-semibold text-left', 
-                             currentView === item.id ? 'sidebar-active' : 'text-slate-600 hover:bg-slate-200']" :key="item.id" @click="currentView = item.id" v-for="item in navItems">
-<span :style="currentView === item.id ? 'font-variation-settings: \'FILL\' 1' : ''" class="material-symbols-outlined text-lg">{{ item.icon }}</span>
-<span class="truncate">{{ item.label }}</span>
-</button>
-</nav>
-<div class="p-4 bg-slate-200/50 border-t border-slate-200">
-<div class="bg-[#001f3d] rounded p-3 text-white">
-<div class="flex items-center justify-between">
-<span class="text-[10px] font-bold uppercase tracking-widest opacity-70">Fleet Sync</span>
-<div class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
-</div>
-<p class="text-[11px] font-medium mt-1">Operational Status: OK</p>
-</div>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 flex flex-col h-full bg-white overflow-hidden relative">
-<!-- Header -->
-<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-40 shrink-0">
-<div class="flex items-center gap-4">
-<h2 class="text-sm font-black text-[#001f3d] uppercase tracking-widest">KPS8 PMS</h2>
-<span class="text-slate-300">/</span>
-<p class="text-[11px] text-slate-500 font-bold uppercase tracking-widest">{{ currentNavItem.label }}</p>
-</div>
-<div class="flex items-center gap-6">
-<div class="flex items-center gap-2 text-slate-500">
-<span class="material-symbols-outlined text-lg">schedule</span>
-<span class="text-[11px] font-bold">14:32 UTC</span>
-</div>
-<div class="flex gap-2 items-center">
-<!-- Search Bar Integrated -->
-<div class="relative flex items-center">
-<div :class="['flex items-center bg-slate-100 rounded-full transition-all duration-300 overflow-hidden', searchActive ? 'w-64 px-3' : 'w-10 px-0']">
-<span @click="searchActive = !searchActive" class="material-symbols-outlined text-slate-400 text-xl cursor-pointer shrink-0">search</span>
-<input @input="performSearch" class="bg-transparent border-none focus:ring-0 text-xs font-bold text-slate-700 w-full ml-2 placeholder:text-slate-400 uppercase tracking-tighter" placeholder="SEARCH SYSTEMS..." ref="searchInput" type="text" v-if="searchActive" v-model="searchQuery"/>
-</div>
-<!-- Search Results Dropdown -->
-<div class="absolute top-12 right-0 w-80 bg-white border border-slate-200 shadow-2xl rounded-lg overflow-hidden z-[60]" v-if="searchActive &amp;&amp; searchQuery.length &gt; 1">
-<div class="p-3 border-b border-slate-100 bg-slate-50">
-<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Search Results for "{{ searchQuery }}"</p>
-</div>
-<div class="max-h-96 overflow-y-auto">
-<div :key="result.id" @click="navigateToResult(result)" class="p-4 hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0 group" v-for="result in searchResults">
-<div class="flex items-center gap-3">
-<div class="h-8 w-8 rounded bg-slate-100 flex items-center justify-center text-[#001f3d] group-hover:bg-[#001f3d] group-hover:text-white transition-colors">
-<span class="material-symbols-outlined text-lg">{{ result.icon }}</span>
+<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden">
+<!-- Sidebar Navigation Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-40 overflow-y-auto bg-slate-100 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 glass-sidebar">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="h-10 w-10 premium-gradient rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span>
 </div>
 <div>
-<p class="text-xs font-black text-[#001f3d] uppercase">{{ result.name }}</p>
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">{{ result.category }}</p>
+<h1 class="font-bold text-sky-900 dark:text-sky-100 text-sm tracking-tight uppercase">KPS8 OSMAN BEY</h1>
 </div>
 </div>
-</div>
-<div class="p-8 text-center text-slate-400" v-if="searchResults.length === 0">
-<span class="material-symbols-outlined text-3xl mb-2 opacity-20">search_off</span>
-<p class="text-[10px] font-bold uppercase tracking-widest">No matching records found</p>
-</div>
-</div>
-</div>
-</div>
-<button class="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"><span class="material-symbols-outlined">settings</span></button>
-<button class="p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-2 right-2 h-2 w-2 bg-rose-500 rounded-full border-2 border-white"></span>
+<nav class="flex-1 space-y-1 no-scrollbar" id="main-nav">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="dashboard" onclick="switchView('dashboard')">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-sm">Dashboard</span>
 </button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="spark-plug" onclick="switchView('spark-plug')">
+<span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
+<span class="text-sm">Spark Plug</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="pcc" onclick="switchView('pcc')">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings_input_component">settings_input_component</span>
+<span class="text-sm">PCC</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="valve" onclick="switchView('valve')">
+<span class="material-symbols-outlined text-[20px]" data-icon="straighten">straighten</span>
+<span class="text-sm">Valve Measurement</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="compressors" onclick="switchView('compressors')">
+<span class="material-symbols-outlined text-[20px]" data-icon="air">air</span>
+<span class="text-sm">Compressors</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="sw-pumps" onclick="switchView('sw-pumps')">
+<span class="material-symbols-outlined text-[20px]" data-icon="propane_tank">propane_tank</span>
+<span class="text-sm">SW Pumps</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="lube-oil" onclick="switchView('lube-oil')">
+<span class="material-symbols-outlined text-[20px]" data-icon="oil_barrel">oil_barrel</span>
+<span class="text-sm">Lube Oil System</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="cleaning" onclick="switchView('cleaning')">
+<span class="material-symbols-outlined text-[20px]" data-icon="cleaning_services">cleaning_services</span>
+<span class="text-sm">Cleaning</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="boiler" onclick="switchView('boiler')">
+<span class="material-symbols-outlined text-[20px]" data-icon="hvac">hvac</span>
+<span class="text-sm">Boiler</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="shutdowns" onclick="switchView('shutdowns')">
+<span class="material-symbols-outlined text-[20px]" data-icon="report_problem">report_problem</span>
+<span class="text-sm">Shutdowns</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="reports" onclick="switchView('reports')">
+<span class="material-symbols-outlined text-[20px]" data-icon="description">description</span>
+<span class="text-sm">Reports</span>
+</button>
+</nav>
+<div class="mt-6 border-t border-slate-200 dark:border-slate-800 pt-6">
+<button class="w-full premium-gradient text-white text-xs font-bold py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+            ADD MAINTENANCE LOG
+        </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen h-screen flex flex-col overflow-hidden relative">
+<!-- Top Bar -->
+<header class="bg-slate-50 dark:bg-slate-900 sticky top-0 z-30 flex justify-between items-center w-full px-8 py-3 border-b border-slate-200 dark:border-slate-800 shrink-0">
+<div class="flex items-center gap-6">
+<span class="text-lg font-black tracking-tighter text-sky-900 dark:text-white uppercase">KPS8 OSMAN BEY PMS</span>
+<div class="flex bg-surface-container rounded-md px-3 py-1.5 items-center gap-2 w-72">
+<span class="material-symbols-outlined text-outline text-lg" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-outline" placeholder="Search engine telemetry..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative" id="notification-btn" onclick="toggleNotifications()">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 h-2 w-2 bg-error rounded-full ring-2 ring-white"></span>
+</button>
+<!-- Notification Side Panel -->
+<div class="hidden absolute right-0 mt-3 w-80 bg-white shadow-2xl rounded-xl overflow-hidden border border-slate-200 z-50 transform origin-top-right transition-all" id="notification-panel">
+<div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
+<h4 class="text-xs font-black uppercase tracking-widest text-primary">Notifications</h4>
+<span class="bg-error/10 text-error text-[9px] font-bold px-2 py-0.5 rounded">1 CRITICAL</span>
+</div>
+<div class="max-h-[400px] overflow-y-auto">
+<div class="p-4 bg-red-50 border-l-4 border-error flex gap-3">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<p class="text-xs font-bold text-error uppercase mb-1">Critical Alert</p>
+<p class="text-sm font-medium text-primary leading-tight">GTS 4 Shutdown - Low Lube Oil Pressure detected on Engine Room Bank B.</p>
+<p class="text-[10px] text-slate-500 mt-2 font-semibold">Just now</p>
+</div>
+</div>
+</div>
+<div class="p-3 bg-slate-50 border-t border-slate-100 text-center">
+<button class="text-[10px] font-bold text-primary uppercase hover:underline">View All Alerts</button>
+</div>
+</div>
+</div>
+<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-px bg-slate-200 mx-2"></div>
+<div class="flex items-center gap-3">
+<img alt="Chief Engineer Profile" class="h-10 w-10 rounded-lg object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUOy3pq4J1l49DivEwd5fq5WzA1EdoPc3VeI3QXe7gNFbjgXMRrC6o0igUZ50ZG83dDnHzvsRhAdSesy6Bs38FkG2pr26RaINyOrGyLOF3PqgakNT9-mD1tJr4U18IL8JY1KxRiSlMIX424Q_SjSWtcxzZoV9NCffE2LuB_nSan5mSr0tMWqg1MyibUcFmokCiuHcRXGOh777F5-7bU_uZRL6LyLMbKoeTlapgPHQMrN0gD1lDJ1H5Oy3pO7ePH0oXIt6Hy1Jqik"/>
 </div>
 </div>
 </header>
-<!-- Dynamic Content Area -->
-<div class="flex-1 overflow-y-auto p-8">
-<!-- 1. DASHBOARD VIEW -->
-<div class="space-y-8" v-if="currentView === 'dashboard'">
-<div class="flex justify-between items-end">
+<!-- Page Content Container -->
+<div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-surface">
+<!-- DASHBOARD VIEW -->
+<section class="space-y-10 active" data-view="dashboard" id="view-dashboard">
+<div class="grid grid-cols-12 gap-8">
+<!-- Global Status -->
+<div class="col-span-8 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between">
+<div class="flex justify-between items-start">
 <div>
-<h2 class="text-3xl font-black text-[#001f3d] tracking-tight uppercase">Main Dashboard</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">KPS8 PMS</p>
+<h2 class="text-2xl font-bold text-primary mb-1">Fleet Operational Status</h2>
+<p class="text-sm text-on-surface-variant">Vessel active at 12.4 knots. All systems within nominal variance.</p>
 </div>
-<div class="bg-[#001f3d] px-6 py-3 rounded text-white shadow-lg">
-<p class="text-[10px] font-bold uppercase tracking-widest opacity-60">Total Operational Units</p>
-<p class="text-2xl font-black">12 / 12</p>
-</div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-<!-- Fleet Grid -->
-<div class="xl:col-span-2 bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-<div class="px-6 py-4 border-b border-slate-200 bg-white flex justify-between items-center">
-<h3 class="text-xs font-black uppercase text-[#001f3d] tracking-widest">Main Engine Fleet Summary (GTS 1-12)</h3>
-<span class="material-symbols-outlined text-slate-400">analytics</span>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left">
-<thead class="bg-white border-b border-slate-200">
-<tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-<th class="px-6 py-4">Unit</th>
-<th class="px-6 py-4">Running Hours</th>
-<th class="px-6 py-4">Next Maintenance</th>
-<th class="px-6 py-4 text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr :key="n" class="hover:bg-slate-50 transition-colors group" v-for="n in 12">
-<td class="px-6 py-4 font-black text-[#001f3d]">GTS {{ n }}</td>
-<td class="px-6 py-4">
-<span class="font-mono font-bold text-sm text-[#001f3d]">{{ fleetHours[n-1] }}</span>
-<span class="text-[10px] text-slate-400 font-bold ml-1 uppercase">hrs</span>
-</td>
-<td class="px-6 py-4 text-xs font-medium text-slate-600">Valve Check: 500h</td>
-<td class="px-6 py-4 text-right">
-<span class="text-xs font-bold text-slate-700">Operational</span>
-</td>
-</tr>
-</tbody>
-</table>
+<div class="flex gap-2">
+<span class="bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Online</span>
+<span class="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Normal</span>
 </div>
 </div>
-<!-- Side Panels -->
+<div class="grid grid-cols-3 gap-12 mt-10">
+<div class="space-y-1">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Active Engines</p>
+<p class="text-4xl font-black text-primary">11/12</p>
+<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<div class="h-full bg-sky-600 w-[91%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Avg. Efficiency</p>
+<p class="text-4xl font-black text-primary text-sky-700">94.2<span class="text-lg font-bold">%</span></p>
+<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<div class="h-full bg-sky-600 w-[94%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Total Gas Consumption</p>
+<p class="text-4xl font-black text-primary text-emerald-700">3,485<span class="text-lg font-bold">m³</span></p>
+<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<div class="h-full bg-emerald-600 w-[82%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- GAS SPEC Card -->
+<div class="col-span-4 premium-gradient rounded-xl p-8 text-white flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-lg font-black tracking-tighter">GAS SPEC.</h3>
+<span class="material-symbols-outlined text-sky-400" data-icon="propane">propane</span>
+</div>
 <div class="space-y-6">
-<div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
-<h3 class="text-xs font-black uppercase text-[#001f3d] tracking-widest mb-6 border-b pb-4">Gas Specifications</h3>
-<div class="space-y-4">
-<div :key="spec.label" class="flex justify-between items-center p-3 bg-slate-50 rounded border border-slate-100" v-for="spec in gasSpecs">
-<span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">{{ spec.label }}</span>
-<span class="font-black text-[#001f3d]">{{ spec.value }} <small class="text-[9px] opacity-50 uppercase">{{ spec.unit }}</small></span>
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<span class="text-sm font-medium text-sky-200">Inlet Pressure</span>
+<span class="text-xl font-black">4.2 bar</span>
 </div>
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<span class="text-sm font-medium text-sky-200">Density</span>
+<span class="text-xl font-black">0.71 kg/m³</span>
 </div>
-</div>
-<button @click="currentView = 'reports'" class="w-full text-left bg-slate-900 rounded-lg p-6 text-white relative overflow-hidden h-48 flex flex-col justify-end group transition-all hover:ring-4 hover:ring-sky-500/20">
-<img class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoDYpH8ZGElrWNRx6CQnk7nRxvtBwm6zc9cKGvnMMEOoe9j4mYYLlTHScZH4dFmwpZv_7GGz86yharGaCiLTjqGFu_8HjYjQ4jnPNsyMdv2i-mco8TQ-hcMRfVULbkeROCd-n8XZ5MAYs9As83uFkdmL7mG3jccDkDYOLc4NviW7kb7lMXdyxE1_ntu6HptH-BldpEsSm2djD85yJfVIH-U2Wn-iDf-DGIpIWtPsOY42uoeA_zNll5M3l0I739JY7NSXbpTkyyIx4"/>
-<div class="relative z-10">
-<div class="flex justify-between items-center mb-2">
-<h3 class="text-xs font-black uppercase tracking-widest">System Status &amp; Reports</h3>
-<span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</div>
-<p class="text-[11px] opacity-70 leading-relaxed uppercase font-medium">Click to access document management and operational reports.</p>
-</div>
-</button>
-</div>
-</div>
-</div>
-<!-- 9. REPORTS VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'reports'">
 <div class="flex justify-between items-center">
-<div>
-<h2 class="text-3xl font-black text-[#001f3d] uppercase tracking-tight">Vessel Documentation &amp; Reports</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Professional File Management System</p>
-</div>
-<div class="flex gap-2">
-<button class="px-4 py-2 bg-[#001f3d] text-white text-[10px] font-black uppercase tracking-widest rounded flex items-center gap-2 shadow-lg">
-<span class="material-symbols-outlined text-sm">upload_file</span> New Report
-                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-<div :key="cat.id" class="bg-white border border-slate-200 rounded-lg shadow-sm flex flex-col" v-for="cat in reportCategories">
-<div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-<div class="flex items-center gap-3">
-<div class="h-10 w-10 bg-[#001f3d] text-white rounded flex items-center justify-center">
-<span class="material-symbols-outlined">{{ cat.icon }}</span>
-</div>
-<div>
-<h3 class="text-xs font-black text-[#001f3d] uppercase tracking-widest">{{ cat.label }}</h3>
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{{ cat.sub }}</p>
-</div>
-</div>
-<span class="text-[10px] font-black text-[#001f3d] bg-slate-200 px-2 py-1 rounded">{{ cat.files.length }} FILES</span>
-</div>
-<div class="p-6">
-<div class="border-2 border-dashed border-slate-200 rounded-lg p-8 flex flex-col items-center justify-center hover:border-[#001f3d] hover:bg-slate-50 transition-all cursor-pointer group mb-6">
-<span class="material-symbols-outlined text-3xl text-slate-300 group-hover:text-[#001f3d] mb-2">cloud_upload</span>
-<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Drag files here or <span class="text-[#001f3d] underline">Browse</span></p>
-<p class="text-[8px] text-slate-400 mt-1">PDF, XLSX or JPG (MAX 25MB)</p>
-</div>
-<div>
-<div class="flex items-center justify-between mb-3">
-<h4 class="text-[10px] font-black text-[#001f3d] uppercase tracking-widest">Recently Uploaded</h4>
-<button class="text-[9px] font-black text-sky-600 uppercase">See All</button>
-</div>
-<div class="overflow-hidden rounded border border-slate-100">
-<table class="w-full text-left text-[10px]">
-<thead class="bg-slate-50 border-b border-slate-100">
-<tr class="font-black text-slate-400 uppercase tracking-tighter">
-<th class="px-4 py-2">File Name</th>
-<th class="px-4 py-2">Date</th>
-<th class="px-4 py-2">Author</th>
-<th class="px-4 py-2 text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-50">
-<tr :key="f.name" class="hover:bg-slate-50/50 transition-colors" v-for="f in cat.files">
-<td class="px-4 py-3 font-bold text-[#001f3d]">{{ f.name }}</td>
-<td class="px-4 py-3 text-slate-500">{{ f.date }}</td>
-<td class="px-4 py-3 text-slate-500 uppercase font-medium">{{ f.author }}</td>
-<td class="px-4 py-3 text-right">
-<div class="flex justify-end gap-2">
-<button class="p-1.5 hover:bg-slate-200 rounded text-slate-600 transition-colors" title="View"><span class="material-symbols-outlined text-sm">visibility</span></button>
-<button class="p-1.5 hover:bg-slate-200 rounded text-[#001f3d] transition-colors" title="Download"><span class="material-symbols-outlined text-sm">download</span></button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
+<span class="text-sm font-medium text-sky-200">Methane Number</span>
+<span class="text-xl font-black">81.4 MN</span>
 </div>
 </div>
 </div>
 </div>
-</div>
-</div>
-<!-- SPARK PLUG / PCC / NRV VIEW -->
-<div class="space-y-8" v-else-if="['spark-plug', 'pcc', 'nrv'].includes(currentView)">
-<div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
-<div>
-<h2 class="text-2xl font-black text-[#001f3d] uppercase">{{ currentNavItem.label }} Management</h2>
-<p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] mt-1">Service Interval: {{ getInterval(currentView) }} HRS</p>
-</div>
-<div class="flex bg-white p-1 rounded-md border border-slate-200 gap-1 overflow-x-auto max-w-lg">
-<button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase whitespace-nowrap', selectedGts === n ? 'bg-[#001f3d] text-white' : 'text-slate-500 hover:bg-slate-100']" :key="n" @click="selectedGts = n" v-for="n in 12">
-                            GTS UNIT {{ n }}
-                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<div :key="bank" class="space-y-4" v-for="bank in ['A', 'B']">
-<div :class="['p-4 rounded-t-lg flex items-center justify-between', bank === 'A' ? 'bg-[#001f3d] text-white' : 'bg-slate-200 text-slate-700']">
-<span class="text-xs font-black uppercase tracking-widest">BANK {{ bank }} (CYL 1-9)</span>
-<span class="text-[10px] font-bold opacity-60">GTS {{ selectedGts }}</span>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<div :key="bank+c" class="bg-white border border-slate-200 rounded p-4 shadow-sm group hover:border-[#001f3d] transition-colors" v-for="c in 9">
-<div class="flex justify-between items-center mb-3">
-<span class="text-xs font-black text-[#001f3d]">CYL {{ bank }}{{ c }}</span>
-<span :class="['status-badge', getCompStatusClass(currentView, selectedGts, bank, c)]">
-                                        {{ getCompStatusText(currentView, selectedGts, bank, c) }}
-                                    </span>
-</div>
-<div class="space-y-2">
-<label class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Last Service (Hrs)</label>
-<input class="w-full bg-slate-50 border-slate-100 rounded px-2 py-1.5 text-xs font-bold text-[#001f3d] focus:ring-1 focus:ring-[#001f3d]" type="number" v-model="componentData[currentView][selectedGts-1][bank][c-1]"/>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- VALVE MEASUREMENT VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'valve-measure'">
-<div class="flex justify-between items-center bg-[#001f3d] p-6 rounded-lg text-white shadow-lg">
-<div>
-<h2 class="text-2xl font-black uppercase tracking-tight">Valve Clearance Matrix</h2>
-<p class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-60">12 GTS Units • 18 Cylinders • 4 Valves Per Cylinder</p>
-</div>
-<div class="flex bg-white/10 p-1 rounded-md gap-1 overflow-x-auto max-w-lg">
-<button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase whitespace-nowrap', selectedGts === n ? 'bg-white text-[#001f3d]' : 'text-white/60 hover:bg-white/20']" :key="n" @click="selectedGts = n" v-for="n in 12">
-                            GTS {{ n }}
-                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 gap-8">
-<div :key="bank" class="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm" v-for="bank in ['A', 'B']">
-<div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-<h3 class="text-xs font-black uppercase text-[#001f3d] tracking-widest">{{ bank }} Bank Detailed Measurement</h3>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left text-xs">
-<thead>
-<tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
-<th class="px-6 py-4 w-32">Cylinder</th>
-<th class="px-4 py-4 text-center">Inlet 1 (mm)</th>
-<th class="px-4 py-4 text-center">Inlet 2 (mm)</th>
-<th class="px-4 py-4 text-center">Exh. 1 (mm)</th>
-<th class="px-4 py-4 text-center">Exh. 2 (mm)</th>
-<th class="px-6 py-4 text-center">Last Hrs</th>
-<th class="px-6 py-4 text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr :key="bank+c" class="hover:bg-slate-50/50" v-for="c in 9">
-<td class="px-6 py-4 font-black text-[#001f3d]">CYL {{ bank }}{{ c }}</td>
-<td :key="vIdx" class="px-4 py-3" v-for="vIdx in 4">
-<input class="w-full text-center bg-transparent border-0 border-b border-slate-100 focus:border-[#001f3d] font-mono font-bold text-xs p-1" step="0.01" type="number" v-model="valveData[selectedGts-1][bank][c-1].vals[vIdx-1]"/>
-</td>
-<td class="px-6 py-4">
-<input class="w-full text-center bg-slate-100 border-0 rounded py-1 px-2 text-[11px] font-bold text-[#001f3d] focus:ring-1 focus:ring-[#001f3d]" type="number" v-model="valveData[selectedGts-1][bank][c-1].lastHrs"/>
-</td>
-<td class="px-6 py-4 text-right">
-<span :class="['status-badge', getValveStatusClass(selectedGts, bank, c)]">Optimal</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<!-- LUBE OIL SYSTEM VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'lube-oil'">
-<div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
-<div>
-<h2 class="text-2xl font-black text-[#001f3d] uppercase tracking-tight">Lube Oil Management</h2>
-<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Oil Analysis &amp; Consumption Monitoring</p>
-</div>
-<div class="flex bg-white p-1 rounded-md border border-slate-200 gap-1 overflow-x-auto max-w-lg">
-<button :class="['px-3 py-1.5 text-[10px] font-black rounded transition-all uppercase whitespace-nowrap', selectedGts === n ? 'bg-[#001f3d] text-white' : 'text-slate-500 hover:bg-slate-100']" :key="n" @click="selectedGts = n" v-for="n in 12">
-                            GTS {{ n }}
-                        </button>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="lg:col-span-1 space-y-6">
-<div class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
-<h3 class="text-[11px] font-black uppercase text-[#001f3d] tracking-widest mb-6 border-b pb-4 flex items-center gap-2">
-<span class="material-symbols-outlined text-lg">science</span> Oil Analysis Values (GTS {{ selectedGts }})
-                            </h3>
+<!-- GTS Engine Grid Status -->
 <div class="space-y-4">
-<div :key="key" class="space-y-1" v-for="(val, key) in lubeOilData[selectedGts-1].properties">
-<label class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ key.replace(/([A-Z])/g, ' $1') }}</label>
-<div class="flex gap-2">
-<input class="flex-1 bg-slate-50 border-slate-200 rounded px-3 py-2 text-xs font-bold text-[#001f3d]" type="text" v-model="lubeOilData[selectedGts-1].properties[key]"/>
+<div class="flex justify-between items-end">
+<h2 class="text-xl font-bold text-primary">GTS Engine Running Status</h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 1</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">162</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 2</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">158</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 3</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">164</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 4</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">42</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 5</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">160</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 6</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">159</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 7</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">163</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 8</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">165</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 9</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">161</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 10</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">164</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 11</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">157</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
+<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 12</p>
+<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">162</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
 </div>
 </div>
 </div>
+<!-- Dashboard Hub Cards -->
+<div class="grid grid-cols-2 gap-8">
+<div class="bg-surface-container rounded-xl p-8 flex items-center gap-6 group cursor-pointer border border-transparent hover:border-sky-200 transition-all shadow-sm hover:shadow-md" onclick="switchView('reports')">
+<div class="h-16 w-16 bg-white rounded-xl flex items-center justify-center text-primary shadow-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-4xl" data-icon="insert_chart">insert_chart</span>
+</div>
+<div>
+<h3 class="text-xl font-bold text-primary">System Reports</h3>
+<p class="text-sm text-on-surface-variant">Review all technical logs and performance summaries.</p>
+</div>
+<div class="ml-auto">
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
 </div>
 </div>
-<div class="lg:col-span-2 bg-white border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-<div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-<h3 class="text-xs font-black uppercase text-[#001f3d] tracking-widest flex items-center gap-2">
-<span class="material-symbols-outlined text-lg">oil_barrel</span> Oil Top-up Log (GTS {{ selectedGts }})
-                            </h3>
-<button @click="addLubeLog(selectedGts-1)" class="text-[10px] font-black bg-[#001f3d] text-white px-3 py-1 rounded uppercase tracking-wider hover:opacity-90">Add Entry</button>
+<div class="bg-surface-container rounded-xl p-8 flex items-center gap-6 group cursor-pointer border border-transparent hover:border-error/20 transition-all shadow-sm hover:shadow-md" onclick="switchView('shutdowns')">
+<div class="h-16 w-16 bg-white rounded-xl flex items-center justify-center text-error shadow-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-4xl" data-icon="warning">warning</span>
 </div>
-<div class="overflow-x-auto">
+<div>
+<h3 class="text-xl font-bold text-primary">Shutdown Management</h3>
+<p class="text-sm text-on-surface-variant">Log reasons and corrective actions for engine outages.</p>
+</div>
+<div class="ml-auto">
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SHUTDOWNS VIEW -->
+<section class="space-y-8" data-view="shutdowns" id="view-shutdowns">
+<div class="flex items-center gap-3 border-l-4 border-error pl-4">
+<span class="material-symbols-outlined text-error" data-icon="power_settings_new">power_settings_new</span>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Shutdowns Logbook</h2>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-slate-200">
 <table class="w-full text-left">
-<thead class="bg-white border-b border-slate-200">
-<tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-<th class="px-6 py-4">Date</th>
-<th class="px-6 py-4">Amount (Liters)</th>
-<th class="px-6 py-4 text-right">Remarks</th>
+<thead>
+<tr class="bg-slate-50 text-primary border-b border-slate-200">
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest w-32">Engine Unit</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Shutdown Reason</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Active Alarms</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Corrective Action</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr :key="idx" class="hover:bg-slate-50 transition-colors" v-for="(entry, idx) in lubeOilData[selectedGts-1].logs">
-<td class="px-6 py-3">
-<input class="bg-transparent border-none text-xs font-bold text-[#001f3d] p-0 focus:ring-0" type="date" v-model="entry.date"/>
-</td>
-<td class="px-6 py-3">
-<input class="bg-transparent border-none text-xs font-black text-[#001f3d] w-20 p-0 focus:ring-0" type="number" v-model="entry.liters"/>
-</td>
-<td class="px-6 py-3 text-right">
-<input class="bg-transparent border-none text-[10px] font-bold text-slate-400 p-0 focus:ring-0 text-right w-full" placeholder="Optional notes..." type="text" v-model="entry.note"/>
-</td>
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="px-6 py-4 font-black text-primary text-sm">GTS 1</td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Enter reason..." type="text"/></td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Alarm codes..." type="text"/></td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Describe actions..." type="text"/></td>
 </tr>
+<!-- Critical Unit 4 -->
+<tr class="bg-red-50/70">
+<td class="px-6 py-4 font-black text-error text-sm">GTS 4</td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Low Lube Oil Pressure"/></td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="ERR-204, ERR-209"/></td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Primary pump swap &amp; filter check"/></td>
+</tr>
+<script>
+                            for(let i=2; i<=12; i++) {
+                                if(i == 4) continue;
+                                document.write(`
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="px-6 py-4 font-black text-primary text-sm">GTS ${i}</td>
+                                        <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Enter reason..." type="text"/></td>
+                                        <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Alarm codes..." type="text"/></td>
+                                        <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Describe actions..." type="text"/></td>
+                                    </tr>
+                                `);
+                            }
+                        </script>
 </tbody>
 </table>
 </div>
+<div class="flex justify-end gap-4">
+<button class="bg-slate-200 text-primary px-6 py-3 rounded font-black text-xs tracking-widest uppercase hover:bg-slate-300 transition-colors">Clear Draft</button>
+<button class="bg-primary text-white px-8 py-3 rounded font-black text-xs tracking-widest uppercase shadow-lg active:scale-95 transition-transform">Save Logbook Entry</button>
 </div>
-</div>
-</div>
-<!-- STARTING AIR COMPRESSORS VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'starting-air'">
-<div class="flex justify-between items-center">
-<div>
-<h2 class="text-3xl font-black text-[#001f3d] uppercase tracking-tight">{{ currentNavItem.label }}</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Detailed Maintenance Log</p>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div :key="n" class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden group" v-for="n in 4">
-<div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-<span class="text-[11px] font-black text-[#001f3d] uppercase tracking-wider">SAC #{{ n }}</span>
-<div class="h-2 w-2 rounded-full bg-emerald-500"></div>
-</div>
-<div class="p-5">
-<label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Running Hours</label>
-<input class="w-full bg-slate-50 border-slate-200 rounded px-3 py-1.5 text-lg font-black text-[#001f3d]" type="number" v-model="equipmentHours['starting-air'][n-1]"/>
-</div>
-</div>
-</div>
-</div>
-<!-- GENERIC SYSTEM VIEWS -->
-<div class="space-y-8" v-else-if="['service-air', 'control-air', 'denox-comp', 'fwg', 'pumps'].includes(currentView)">
-<div class="flex justify-between items-center mb-6">
-<div>
-<h2 class="text-3xl font-black text-[#001f3d] uppercase tracking-tight">{{ currentNavItem.label }}</h2>
-<p class="text-slate-500 font-bold uppercase text-[10px] tracking-[0.2em] mt-1">Operational Parameters &amp; Maintenance Monitoring</p>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-<div :key="n" class="bg-white border border-slate-200 rounded-lg shadow-sm overflow-hidden flex flex-col group hover:shadow-md transition-shadow" v-for="n in getEquipmentCount(currentView)">
-<div class="px-5 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-<span class="text-[11px] font-black text-[#001f3d] uppercase tracking-wider">{{ currentNavItem.label }} #{{ n }}</span>
-<div class="h-2 w-2 rounded-full bg-emerald-500"></div>
-</div>
-<div class="p-6 space-y-5 flex-1">
-<div>
-<label class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-2">Total Running Hours</label>
-<div class="flex items-end gap-2">
-<input class="w-full bg-slate-50 border-slate-200 rounded-lg px-3 py-2 text-xl font-black text-[#001f3d] focus:ring-2 focus:ring-[#001f3d] transition-all" type="number" v-model="equipmentHours[currentView][n-1]"/>
-<span class="text-[10px] font-bold text-slate-400 mb-2 uppercase">hrs</span>
-</div>
-</div>
-<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-<div :class="['h-full transition-all duration-700', getHealthColor(currentView, n)]" :style="{ width: getHealthProgress(currentView, n) + '%' }"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- CLEANING VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'cleaning'">
-<div class="bg-[#001f3d] p-8 rounded-lg text-white shadow-xl flex justify-between items-center">
-<div>
-<h2 class="text-3xl font-black uppercase">Purification &amp; Cleaning</h2>
-<p class="text-xs font-bold uppercase tracking-[0.3em] opacity-60 mt-2">Filter Management &amp; Component Hygiene Log</p>
-</div>
-</div>
+</section>
+<!-- REPORTS VIEW -->
+<section class="space-y-8" data-view="reports" id="view-reports">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Technical Reports</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div :key="idx" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm group hover:border-[#001f3d] transition-all" v-for="(item, idx) in cleaningItems">
-<div class="flex justify-between items-start mb-6">
-<div class="p-3 bg-slate-100 rounded-lg group-hover:bg-[#001f3d] group-hover:text-white transition-colors">
-<span class="material-symbols-outlined">sanitizer</span>
+<!-- Daily Sounding -->
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-sky-500" data-icon="analytics">analytics</span>
+<h3 class="font-bold text-primary text-lg">Daily Sounding</h3>
 </div>
-<span class="text-[10px] font-bold text-slate-400">ID: CL-240{{ idx }}</span>
+<div class="mt-2">
+<label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Upload Report (PDF/XLS)</label>
+<input class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-all cursor-pointer border border-slate-100 rounded-md p-1" type="file"/>
 </div>
-<h4 class="font-black text-[#001f3d] uppercase text-xs mb-6 leading-relaxed">{{ item }}</h4>
-<div class="flex gap-4">
-<button class="flex-1 py-2.5 bg-[#001f3d] text-white text-[10px] font-black uppercase rounded shadow-sm hover:opacity-90 transition-opacity">Cleaned</button>
+<button class="w-full py-2.5 bg-primary text-white text-[10px] font-black uppercase rounded shadow-sm hover:bg-sky-900 transition-colors mt-auto">Submit Report</button>
 </div>
+<!-- Daily Operation Report -->
+<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-4xl text-emerald-500" data-icon="assignment">assignment</span>
+<h3 class="font-bold text-primary text-lg">Daily Operation</h3>
 </div>
-</div>
-</div>
-<!-- BOILER VIEW -->
-<div class="space-y-8" v-else-if="currentView === 'boiler'">
-<div class="flex justify-between items-center bg-slate-50 p-6 rounded-lg border border-slate-200 shadow-sm">
+<div class="mt-2 p-3 bg-slate-50 rounded-lg border border-dashed border-slate-200 flex items-center gap-3">
+<span class="material-symbols-outlined text-sky-600" data-icon="cloud_sync">cloud_sync</span>
 <div>
-<h2 class="text-2xl font-black text-[#001f3d] uppercase tracking-tight">Boiler Damper Control Log</h2>
-<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">Kazan Damper Kontrolü Haftalık Takip (Unit 1-12)</p>
+<p class="text-[10px] font-black text-primary uppercase">OneDrive Sync</p>
+<p class="text-[9px] text-slate-500">Connected to Vessel-Ops-Shared</p>
 </div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-<div :key="n" class="bg-white border border-slate-200 rounded-lg p-6 shadow-sm" v-for="n in 12">
-<h5 class="text-xs font-black text-[#001f3d] mb-4 uppercase tracking-widest">Boiler Unit {{ n }}</h5>
-<div class="space-y-4">
-<input class="w-full bg-slate-50 border-slate-200 rounded-md py-2 px-3 text-xs font-bold text-[#001f3d] focus:ring-1 focus:ring-[#001f3d]" type="date" v-model="boilerDates[n-1]"/>
-<label class="flex items-center gap-3 p-3 bg-slate-50 rounded-md cursor-pointer hover:bg-slate-100 transition-colors">
-<input class="h-4 w-4 rounded border-slate-300 text-[#001f3d] focus:ring-[#001f3d]" type="checkbox" v-model="boilerStatus[n-1]"/>
-<span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Damper Verified</span>
-</label>
+<div class="mt-auto pt-4">
+<button class="w-full py-2.5 bg-slate-100 text-slate-600 text-[10px] font-black uppercase rounded flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+                            Open in OneDrive
+                        </button>
+</div>
+</div>
+<!-- Template Download Card -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-slate-200 flex flex-col justify-center items-center text-center gap-3">
+<span class="material-symbols-outlined text-4xl text-slate-400" data-icon="download">download</span>
+<p class="text-xs font-bold text-primary">Need the standard reporting templates?</p>
+<button class="text-[10px] font-black uppercase text-sky-600 hover:underline">Download Pack v2.4</button>
+</div>
+</div>
+</section>
+<!-- Other View Placeholders -->
+<section class="space-y-8" data-view="spark-plug" id="view-spark-plug">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Spark Plug Logs</h2>
+<div class="p-12 bg-surface-container-lowest rounded-xl border border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
+<span class="material-symbols-outlined text-6xl mb-4" data-icon="bolt">bolt</span>
+<p class="font-bold">Spark plug performance telemetry module</p>
+</div>
+</section>
+<section class="space-y-8" data-view="pcc" id="view-pcc">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Power Control Center</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-slate-100">
+<div class="flex justify-between items-center mb-6">
+<h4 class="text-sm font-black text-primary">ENGINE UNIT GTS 1</h4>
+<span class="bg-primary text-white text-[9px] font-black px-2 py-0.5 rounded tracking-widest">ACTIVE</span>
+</div>
+<div class="h-40 bg-slate-50 flex items-center justify-center rounded-lg border border-slate-100">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live Grid Feed Pending</span>
 </div>
 </div>
 </div>
+</section>
+<section class="space-y-8" data-view="sw-pumps" id="view-sw-pumps"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">SW Pumps Monitoring</h2></section>
+<section class="space-y-8" data-view="valve" id="view-valve"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Valve Measurement</h2></section>
+<section class="space-y-8" data-view="compressors" id="view-compressors"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Compressors</h2></section>
+<section class="space-y-8" data-view="lube-oil" id="view-lube-oil"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil System</h2></section>
+<section class="space-y-8" data-view="cleaning" id="view-cleaning"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Cleaning Logs</h2></section>
+<section class="space-y-8" data-view="boiler" id="view-boiler"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Boiler Status</h2></section>
 </div>
-</div>
-<!-- Footer -->
-<footer class="h-10 bg-slate-900 flex items-center justify-between px-8 text-[9px] text-white/50 font-black uppercase tracking-[0.2em] z-40 shrink-0">
-<div class="flex items-center gap-8">
-<p>Terminal ID: BRIDGE-KPS8-MASTER</p>
-<div class="flex items-center gap-2">
-<div class="h-2 w-2 rounded-full bg-emerald-500"></div>
-<p>Subsystem Data Linked</p>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<p>PMS Version: 5.0.4 - STABLE</p>
-<span class="text-white/10">|</span>
-<p>Session: Chief Engineer</p>
-</div>
-</footer>
 </main>
-</div>
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
-    const { createApp } = Vue;
+    const navItems = document.querySelectorAll('.nav-item');
+    const views = document.querySelectorAll('[data-view]');
+    
+    function switchView(viewId) {
+        navItems.forEach(item => {
+            item.classList.remove('bg-sky-900', 'text-white', 'font-semibold', 'shadow-lg');
+            item.classList.add('text-slate-600', 'dark:text-slate-400');
+        });
+        
+        views.forEach(view => {
+            view.classList.remove('active');
+        });
 
-    createApp({
-        data() {
-            const initArr = (len, val) => Array.from({length: len}, () => val);
-            const initGtsComp = (val) => Array.from({length: 12}, () => ({
-                A: Array.from({length: 9}, () => val),
-                B: Array.from({length: 9}, () => val)
-            }));
-            const initValveData = () => Array.from({length: 12}, () => ({
-                A: Array.from({length: 9}, () => ({ vals: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 })),
-                B: Array.from({length: 9}, () => ({ vals: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 }))
-            }));
-            
-            return {
-                currentView: 'dashboard',
-                selectedGts: 1,
-                searchActive: false,
-                searchQuery: '',
-                searchResults: [],
-                fleetHours: [12550, 12700, 12850, 13000, 13150, 13300, 13450, 13600, 13750, 13900, 14050, 14200],
-                navItems: [
-                    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
-                    { id: 'spark-plug', label: 'Spark Plug', icon: 'bolt' },
-                    { id: 'pcc', label: 'PCC (Non Return Valve)', icon: 'settings_input_component' },
-                    { id: 'nrv', label: 'Non Return Valve', icon: 'vertical_align_bottom' },
-                    { id: 'valve-measure', label: 'Valve Measurement', icon: 'straighten' },
-                    { id: 'starting-air', label: 'Starting Air Compressors', icon: 'compress' },
-                    { id: 'service-air', label: 'Service Air Compressors', icon: 'air' },
-                    { id: 'control-air', label: 'Control Air Compressors', icon: 'mode_fan' },
-                    { id: 'denox-comp', label: 'Denox Compressors', icon: 'cyclone' },
-                    { id: 'fwg', label: 'FWG', icon: 'water_drop' },
-                    { id: 'pumps', label: 'Pumps', icon: 'waves' },
-                    { id: 'lube-oil', label: 'Lube Oil System', icon: 'oil_barrel' },
-                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
-                    { id: 'boiler', label: 'Boiler', icon: 'hvac' },
-                    { id: 'reports', label: 'Reports', icon: 'folder_open' }
-                ],
-                gasSpecs: [
-                    { label: 'Inlet Pressure', value: '4.2', unit: 'bar' },
-                    { label: 'Density (Ref)', value: '0.78', unit: 'kg/m³' },
-                    { label: 'Methane Number', value: '82.1', unit: 'MN' }
-                ],
-                componentData: {
-                    'spark-plug': initGtsComp(2000),
-                    'pcc': initGtsComp(15000),
-                    'nrv': initGtsComp(15000)
-                },
-                valveData: initValveData(),
-                lubeOilData: Array.from({length: 12}, (_, i) => ({
-                    properties: { viscosity40C: '105', viscosity100C: '14.2', baseNumber: '10.5', flashPoint: '220', waterContent: '0.02' },
-                    logs: [{ date: '2024-05-01', liters: 250, hrs: 12400, note: 'Normal replenishment' }]
-                })),
-                equipmentHours: {
-                    'starting-air': [1482, 2100, 1950, 420],
-                    'service-air': [5420, 3190],
-                    'control-air': [4500, 4800],
-                    'denox-comp': initArr(12, 12000),
-                    'fwg': initArr(4, 8000),
-                    'pumps': initArr(16, 1200)
-                },
-                intervals: {
-                    'spark-plug': 4000,
-                    'pcc': 15000,
-                    'nrv': 15000,
-                    'valve-measure': 500,
-                    'service-air': 5000,
-                    'control-air': 5000,
-                    'denox-comp': 15000,
-                    'fwg': 10000,
-                    'pumps': 5000
-                },
-                cleaningItems: [
-                    "MDO Transfer Filter", "LO Transfer System", "Centrifuge Unit 1", 
-                    "Fuel Module Filter", "Air Cooler Elements", "Charge Air Receiver",
-                    "Steam Trap Controls", "Hot Water Filter", "Hydrophore Filter"
-                ],
-                boilerDates: initArr(12, new Date().toISOString().split('T')[0]),
-                boilerStatus: initArr(12, true),
-                reportCategories: [
-                    { 
-                        id: 'monthly', icon: 'calendar_month', label: 'Monthly Reports', sub: 'Aylık Raporlar',
-                        files: [{ name: 'May_2024_Performance.pdf', date: '2024-05-31', author: 'C/E Smith' }]
-                    }
-                ]
-            }
-        },
-        watch: {
-            searchActive(val) {
-                if(val) this.$nextTick(() => this.$refs.searchInput?.focus());
-            }
-        },
-        computed: {
-            currentNavItem() {
-                return this.navItems.find(i => i.id === this.currentView) || this.navItems[0];
-            }
-        },
-        methods: {
-            performSearch() {
-                const query = this.searchQuery.toLowerCase().trim();
-                if (query.length < 2) {
-                    this.searchResults = [];
-                    return;
-                }
+        const activeItem = document.querySelector(`[data-nav="${viewId}"]`);
+        const targetView = document.getElementById('view-' + viewId);
 
-                const results = [];
-
-                // 1. Search Navigation Items
-                this.navItems.forEach(item => {
-                    if (item.label.toLowerCase().includes(query)) {
-                        results.push({ id: item.id, name: item.label, category: 'Navigation Section', icon: item.icon });
-                    }
-                });
-
-                // 2. Search specific units (GTS 1-12)
-                for (let i = 1; i <= 12; i++) {
-                    if (`gts ${i}`.includes(query) || `unit ${i}`.includes(query)) {
-                        results.push({ 
-                            id: 'gts-unit', 
-                            name: `GTS UNIT ${i}`, 
-                            category: 'Engine Unit', 
-                            icon: 'settings_suggest',
-                            targetGts: i
-                        });
-                    }
-                }
-
-                // 3. Search Specific Components/Categories
-                const components = ['Filter', 'Compressor', 'Pump', 'Boiler', 'Damper', 'Air Cooler', 'Lube Oil'];
-                components.forEach(comp => {
-                    if (comp.toLowerCase().includes(query)) {
-                        const navMatch = this.navItems.find(n => n.label.toLowerCase().includes(comp.toLowerCase()));
-                        if (navMatch) {
-                            results.push({ id: navMatch.id, name: comp, category: 'System Component', icon: navMatch.icon });
-                        }
-                    }
-                });
-
-                this.searchResults = results.slice(0, 10);
-            },
-            navigateToResult(result) {
-                if (result.targetGts) {
-                    this.selectedGts = result.targetGts;
-                    // Jump to a relevant view if we are on a per-unit view, otherwise maybe dashboard
-                    if (!['spark-plug', 'pcc', 'nrv', 'valve-measure', 'lube-oil', 'boiler'].includes(this.currentView)) {
-                        this.currentView = 'dashboard';
-                    }
-                } else {
-                    this.currentView = result.id;
-                }
-                this.searchActive = false;
-                this.searchQuery = '';
-            },
-            getInterval(key) {
-                return this.intervals[key] || 0;
-            },
-            getEquipmentCount(key) {
-                const counts = { 'service-air': 2, 'control-air': 2, 'denox-comp': 12, 'fwg': 4, 'pumps': 16 };
-                return counts[key] || 0;
-            },
-            getCompStatusText(view, gts, bank, cyl) {
-                const current = this.fleetHours[gts-1];
-                const last = this.componentData[view][gts-1][bank][cyl-1];
-                const delta = current - last;
-                const interval = this.intervals[view];
-                if (delta >= interval) return 'Due';
-                if (delta >= interval * 0.8) return 'Upcoming';
-                return 'Healthy';
-            },
-            getCompStatusClass(view, gts, bank, cyl) {
-                const status = this.getCompStatusText(view, gts, bank, cyl);
-                if (status === 'Due') return 'status-due';
-                if (status === 'Upcoming') return 'status-upcoming';
-                return 'status-healthy';
-            },
-            getValveStatusClass(gts, bank, cyl) {
-                const current = this.fleetHours[gts-1];
-                const last = this.valveData[gts-1][bank][cyl-1].lastHrs;
-                const delta = current - last;
-                if (delta >= 500) return 'status-due';
-                if (delta >= 400) return 'status-upcoming';
-                return 'status-healthy';
-            },
-            getHealthProgress(key, n) {
-                const current = this.equipmentHours[key][n-1];
-                const interval = this.intervals[key];
-                return Math.min(100, (current / interval) * 100);
-            },
-            getHealthColor(key, n) {
-                const current = this.equipmentHours[key][n-1];
-                const interval = this.intervals[key];
-                if (current >= interval) return 'bg-rose-500';
-                if (current >= interval * 0.85) return 'bg-amber-500';
-                return 'bg-[#001f3d]';
-            },
-            addLubeLog(idx) {
-                this.lubeOilData[idx].logs.unshift({
-                    date: new Date().toISOString().split('T')[0],
-                    liters: 0,
-                    note: ''
-                });
-            }
+        if(activeItem) {
+            activeItem.classList.remove('text-slate-600', 'dark:text-slate-400');
+            activeItem.classList.add('bg-sky-900', 'text-white', 'font-semibold', 'shadow-lg');
         }
-    }).mount('#app');
+
+        if(targetView) {
+            targetView.classList.add('active');
+        }
+
+        document.getElementById('notification-panel').classList.add('hidden');
+        localStorage.setItem('pms_last_view', viewId);
+    }
+
+    function toggleNotifications() {
+        const panel = document.getElementById('notification-panel');
+        const isHidden = panel.classList.contains('hidden');
+        if(isHidden) {
+            panel.classList.remove('hidden');
+        } else {
+            panel.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        const panel = document.getElementById('notification-panel');
+        const btn = document.getElementById('notification-btn');
+        if (panel && !panel.contains(e.target) && btn && !btn.contains(e.target)) {
+            panel.classList.add('hidden');
+        }
+    });
+
+    window.onload = () => {
+        const lastView = localStorage.getItem('pms_last_view') || 'dashboard';
+        switchView(lastView);
+    }
 </script>
 </body></html>
