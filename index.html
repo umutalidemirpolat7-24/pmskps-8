@@ -141,6 +141,49 @@
 </div>
 </div>
 </div>
+<!-- CLEANING DASHBOARD -->
+<div class="space-y-6" v-else-if="currentView === 'cleaning'">
+<div class="flex items-center justify-between bg-white p-4 border border-slate-200 rounded shadow-sm">
+<div>
+<h2 class="text-xl font-black text-[#003366] uppercase">Filter &amp; Component Cleaning Schedule</h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Maintenance Log based on Operational Data</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-slate-400 uppercase">Last Global Sync:</span>
+<span class="text-[10px] font-black text-[#003366]">31.03.2026</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Dynamic Cleaning Cards -->
+<div :key="item.title" class="bg-white border border-slate-200 rounded shadow-sm overflow-hidden flex flex-col" v-for="(item, idx) in cleaningItems">
+<div class="px-4 py-3 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
+<h4 class="text-[10px] font-black text-[#003366] uppercase leading-tight max-w-[200px]">{{ item.title }}</h4>
+<span :class="['status-badge', getCleaningStatusClass(item)]">{{ getCleaningStatusText(item) }}</span>
+</div>
+<div class="p-4 space-y-4">
+<div :key="unitIdx" class="space-y-3" v-for="(unit, unitIdx) in item.units">
+<div class="flex items-center justify-between">
+<span class="text-[9px] font-black text-slate-500 uppercase">{{ unit.label }}</span>
+<span class="text-[9px] font-bold text-slate-400">REM: {{ unit.next - unit.last }}</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="space-y-1">
+<label class="text-[8px] font-bold text-slate-400 uppercase">Last Done</label>
+<input class="w-full bg-slate-50 border-slate-200 rounded p-1 text-[11px] font-bold text-[#003366]" type="text" v-model="unit.last"/>
+</div>
+<div class="space-y-1">
+<label class="text-[8px] font-bold text-slate-400 uppercase">Next Due</label>
+<input class="w-full bg-slate-50 border-slate-200 rounded p-1 text-[11px] font-bold text-[#003366]" type="text" v-model="unit.next"/>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden" v-if="typeof unit.last === 'number'">
+<div :style="{ width: Math.min(100, (unit.last / unit.next) * 100) + '%' }" class="h-full bg-[#003366]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- 2. CYLINDER COMPONENT VIEWS (Spark Plug, PCC, NRV) -->
 <div class="space-y-6" v-else-if="['spark-plug', 'pcc', 'nrv'].includes(currentView)">
 <div class="flex items-center justify-between bg-white p-4 border border-slate-200 rounded shadow-sm">
@@ -309,16 +352,11 @@
 
     createApp({
         data() {
-            // Helper to init array with specific value
             const initArr = (len, val) => Array.from({length: len}, () => val);
-            
-            // Helper to init GTS data (12 engines, 2 banks, 9 cyl)
             const initGtsComponentData = (val) => Array.from({length: 12}, () => ({
                 A: Array.from({length: 9}, () => val),
                 B: Array.from({length: 9}, () => val)
             }));
-
-            // Helper for Valve Measurement data
             const initValveData = () => Array.from({length: 12}, () => ({
                 A: Array.from({length: 9}, () => ({ values: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 })),
                 B: Array.from({length: 9}, () => ({ values: [0.45, 0.45, 0.90, 0.90], lastHrs: 4500 }))
@@ -330,6 +368,7 @@
                 fleetHours: [12450, 11200, 13100, 9800, 14500, 12000, 11000, 10500, 9900, 12200, 11800, 13000],
                 navItems: [
                     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
                     { id: 'spark-plug', label: 'Spark Plug', icon: 'bolt' },
                     { id: 'pcc', label: 'PCC', icon: 'settings_input_component' },
                     { id: 'nrv', label: 'Non Return Valve', icon: 'vertical_align_bottom' },
@@ -347,21 +386,33 @@
                     { label: 'Calorific Value', value: '34.2', unit: 'MJ/m³', icon: 'local_fire_department' },
                     { label: 'Methane Number', value: '82', unit: 'MN', icon: 'gas_meter' }
                 ],
-                // Core Component Data
+                cleaningItems: [
+                    { title: 'MDO TRANS. PUMP SUC. FILT.', units: [{label: 'NO 1', last: 2587, next: 3587}, {label: 'NO 2', last: 2328, next: 3328}] },
+                    { title: 'LO TRANSFER PUMP SUCT. FILTER', units: [{label: 'FORE', last: '10.03.2026', next: '10.06.2026'}, {label: 'AFT', last: '10.03.2026', next: '10.06.2026'}] },
+                    { title: 'YAŞAM MAHALLİ KAPILARI IZGARA TEMİZLİKLERİ', units: [{label: 'GRID', last: '01.07.2025', next: '29.09.2025'}] },
+                    { title: 'LO FILLING PUMP SUCT. FILTER', units: [{label: 'FORE', last: '10.03.2026', next: '10.06.2026'}, {label: 'AFT', last: '10.03.2026', next: '10.06.2026'}] },
+                    { title: 'SLUDGE PUMP SUCT. FILTER', units: [{label: 'NO 1', last: '07.04.2024', next: '07.04.2024'}, {label: 'NO 2', last: '06.07.2024', next: '06.07.2024'}] },
+                    { title: 'STEAM TRAP KONTROLLERİ', units: [{label: 'TRAPS', last: '16.01.2026', next: '16.04.2026'}] },
+                    { title: 'SW VV TORNAÇARKLARI', units: [{label: 'SW VV', last: '14.10.2025', next: '12.01.2026'}] },
+                    { title: 'TÜM KARTER KAPAKLARININ 25N.m\'ye TORKLANMASI', units: [{label: 'CRANKCASE', last: '10.03.2026', next: '25.03.2026'}] },
+                    { title: 'JENERATÖR TORNAÇARKLARININ GENEL KONTROLÜ', units: [{label: 'GEN', last: '03.10.2025', next: '18.10.2025'}] },
+                    { title: 'Yaşam Mahalli Hot Water Pump Filter Temizliği', units: [{label: 'HOT WATER', last: '17.02.2026', next: '19.03.2026'}] },
+                    { title: 'PLANT İÇİ YARDIMCI EKİPMAN SİRKÜLASYON KONTROLLERİ', units: [{label: 'AUX', last: '08.02.2026', next: '11.05.2026'}] },
+                    { title: 'HİDROFOR KONTROLLERİ', units: [{label: 'HYDROPHORE', last: '17.02.2026', next: '18.05.2026'}] }
+                ],
                 componentData: {
                     'spark-plug': initGtsComponentData(10000),
                     'pcc': initGtsComponentData(10000),
                     'nrv': initGtsComponentData(10000)
                 },
                 valveMeasurements: initValveData(),
-                // Auxiliary Equipment Data (Running Hours)
                 equipmentData: {
                     'starting-air': [1200, 2400, 3100, 500],
                     'denox-comp': initArr(12, 12000),
                     'control-air': [4500, 4800],
                     'fwg': initArr(4, 8000),
                     'pumps': initArr(16, 1200),
-                    'lube-oil': [12450, 11200, 13100, 9800, 14500, 12000, 11000, 10500, 9900, 12200, 11800, 13000] // Tied to GTS fleet usually
+                    'lube-oil': [12450, 11200, 13100, 9800, 14500, 12000, 11000, 10500, 9900, 12200, 11800, 13000]
                 },
                 intervals: {
                     'spark-plug': 2000,
@@ -382,7 +433,6 @@
                 return this.navItems.find(i => i.id === this.currentView) || this.navItems[0];
             },
             criticalAlertCount() {
-                // Simplified count for demo - logic would aggregate all "Due" statuses
                 return 4;
             },
             healthPercentage() {
@@ -404,9 +454,8 @@
                 };
                 return counts[key] || 0;
             },
-            // Status Calculation Logic
             getStatus(key, currentHours, lastServiceHours) {
-                const interval = this.intervals[key];
+                const interval = this.intervals[key] || 1000;
                 const delta = currentHours - lastServiceHours;
                 if (delta >= interval) return 'due';
                 if (delta >= interval * 0.8) return 'upcoming';
@@ -424,7 +473,6 @@
                 const s = this.getStatus(key, current, last);
                 return s === 'due' ? 'status-due' : (s === 'upcoming' ? 'status-upcoming' : 'status-healthy');
             },
-            // Valve Status
             getValveStatusText(gtsIdx, bank, cylIdx) {
                 const current = this.fleetHours[gtsIdx - 1];
                 const last = this.valveMeasurements[gtsIdx - 1][bank][cylIdx - 1].lastHrs;
@@ -437,7 +485,6 @@
                 const s = this.getStatus('valve-measure', current, last);
                 return s === 'due' ? 'status-due' : (s === 'upcoming' ? 'status-upcoming' : 'status-healthy');
             },
-            // Equipment Status (Auxiliary)
             getEquipmentStatusText(key, n) {
                 const current = this.equipmentData[key][n - 1];
                 const interval = this.intervals[key];
@@ -463,6 +510,23 @@
                 const current = this.equipmentData[key][n - 1];
                 const interval = this.intervals[key];
                 return Math.min(100, (current / interval) * 100);
+            },
+            getCleaningStatusClass(item) {
+                // Simplified date logic for demo purposes: if remaining is small or negative
+                const unit = item.units[0];
+                if (typeof unit.last === 'number') {
+                    if (unit.next - unit.last < 100) return 'status-due';
+                    if (unit.next - unit.last < 300) return 'status-upcoming';
+                }
+                return 'status-healthy';
+            },
+            getCleaningStatusText(item) {
+                const unit = item.units[0];
+                if (typeof unit.last === 'number') {
+                    if (unit.next - unit.last < 100) return 'Maintenance Due';
+                    if (unit.next - unit.last < 300) return 'Check Advised';
+                }
+                return 'Optimal';
             }
         }
     }).mount('#app');
