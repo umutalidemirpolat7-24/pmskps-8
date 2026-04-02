@@ -3,7 +3,7 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS - The Digital Bridge</title>
+<title>KPS8 OSMAN BEY PMS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -82,75 +82,78 @@
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-white outline-none text-xs border-none p-1 transition-colors; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
     </style>
 </head>
 <body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden">
-<!-- Sidebar Navigation Shell -->
 <aside class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-40 overflow-y-auto bg-slate-100 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 glass-sidebar">
 <div class="mb-8 px-2 flex items-center gap-3">
-<div class="h-10 w-10 premium-gradient rounded-lg flex items-center justify-center text-white">
+<div class="h-10 w-10 premium-gradient rounded-lg flex items-center justify-center text-white shadow-lg">
 <span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span>
 </div>
 <div>
-<h1 class="font-bold text-sky-900 dark:text-sky-100 text-sm tracking-tight uppercase">KPS8 OSMAN BEY</h1>
+<h1 class="font-bold text-sky-900 dark:text-sky-100 text-sm tracking-tight uppercase leading-tight">KPS8<br/>OSMAN BEY</h1>
 </div>
 </div>
 <nav class="flex-1 space-y-1 no-scrollbar" id="main-nav">
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="dashboard" onclick="switchView('dashboard')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="dashboard" onclick="switchView('dashboard')">
 <span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
-<span class="text-sm">Dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="spark-plug" onclick="switchView('spark-plug')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="spark-plug" onclick="switchView('spark-plug')">
 <span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
-<span class="text-sm">Spark Plug</span>
+<span class="text-sm font-medium">Spark Plug</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="pcc" onclick="switchView('pcc')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="pcc" onclick="switchView('pcc')">
 <span class="material-symbols-outlined text-[20px]" data-icon="settings_input_component">settings_input_component</span>
-<span class="text-sm">PCC</span>
+<span class="text-sm font-medium">PCC</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="valve" onclick="switchView('valve')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="valve" onclick="switchView('valve')">
 <span class="material-symbols-outlined text-[20px]" data-icon="straighten">straighten</span>
-<span class="text-sm">Valve Measurement</span>
+<span class="text-sm font-medium">Valve Measurement</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="compressors" onclick="switchView('compressors')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="compressors" onclick="switchView('compressors')">
 <span class="material-symbols-outlined text-[20px]" data-icon="air">air</span>
-<span class="text-sm">Compressors</span>
+<span class="text-sm font-medium">Compressors</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="sw-pumps" onclick="switchView('sw-pumps')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="fwg" onclick="switchView('fwg')">
+<span class="material-symbols-outlined text-[20px]" data-icon="water_drop">water_drop</span>
+<span class="text-sm font-medium">FWG</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="sw-pumps" onclick="switchView('sw-pumps')">
 <span class="material-symbols-outlined text-[20px]" data-icon="propane_tank">propane_tank</span>
-<span class="text-sm">SW Pumps</span>
+<span class="text-sm font-medium">SW Pumps</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="lube-oil" onclick="switchView('lube-oil')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="lube-oil" onclick="switchView('lube-oil')">
 <span class="material-symbols-outlined text-[20px]" data-icon="oil_barrel">oil_barrel</span>
-<span class="text-sm">Lube Oil System</span>
+<span class="text-sm font-medium">Lube Oil System</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="cleaning" onclick="switchView('cleaning')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="cleaning" onclick="switchView('cleaning')">
 <span class="material-symbols-outlined text-[20px]" data-icon="cleaning_services">cleaning_services</span>
-<span class="text-sm">Cleaning</span>
+<span class="text-sm font-medium">Cleaning</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="boiler" onclick="switchView('boiler')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="boiler" onclick="switchView('boiler')">
 <span class="material-symbols-outlined text-[20px]" data-icon="hvac">hvac</span>
-<span class="text-sm">Boiler</span>
+<span class="text-sm font-medium">Boiler</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="shutdowns" onclick="switchView('shutdowns')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="shutdowns" onclick="switchView('shutdowns')">
 <span class="material-symbols-outlined text-[20px]" data-icon="report_problem">report_problem</span>
-<span class="text-sm">Shutdowns</span>
+<span class="text-sm font-medium">Shutdowns</span>
 </button>
-<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1" data-nav="reports" onclick="switchView('reports')">
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-md transition-all duration-200 hover:translate-x-1 text-slate-600" data-nav="reports" onclick="switchView('reports')">
 <span class="material-symbols-outlined text-[20px]" data-icon="description">description</span>
-<span class="text-sm">Reports</span>
+<span class="text-sm font-medium">Reports</span>
 </button>
 </nav>
 <div class="mt-6 border-t border-slate-200 dark:border-slate-800 pt-6">
-<button class="w-full premium-gradient text-white text-xs font-bold py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<button class="w-full premium-gradient text-white text-xs font-bold py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-md">
 <span class="material-symbols-outlined text-sm" data-icon="add">add</span>
             ADD MAINTENANCE LOG
         </button>
 </div>
 </aside>
-<!-- Main Canvas -->
 <main class="ml-64 min-h-screen h-screen flex flex-col overflow-hidden relative">
-<!-- Top Bar -->
 <header class="bg-slate-50 dark:bg-slate-900 sticky top-0 z-30 flex justify-between items-center w-full px-8 py-3 border-b border-slate-200 dark:border-slate-800 shrink-0">
 <div class="flex items-center gap-6">
 <span class="text-lg font-black tracking-tighter text-sky-900 dark:text-white uppercase">KPS8 OSMAN BEY PMS</span>
@@ -165,7 +168,6 @@
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 <span class="absolute top-1.5 right-1.5 h-2 w-2 bg-error rounded-full ring-2 ring-white"></span>
 </button>
-<!-- Notification Side Panel -->
 <div class="hidden absolute right-0 mt-3 w-80 bg-white shadow-2xl rounded-xl overflow-hidden border border-slate-200 z-50 transform origin-top-right transition-all" id="notification-panel">
 <div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
 <h4 class="text-xs font-black uppercase tracking-widest text-primary">Notifications</h4>
@@ -182,7 +184,7 @@
 </div>
 </div>
 <div class="p-3 bg-slate-50 border-t border-slate-100 text-center">
-<button class="text-[10px] font-bold text-primary uppercase hover:underline">View All Alerts</button>
+<button class="text-[10px] font-bold text-primary uppercase hover:underline" onclick="switchView('shutdowns')">View All Alerts</button>
 </div>
 </div>
 </div>
@@ -191,24 +193,24 @@
 </button>
 <div class="h-8 w-px bg-slate-200 mx-2"></div>
 <div class="flex items-center gap-3">
-<img alt="Chief Engineer Profile" class="h-10 w-10 rounded-lg object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUOy3pq4J1l49DivEwd5fq5WzA1EdoPc3VeI3QXe7gNFbjgXMRrC6o0igUZ50ZG83dDnHzvsRhAdSesy6Bs38FkG2pr26RaINyOrGyLOF3PqgakNT9-mD1tJr4U18IL8JY1KxRiSlMIX424Q_SjSWtcxzZoV9NCffE2LuB_nSan5mSr0tMWqg1MyibUcFmokCiuHcRXGOh777F5-7bU_uZRL6LyLMbKoeTlapgPHQMrN0gD1lDJ1H5Oy3pO7ePH0oXIt6Hy1Jqik"/>
+<div class="h-10 w-10 rounded-lg overflow-hidden border border-slate-200 bg-slate-200">
+<img alt="User Profile" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnUOy3pq4J1l49DivEwd5fq5WzA1EdoPc3VeI3QXe7gNFbjgXMRrC6o0igUZ50ZG83dDnHzvsRhAdSesy6Bs38FkG2pr26RaINyOrGyLOF3PqgakNT9-mD1tJr4U18IL8JY1KxRiSlMIX424Q_SjSWtcxzZoV9NCffE2LuB_nSan5mSr0tMWqg1MyibUcFmokCiuHcRXGOh777F5-7bU_uZRL6LyLMbKoeTlapgPHQMrN0gD1lDJ1H5Oy3pO7ePH0oXIt6Hy1Jqik"/>
+</div>
 </div>
 </div>
 </header>
-<!-- Page Content Container -->
 <div class="flex-1 overflow-y-auto no-scrollbar p-8 bg-surface">
-<!-- DASHBOARD VIEW -->
+<!-- DASHBOARD -->
 <section class="space-y-10 active" data-view="dashboard" id="view-dashboard">
 <div class="grid grid-cols-12 gap-8">
-<!-- Global Status -->
-<div class="col-span-8 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between">
+<div class="col-span-8 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between border border-slate-100 shadow-sm">
 <div class="flex justify-between items-start">
 <div>
 <h2 class="text-2xl font-bold text-primary mb-1">Fleet Operational Status</h2>
 <p class="text-sm text-on-surface-variant">Vessel active at 12.4 knots. All systems within nominal variance.</p>
 </div>
 <div class="flex gap-2">
-<span class="bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Online</span>
+<span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Online</span>
 <span class="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Normal</span>
 </div>
 </div>
@@ -216,30 +218,29 @@
 <div class="space-y-1">
 <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Active Engines</p>
 <p class="text-4xl font-black text-primary">11/12</p>
-<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-sky-600 w-[91%]"></div>
+<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<div class="h-full bg-sky-600 w-[91.6%]"></div>
 </div>
 </div>
 <div class="space-y-1">
 <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Avg. Efficiency</p>
-<p class="text-4xl font-black text-primary text-sky-700">94.2<span class="text-lg font-bold">%</span></p>
-<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-sky-600 w-[94%]"></div>
+<p class="text-4xl font-black text-sky-700">94.2<span class="text-lg font-bold">%</span></p>
+<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<div class="h-full bg-sky-600 w-[94.2%]"></div>
 </div>
 </div>
 <div class="space-y-1">
-<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Total Gas Consumption</p>
-<p class="text-4xl font-black text-primary text-emerald-700">3,485<span class="text-lg font-bold">m³</span></p>
-<div class="h-1 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Gas Consumption</p>
+<p class="text-4xl font-black text-emerald-700">3,485<span class="text-lg font-bold">m³</span></p>
+<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
 <div class="h-full bg-emerald-600 w-[82%]"></div>
 </div>
 </div>
 </div>
 </div>
-<!-- GAS SPEC Card -->
-<div class="col-span-4 premium-gradient rounded-xl p-8 text-white flex flex-col">
+<div class="col-span-4 premium-gradient rounded-xl p-8 text-white flex flex-col shadow-lg">
 <div class="flex items-center justify-between mb-8">
-<h3 class="text-lg font-black tracking-tighter">GAS SPEC.</h3>
+<h3 class="text-lg font-black tracking-tighter uppercase">GAS SPEC.</h3>
 <span class="material-symbols-outlined text-sky-400" data-icon="propane">propane</span>
 </div>
 <div class="space-y-6">
@@ -258,128 +259,444 @@
 </div>
 </div>
 </div>
-<!-- GTS Engine Grid Status -->
 <div class="space-y-4">
-<div class="flex justify-between items-end">
 <h2 class="text-xl font-bold text-primary">GTS Engine Running Status</h2>
-</div>
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 1</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">162</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 2</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">158</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 3</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">164</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 4</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">42</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 5</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">160</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 6</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">159</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 7</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">163</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 8</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">165</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 9</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">161</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 10</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">164</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 11</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">157</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
-</div>
-<div class="bg-surface-container-lowest p-5 rounded-lg shadow-sm border border-slate-100">
-<p class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest mb-1">GTS 12</p>
-<div class="flex items-end justify-between"><p class="text-2xl font-black text-primary">162</p><p class="text-[10px] font-bold text-slate-400 mb-1">WEEKLY HRS</p></div>
+<script>
+                        const engs = [1,2,3,4,5,6,7,8,9,10,11,12];
+                        engs.forEach(i => {
+                            const hrs = i === 4 ? 42 : 160 + i;
+                            const isCrit = i === 4;
+                            document.write(`
+                                <div class="bg-white p-5 rounded-lg border ${isCrit ? 'border-red-300 ring-1 ring-red-100' : 'border-slate-100'} shadow-sm">
+                                    <p class="text-[10px] font-black uppercase tracking-widest mb-1 ${isCrit ? 'text-error' : 'text-slate-400'}">GTS ${i}</p>
+                                    <div class="flex items-end justify-between">
+                                        <p class="text-2xl font-black ${isCrit ? 'text-error' : 'text-primary'}">${hrs}</p>
+                                        <p class="text-[9px] font-bold text-slate-400 mb-1">WEEKLY HRS</p>
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    </script>
 </div>
 </div>
+</section>
+<!-- SPARK PLUG -->
+<section class="space-y-8" data-view="spark-plug" id="view-spark-plug">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Spark Plug Replacement Log</h2>
+<select class="bg-white border-slate-200 text-xs font-bold rounded p-2 focus:ring-sky-500 outline-none">
+<script>for(let i=1; i<=12; i++) document.write(`<option>GTS ${i} UNIT</option>`);</script>
+</select>
 </div>
-<!-- Dashboard Hub Cards -->
 <div class="grid grid-cols-2 gap-8">
-<div class="bg-surface-container rounded-xl p-8 flex items-center gap-6 group cursor-pointer border border-transparent hover:border-sky-200 transition-all shadow-sm hover:shadow-md" onclick="switchView('reports')">
-<div class="h-16 w-16 bg-white rounded-xl flex items-center justify-center text-primary shadow-sm group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined text-4xl" data-icon="insert_chart">insert_chart</span>
+<div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
+<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">BANK A - Cylinders 1-9</h3>
+<div class="grid grid-cols-3 gap-3">
+<script>
+                            for(let i=1; i<=9; i++) {
+                                document.write(`
+                                    <div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-[10px] font-black text-primary uppercase">CYL ${i}A</span>
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        </div>
+                                        <input type="date" class="w-full text-[10px] border-none bg-transparent p-0 mb-1" value="2023-11-01">
+                                        <input type="number" placeholder="Hours" class="w-full text-[10px] border-none bg-transparent p-0 font-black text-primary" value="${1200+i*10}">
+                                    </div>
+                                `);
+                            }
+                        </script>
 </div>
-<div>
-<h3 class="text-xl font-bold text-primary">System Reports</h3>
-<p class="text-sm text-on-surface-variant">Review all technical logs and performance summaries.</p>
 </div>
-<div class="ml-auto">
-<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+<div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
+<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">BANK B - Cylinders 1-9</h3>
+<div class="grid grid-cols-3 gap-3">
+<script>
+                            for(let i=1; i<=9; i++) {
+                                document.write(`
+                                    <div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-[10px] font-black text-primary uppercase">CYL ${i}B</span>
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                        </div>
+                                        <input type="date" class="w-full text-[10px] border-none bg-transparent p-0 mb-1" value="2023-10-15">
+                                        <input type="number" placeholder="Hours" class="w-full text-[10px] border-none bg-transparent p-0 font-black text-primary" value="${1150+i*8}">
+                                    </div>
+                                `);
+                            }
+                        </script>
 </div>
 </div>
-<div class="bg-surface-container rounded-xl p-8 flex items-center gap-6 group cursor-pointer border border-transparent hover:border-error/20 transition-all shadow-sm hover:shadow-md" onclick="switchView('shutdowns')">
-<div class="h-16 w-16 bg-white rounded-xl flex items-center justify-center text-error shadow-sm group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined text-4xl" data-icon="warning">warning</span>
 </div>
-<div>
-<h3 class="text-xl font-bold text-primary">Shutdown Management</h3>
-<p class="text-sm text-on-surface-variant">Log reasons and corrective actions for engine outages.</p>
+<div class="flex justify-end"><button class="premium-gradient text-white px-8 py-3 rounded text-xs font-bold uppercase tracking-widest shadow-lg">Save Spark Plug Log</button></div>
+</section>
+<!-- PCC -->
+<section class="space-y-8" data-view="pcc" id="view-pcc">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Power Control Center (PCC)</h2>
+<select class="bg-white border-slate-200 text-xs font-bold rounded p-2 outline-none">
+<script>for(let i=1; i<=12; i++) document.write(`<option>GTS ${i} UNIT</option>`);</script>
+</select>
 </div>
-<div class="ml-auto">
-<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+<div class="grid grid-cols-9 gap-2">
+<script>
+                        for(let i=1; i<=18; i++) {
+                            const side = i <= 9 ? 'A' : 'B';
+                            const num = i <= 9 ? i : i-9;
+                            document.write(`
+                                <div class="bg-slate-50 border border-slate-200 p-3 rounded text-center">
+                                    <p class="text-[10px] font-black text-primary mb-2">CYL ${num}${side}</p>
+                                    <div class="space-y-1">
+                                        <div class="flex flex-col">
+                                            <span class="text-[8px] uppercase text-slate-400 font-bold">KW</span>
+                                            <input type="text" value="915" class="bg-transparent border-none p-0 text-center text-xs font-black text-primary outline-none focus:bg-white">
+                                        </div>
+                                        <div class="flex flex-col border-t border-slate-200 pt-1">
+                                            <span class="text-[8px] uppercase text-slate-400 font-bold">TEMP</span>
+                                            <input type="text" value="412°C" class="bg-transparent border-none p-0 text-center text-xs font-black text-emerald-600 outline-none focus:bg-white">
+                                        </div>
+                                    </div>
+                                </div>
+                            `);
+                        }
+                    </script>
+</div>
+</div>
+</section>
+<!-- VALVE MEASUREMENT -->
+<section class="space-y-8" data-view="valve" id="view-valve">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Valve Clearance Measurement (0.01 mm)</h2>
+<div class="flex gap-3">
+<select class="bg-white border-slate-200 text-xs font-bold rounded p-2 outline-none">
+<script>for(let i=1; i<=12; i++) document.write(`<option>GTS ${i} UNIT</option>`);</script>
+</select>
+<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200">Export Report</button>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-x-auto no-scrollbar">
+<table class="w-full text-[10px] font-bold uppercase tracking-tight">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr>
+<th class="p-3 border-r bg-slate-100 w-24">CYLINDER</th>
+<th class="p-3 text-center border-r" colspan="2">INLET VALVES</th>
+<th class="p-3 text-center" colspan="2">EXHAUST VALVES</th>
+</tr>
+<tr class="text-slate-500 border-b border-slate-200">
+<th class="p-2 border-r bg-slate-100">ID</th>
+<th class="p-2 border-r">V1</th>
+<th class="p-2 border-r">V2</th>
+<th class="p-2 border-r">V3</th>
+<th class="p-2">V4</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<script>
+                            for(let i=1; i<=18; i++) {
+                                const side = i <= 9 ? 'A' : 'B';
+                                const num = i <= 9 ? i : i-9;
+                                document.write(`
+                                    <tr class="hover:bg-sky-50/50">
+                                        <td class="p-2 border-r bg-slate-50 text-center font-black">${num}${side}</td>
+                                        <td class="p-1 border-r"><input type="text" value="0.45" class="grid-cell-input"></td>
+                                        <td class="p-1 border-r"><input type="text" value="0.45" class="grid-cell-input"></td>
+                                        <td class="p-1 border-r"><input type="text" value="0.90" class="grid-cell-input"></td>
+                                        <td class="p-1"><input type="text" value="0.90" class="grid-cell-input"></td>
+                                    </tr>
+                                `);
+                            }
+                        </script>
+</tbody>
+</table>
+</div>
+</section>
+<!-- COMPRESSORS -->
+<section class="space-y-8" data-view="compressors" id="view-compressors">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Compressor Maintenance Dashboard</h2>
+<div class="grid grid-cols-1 gap-8">
+<div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+<div class="p-4 bg-primary text-white text-xs font-black uppercase tracking-widest flex justify-between items-center">
+<span>Starting Air Compressors (30 Bar) - Maintenance Log</span>
+<span class="text-[10px] font-normal opacity-70">Source: PMS Template v1.4</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-[11px] border-collapse">
+<thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200 text-center">
+<tr>
+<th class="p-3 text-left border-r sticky left-0 bg-slate-50">Maintenance Action</th>
+<th class="p-3 border-r">Repeat (Hrs)</th>
+<th class="p-3 border-r">Metric</th>
+<th class="p-3 border-r bg-sky-50">COMP 1.1</th>
+<th class="p-3 border-r bg-sky-50">COMP 1.2</th>
+<th class="p-3 border-r bg-sky-50">COMP 2.1</th>
+<th class="p-3 bg-sky-50">COMP 2.2</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-bold">
+<script>
+                                    const actions = [
+                                        {name: "Oil change", hrs: 500},
+                                        {name: "Drive mechanism inspection", hrs: 500},
+                                        {name: "Cylinder lubrication check", hrs: 500},
+                                        {name: "Intake air filter clean", hrs: 100},
+                                        {name: "1st, 2nd, 3rd stage valves", hrs: 1000},
+                                        {name: "Piston rings replacement", hrs: 1000},
+                                        {name: "Change separator cartridge", hrs: 6000}
+                                    ];
+                                    actions.forEach(a => {
+                                        document.write(`
+                                            <tr>
+                                                <td rowspan="2" class="p-3 border-r bg-slate-50 font-black text-primary sticky left-0">${a.name}</td>
+                                                <td rowspan="2" class="p-3 border-r text-center bg-slate-50">${a.hrs}</td>
+                                                <td class="p-1 border-r text-[9px] text-slate-400 text-center uppercase">RH Hours</td>
+                                                <td class="p-1 border-r bg-emerald-100 text-center"><input type="text" value="429" class="grid-cell-input bg-transparent"></td>
+                                                <td class="p-1 border-r bg-red-100 text-center"><input type="text" value="953" class="grid-cell-input bg-transparent"></td>
+                                                <td class="p-1 border-r bg-emerald-100 text-center"><input type="text" value="312" class="grid-cell-input bg-transparent"></td>
+                                                <td class="p-1 bg-emerald-100 text-center"><input type="text" value="280" class="grid-cell-input bg-transparent"></td>
+                                            </tr>
+                                            <tr class="border-b border-slate-100">
+                                                <td class="p-1 border-r text-[9px] text-slate-400 text-center uppercase">Maint Hrs</td>
+                                                <td class="p-1 border-r text-center"><input type="text" value="831" class="grid-cell-input bg-transparent font-black"></td>
+                                                <td class="p-1 border-r text-center"><input type="text" value="0" class="grid-cell-input bg-transparent font-black"></td>
+                                                <td class="p-1 border-r text-center"><input type="text" value="188" class="grid-cell-input bg-transparent font-black"></td>
+                                                <td class="p-1 text-center"><input type="text" value="220" class="grid-cell-input bg-transparent font-black"></td>
+                                            </tr>
+                                        `);
+                                    });
+                                </script>
+</tbody>
+</table>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="p-4 bg-slate-800 text-white text-xs font-black uppercase tracking-widest">Service Air Units (7 Bar)</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center border-b border-slate-100 pb-2">
+<span class="text-xs font-bold uppercase text-slate-400">Unit 1 Running Hours</span>
+<input class="border border-slate-200 rounded p-1 text-xs w-24 text-right font-black" type="number" value="12450"/>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold uppercase text-slate-400">Unit 2 Running Hours</span>
+<input class="border border-slate-200 rounded p-1 text-xs w-24 text-right font-black" type="number" value="11980"/>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="p-4 bg-slate-800 text-white text-xs font-black uppercase tracking-widest">Control Air &amp; Instrument Air</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between items-center border-b border-slate-100 pb-2">
+<span class="text-xs font-bold uppercase text-slate-400">Main Dryer 1</span>
+<span class="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded uppercase">Operational</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold uppercase text-slate-400">Emergency Unit</span>
+<input class="border border-slate-200 rounded p-1 text-xs w-24 text-right font-black" type="number" value="342"/>
+</div>
+</div>
 </div>
 </div>
 </div>
 </section>
-<!-- SHUTDOWNS VIEW -->
-<section class="space-y-8" data-view="shutdowns" id="view-shutdowns">
-<div class="flex items-center gap-3 border-l-4 border-error pl-4">
-<span class="material-symbols-outlined text-error" data-icon="power_settings_new">power_settings_new</span>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Shutdowns Logbook</h2>
+<!-- FWG -->
+<section class="space-y-8" data-view="fwg" id="view-fwg">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Fresh Water Generators (FWG)</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<script>
+                    for(let i=1; i<=4; i++) {
+                        document.write(`
+                            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-[10px] font-black text-primary uppercase">FWG UNIT ${i}</p>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between text-[11px]">
+                                        <span class="text-slate-400 uppercase font-bold">Daily Output</span>
+                                        <span class="text-primary font-black">24.5 m³</span>
+                                    </div>
+                                    <div class="flex justify-between text-[11px]">
+                                        <span class="text-slate-400 uppercase font-bold">Salinity</span>
+                                        <span class="text-emerald-600 font-black">0.4 ppm</span>
+                                    </div>
+                                    <div class="pt-2 border-t border-slate-100">
+                                        <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
+                                        <input type="date" class="w-full text-xs border border-slate-200 rounded p-1.5 font-medium" value="2023-11-05">
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    }
+                </script>
 </div>
-<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-slate-200">
-<table class="w-full text-left">
-<thead>
-<tr class="bg-slate-50 text-primary border-b border-slate-200">
-<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest w-32">Engine Unit</th>
-<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Shutdown Reason</th>
-<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Active Alarms</th>
-<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Corrective Action</th>
+</section>
+<!-- SW PUMPS -->
+<section class="space-y-8" data-view="sw-pumps" id="view-sw-pumps">
+<div class="flex justify-between items-end border-l-4 border-sky-500 pl-4">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Sea Water Pumps &amp; Filtration</h2>
+<div class="flex gap-4">
+<span class="flex items-center gap-2 text-xs font-bold text-error">
+<span class="material-symbols-outlined text-sm">warning</span> 2 FILTERS OVERDUE
+                    </span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+<script>
+                    for(let i=1; i<=16; i++) {
+                        const overdue = i === 4 || i === 9;
+                        document.write(`
+                            <div class="bg-white p-4 rounded-xl border ${overdue ? 'border-red-300 bg-red-50' : 'border-slate-100'} shadow-sm text-center group cursor-pointer hover:shadow-md transition-all">
+                                <p class="text-[9px] font-black text-slate-400 uppercase mb-2">PUMP ${i}</p>
+                                <div class="w-10 h-10 ${overdue ? 'bg-red-200 text-red-600' : 'bg-emerald-100 text-emerald-600'} rounded-full mx-auto flex items-center justify-center mb-3">
+                                    <span class="material-symbols-outlined text-lg ${!overdue ? 'animate-spin' : ''}" style="animation-duration: 3s">rotate_right</span>
+                                </div>
+                                <input type="text" class="w-full text-center text-[10px] font-black border-none bg-transparent p-0 mb-1" value="${overdue ? 'OVERDUE' : 'RUNNING'}">
+                                <input type="date" class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60" value="2023-11-10">
+                            </div>
+                        `);
+                    }
+                </script>
+</div>
+</section>
+<!-- LUBE OIL -->
+<section class="space-y-8" data-view="lube-oil" id="view-lube-oil">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil Consumption &amp; Analysis</h2>
+<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<table class="w-full text-[11px] font-bold">
+<thead class="bg-slate-50 border-b border-slate-200">
+<tr class="text-slate-400 uppercase tracking-widest text-center">
+<th class="p-4 text-left border-r sticky left-0 bg-slate-50">GTS UNIT</th>
+<th class="p-4 border-r">Top-up (L/24h)</th>
+<th class="p-4 border-r">Viscosity @ 40°C</th>
+<th class="p-4 border-r">TBN (BN)</th>
+<th class="p-4 border-r">Water %</th>
+<th class="p-4 border-r">Flash Point °C</th>
+<th class="p-4">Last Sample</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50 transition-colors">
-<td class="px-6 py-4 font-black text-primary text-sm">GTS 1</td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Enter reason..." type="text"/></td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Alarm codes..." type="text"/></td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Describe actions..." type="text"/></td>
+<script>
+                            for(let i=1; i<=12; i++) {
+                                document.write(`
+                                    <tr class="hover:bg-sky-50/30 transition-colors">
+                                        <td class="p-4 font-black border-r text-primary sticky left-0 bg-white">GTS ${i}</td>
+                                        <td class="p-2 border-r"><input type="number" value="120" class="grid-cell-input font-black"></td>
+                                        <td class="p-2 border-r"><input type="text" value="105.4" class="grid-cell-input"></td>
+                                        <td class="p-2 border-r"><input type="text" value="32.5" class="grid-cell-input text-sky-600"></td>
+                                        <td class="p-2 border-r"><input type="text" value="0.01" class="grid-cell-input"></td>
+                                        <td class="p-2 border-r"><input type="text" value="225" class="grid-cell-input"></td>
+                                        <td class="p-2 text-center text-[10px] text-slate-400">2023-11-01</td>
+                                    </tr>
+                                `);
+                            }
+                        </script>
+</tbody>
+</table>
+</div>
+</section>
+<!-- CLEANING -->
+<section class="space-y-8" data-view="cleaning" id="view-cleaning">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Engine Room Hygiene Log</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<script>
+                    const tasks = [
+                        "Engine Room Floor Plates & Gratings",
+                        "GTS Enclosures Exterior & Interior",
+                        "PCC Cubicle Filters & Cooling Fans",
+                        "Compressor Room & Air Receivers",
+                        "Oil Mist Separators & Drain Pots",
+                        "Tool Storage & Workshop Area",
+                        "MDO Transfer Pump Skids",
+                        "Lube Oil Transfer System",
+                        "Steam Traps & EGB Drain Lines"
+                    ];
+                    tasks.forEach(item => {
+                        document.write(`
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-sky-500 transition-colors">
+                                <div class="flex items-center gap-4">
+                                    <div class="h-12 w-12 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
+                                        <span class="material-symbols-outlined">cleaning_services</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-black text-primary uppercase">${item}</p>
+                                        <p class="text-[10px] text-slate-400">Verified by Deck Foreman</p>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-end gap-1">
+                                    <input type="checkbox" checked class="rounded text-sky-600 focus:ring-sky-500 h-5 w-5 border-slate-300">
+                                    <span class="text-[8px] font-black text-slate-300">OCT 29</span>
+                                </div>
+                            </div>
+                        `);
+                    });
+                </script>
+</div>
+</section>
+<!-- BOILER -->
+<section class="space-y-8" data-view="boiler" id="view-boiler">
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Exhaust Gas Boiler (EGB) Tracking</h2>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<script>
+                    for(let i=1; i<=12; i++) {
+                        document.write(`
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-[10px] font-black text-primary uppercase tracking-widest">EGB UNIT ${i}</p>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                </div>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between text-[11px] font-bold">
+                                        <span class="text-slate-400 uppercase">Damper Control</span>
+                                        <input type="date" class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" value="2023-11-08">
+                                    </div>
+                                    <div class="flex justify-between text-[11px] font-bold">
+                                        <span class="text-slate-400 uppercase">Steam Pressure</span>
+                                        <span class="text-primary font-black">8.5 Bar</span>
+                                    </div>
+                                    <div class="pt-3 border-t border-slate-100">
+                                        <p class="text-[9px] font-black text-slate-400 uppercase mb-2">Weekly Soot Blow</p>
+                                        <input type="datetime-local" class="w-full text-[10px] border-none bg-slate-100 rounded p-1.5 font-bold outline-none">
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                    }
+                </script>
+</div>
+</section>
+<!-- SHUTDOWNS -->
+<section class="space-y-8" data-view="shutdowns" id="view-shutdowns">
+<div class="flex items-center gap-3 border-l-4 border-error pl-4">
+<span class="material-symbols-outlined text-error font-black" data-icon="power_settings_new">power_settings_new</span>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Emergency Shutdowns Logbook</h2>
+</div>
+<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-300">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-100 text-primary border-b border-slate-300">
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest w-32 border-r">GTS Unit</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest border-r">Shutdown Reason</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest border-r">Alarm Codes</th>
+<th class="px-6 py-4 text-[11px] font-black uppercase tracking-widest">Corrective Action Taken</th>
 </tr>
-<!-- Critical Unit 4 -->
-<tr class="bg-red-50/70">
-<td class="px-6 py-4 font-black text-error text-sm">GTS 4</td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Low Lube Oil Pressure"/></td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="ERR-204, ERR-209"/></td>
-<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Primary pump swap &amp; filter check"/></td>
+</thead>
+<tbody class="divide-y divide-slate-200">
+<tr class="bg-red-50">
+<td class="px-6 py-4 font-black text-error text-sm border-r">GTS 4</td>
+<td class="px-6 py-4 border-r"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Low Lube Oil Pressure @ 14:02 UTC"/></td>
+<td class="px-6 py-4 border-r"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="ERR-204, ERR-209"/></td>
+<td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-error font-bold text-sm py-1" type="text" value="Primary pump swap &amp; internal filter inspection"/></td>
 </tr>
 <script>
-                            for(let i=2; i<=12; i++) {
+                            for(let i=1; i<=12; i++) {
                                 if(i == 4) continue;
                                 document.write(`
                                     <tr class="hover:bg-slate-50 transition-colors">
-                                        <td class="px-6 py-4 font-black text-primary text-sm">GTS ${i}</td>
-                                        <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Enter reason..." type="text"/></td>
-                                        <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Alarm codes..." type="text"/></td>
+                                        <td class="px-6 py-4 font-black text-primary text-sm border-r">GTS ${i}</td>
+                                        <td class="px-6 py-4 border-r"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Operational - No recent events" type="text"/></td>
+                                        <td class="px-6 py-4 border-r"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="---" type="text"/></td>
                                         <td class="px-6 py-4"><input class="w-full bg-transparent border-none focus:ring-0 text-sm py-1 placeholder-slate-300" placeholder="Describe actions..." type="text"/></td>
                                     </tr>
                                 `);
@@ -389,82 +706,47 @@
 </table>
 </div>
 <div class="flex justify-end gap-4">
-<button class="bg-slate-200 text-primary px-6 py-3 rounded font-black text-xs tracking-widest uppercase hover:bg-slate-300 transition-colors">Clear Draft</button>
-<button class="bg-primary text-white px-8 py-3 rounded font-black text-xs tracking-widest uppercase shadow-lg active:scale-95 transition-transform">Save Logbook Entry</button>
+<button class="bg-slate-200 text-primary px-6 py-3 rounded font-black text-xs tracking-widest uppercase hover:bg-slate-300 transition-colors">Export CSV</button>
+<button class="premium-gradient text-white px-8 py-3 rounded font-black text-xs tracking-widest uppercase shadow-lg active:scale-95 transition-transform">Commit Log Entry</button>
 </div>
 </section>
-<!-- REPORTS VIEW -->
+<!-- REPORTS -->
 <section class="space-y-8" data-view="reports" id="view-reports">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Technical Reports</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<!-- Daily Sounding -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col gap-4">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-4xl text-sky-500" data-icon="analytics">analytics</span>
-<h3 class="font-bold text-primary text-lg">Daily Sounding</h3>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Technical Reports Hub</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<script>
+                    const reportTypes = [
+                        {name: "Monthly Operational", icon: "assignment", color: "text-blue-500"},
+                        {name: "Daily Sounding", icon: "analytics", color: "text-emerald-500"},
+                        {name: "Thermal Analysis", icon: "thermostat", color: "text-orange-500"},
+                        {name: "Maintenance Summary", icon: "construction", color: "text-purple-500"}
+                    ];
+                    reportTypes.forEach(report => {
+                        document.write(`
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4 group">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-4xl ${report.color}" data-icon="${report.icon}">${report.icon}</span>
+                                    <h3 class="font-black text-primary text-base leading-tight">${report.name}</h3>
+                                </div>
+                                <div class="mt-2">
+                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Upload (.PDF / .XLS)</label>
+                                    <input class="block w-full text-[9px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-[9px] file:font-black file:uppercase file:bg-slate-100 file:text-primary hover:file:bg-slate-200 transition-all cursor-pointer border border-slate-100 rounded-md p-1" type="file"/>
+                                </div>
+                                <button class="w-full py-2 bg-primary text-white text-[10px] font-black uppercase rounded shadow-sm hover:bg-sky-900 transition-colors mt-auto">Submit Hub</button>
+                            </div>
+                        `);
+                    });
+                </script>
 </div>
-<div class="mt-2">
-<label class="block text-[10px] font-black uppercase text-slate-400 mb-2">Upload Report (PDF/XLS)</label>
-<input class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-[10px] file:font-black file:uppercase file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-all cursor-pointer border border-slate-100 rounded-md p-1" type="file"/>
-</div>
-<button class="w-full py-2.5 bg-primary text-white text-[10px] font-black uppercase rounded shadow-sm hover:bg-sky-900 transition-colors mt-auto">Submit Report</button>
-</div>
-<!-- Daily Operation Report -->
-<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col gap-4">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-4xl text-emerald-500" data-icon="assignment">assignment</span>
-<h3 class="font-bold text-primary text-lg">Daily Operation</h3>
-</div>
-<div class="mt-2 p-3 bg-slate-50 rounded-lg border border-dashed border-slate-200 flex items-center gap-3">
-<span class="material-symbols-outlined text-sky-600" data-icon="cloud_sync">cloud_sync</span>
+<div class="bg-surface-container-low p-8 rounded-xl border border-dashed border-slate-300 flex flex-col items-center justify-center text-center gap-4">
+<span class="material-symbols-outlined text-5xl text-slate-300" data-icon="cloud_upload">cloud_upload</span>
 <div>
-<p class="text-[10px] font-black text-primary uppercase">OneDrive Sync</p>
-<p class="text-[9px] text-slate-500">Connected to Vessel-Ops-Shared</p>
-</div>
-</div>
-<div class="mt-auto pt-4">
-<button class="w-full py-2.5 bg-slate-100 text-slate-600 text-[10px] font-black uppercase rounded flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
-                            Open in OneDrive
-                        </button>
-</div>
-</div>
-<!-- Template Download Card -->
-<div class="bg-surface-container-low p-6 rounded-xl border border-slate-200 flex flex-col justify-center items-center text-center gap-3">
-<span class="material-symbols-outlined text-4xl text-slate-400" data-icon="download">download</span>
-<p class="text-xs font-bold text-primary">Need the standard reporting templates?</p>
-<button class="text-[10px] font-black uppercase text-sky-600 hover:underline">Download Pack v2.4</button>
+<p class="text-sm font-bold text-primary">Need technical templates for reporting?</p>
+<p class="text-xs text-slate-500 mb-4">Standardized Vessel Forms v2.4 (KPS8-SPEC)</p>
+<button class="bg-white border border-slate-300 text-primary px-6 py-2 rounded text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all">Download Master Pack</button>
 </div>
 </div>
 </section>
-<!-- Other View Placeholders -->
-<section class="space-y-8" data-view="spark-plug" id="view-spark-plug">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Spark Plug Logs</h2>
-<div class="p-12 bg-surface-container-lowest rounded-xl border border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400">
-<span class="material-symbols-outlined text-6xl mb-4" data-icon="bolt">bolt</span>
-<p class="font-bold">Spark plug performance telemetry module</p>
-</div>
-</section>
-<section class="space-y-8" data-view="pcc" id="view-pcc">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Power Control Center</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-slate-100">
-<div class="flex justify-between items-center mb-6">
-<h4 class="text-sm font-black text-primary">ENGINE UNIT GTS 1</h4>
-<span class="bg-primary text-white text-[9px] font-black px-2 py-0.5 rounded tracking-widest">ACTIVE</span>
-</div>
-<div class="h-40 bg-slate-50 flex items-center justify-center rounded-lg border border-slate-100">
-<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Live Grid Feed Pending</span>
-</div>
-</div>
-</div>
-</section>
-<section class="space-y-8" data-view="sw-pumps" id="view-sw-pumps"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">SW Pumps Monitoring</h2></section>
-<section class="space-y-8" data-view="valve" id="view-valve"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Valve Measurement</h2></section>
-<section class="space-y-8" data-view="compressors" id="view-compressors"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Compressors</h2></section>
-<section class="space-y-8" data-view="lube-oil" id="view-lube-oil"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil System</h2></section>
-<section class="space-y-8" data-view="cleaning" id="view-cleaning"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Cleaning Logs</h2></section>
-<section class="space-y-8" data-view="boiler" id="view-boiler"><h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Boiler Status</h2></section>
 </div>
 </main>
 <script>
@@ -473,8 +755,8 @@
     
     function switchView(viewId) {
         navItems.forEach(item => {
-            item.classList.remove('bg-sky-900', 'text-white', 'font-semibold', 'shadow-lg');
-            item.classList.add('text-slate-600', 'dark:text-slate-400');
+            item.classList.remove('bg-primary', 'text-white', 'font-bold', 'shadow-lg');
+            item.classList.add('text-slate-600');
         });
         
         views.forEach(view => {
@@ -485,26 +767,23 @@
         const targetView = document.getElementById('view-' + viewId);
 
         if(activeItem) {
-            activeItem.classList.remove('text-slate-600', 'dark:text-slate-400');
-            activeItem.classList.add('bg-sky-900', 'text-white', 'font-semibold', 'shadow-lg');
+            activeItem.classList.remove('text-slate-600');
+            activeItem.classList.add('bg-primary', 'text-white', 'font-bold', 'shadow-lg');
         }
 
         if(targetView) {
             targetView.classList.add('active');
         }
 
-        document.getElementById('notification-panel').classList.add('hidden');
-        localStorage.setItem('pms_last_view', viewId);
+        const panel = document.getElementById('notification-panel');
+        if (panel) panel.classList.add('hidden');
+        
+        localStorage.setItem('pms_active_view', viewId);
     }
 
     function toggleNotifications() {
         const panel = document.getElementById('notification-panel');
-        const isHidden = panel.classList.contains('hidden');
-        if(isHidden) {
-            panel.classList.remove('hidden');
-        } else {
-            panel.classList.add('hidden');
-        }
+        panel.classList.toggle('hidden');
     }
 
     document.addEventListener('click', (e) => {
@@ -516,7 +795,7 @@
     });
 
     window.onload = () => {
-        const lastView = localStorage.getItem('pms_last_view') || 'dashboard';
+        const lastView = localStorage.getItem('pms_active_view') || 'dashboard';
         switchView(lastView);
     }
 </script>
