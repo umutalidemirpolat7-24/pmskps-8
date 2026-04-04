@@ -1,7 +1,101 @@
-<!DOCTYPE html>
+<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
+        isLoggedIn: false,
+        loginData: { username: '', password: '' },
+        loginError: false,
+        handleLogin() {
+            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
+                this.isLoggedIn = true;
+                this.loginError = false;
+            } else {
+                this.loginError = true;
+                this.loginData.password = '';
+            }
+        },
+        currentView: 'dashboard', 
+        sidebarOpen: true, 
+        notificationsOpen: false, 
+        selectedGts: 1,
+        // Central Data Pool for Engine Hours
+        engineHoursData: {
+            1: { total: 45200, weekly: 168, monthly: 672 },
+            2: { total: 43100, weekly: 162, monthly: 648 },
+            3: { total: 41800, weekly: 165, monthly: 660 },
+            4: { total: 39500, weekly: 42, monthly: 168 },
+            5: { total: 42300, weekly: 164, monthly: 656 },
+            6: { total: 44100, weekly: 166, monthly: 664 },
+            7: { total: 40900, weekly: 167, monthly: 668 },
+            8: { total: 41500, weekly: 168, monthly: 672 },
+            9: { total: 42800, weekly: 169, monthly: 676 },
+            10: { total: 43600, weekly: 170, monthly: 680 },
+            11: { total: 44400, weekly: 171, monthly: 684 },
+            12: { total: 45100, weekly: 172, monthly: 688 }
+        },
+        sparkPlugData: {},
+        pccData: {},
+        valveData: {},
+        initData() {
+            for(let gts=1; gts&lt;=12; gts++) {
+                this.sparkPlugData[gts] = { A: {}, B: {} };
+                this.pccData[gts] = { A: {}, B: {} };
+                this.valveData[gts] = { A: {}, B: {} };
+                ['A', 'B'].forEach(bank =&gt; {
+                    for(let cyl=1; cyl&lt;=9; cyl++) {
+                        this.sparkPlugData[gts][bank][cyl] = {
+                            lastDate: '2026-03-15',
+                            lastHours: 44000,
+                            prevDate: '2025-08-20',
+                            prevHours: 42000
+                        };
+                        this.pccData[gts][bank][cyl] = {
+                            lastServiceDate: '2026-01-10',
+                            lastServiceHours: 43000,
+                            prevServiceHours: 40000
+                        };
+                        this.valveData[gts][bank][cyl] = {
+                            lastMeasDate: '2026-02-05',
+                            lastMeasHours: 44500,
+                            A: 0.45, B: 0.45, C: 0.90, D: 0.90
+                        };
+                    }
+                });
+            }
+        },
+        downloadExcel() {
+            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
+        },
+        startingAirTasks: [
+            {name: 'Oil change', interval: 500},
+            {name: 'Drive mechanism inspection', interval: 500},
+            {name: 'Cylinder lubrication check', interval: 500},
+            {name: 'Pressure gauges', interval: 500},
+            {name: 'Intake air filter clean', interval: 100},
+            {name: 'Safety valves', interval: 500},
+            {name: 'Non return valve inspection', interval: 500},
+            {name: 'Solenoid valves clean', interval: 500},
+            {name: '1st, 2nd, 3rd stage valve overhaul', interval: 1000},
+            {name: 'Piston rings replacement', interval: 1000},
+            {name: 'Connecting rod bearing', interval: 1000},
+            {name: 'Crank shaft inspection', interval: 1000},
+            {name: 'Solenoid valves overhaul', interval: 1000},
+            {name: 'Oil filter / Air filter change', interval: 1000},
+            {name: 'Separator cartridge change', interval: 6000}
+        ],
+        cleaningTasks: [
+            'Engine Room Floor Plates &amp; Gratings',
+            'GTS Enclosures Exterior &amp; Interior',
+            'PCC Cubicle Filters &amp; Fans',
+            'Compressor Room &amp; Air Receivers',
+            'Oil Mist Separators &amp; Drain Pots',
+            'Tool Storage &amp; Workshop Area',
+            'MDO Transfer Pump Skids',
+            'Lube Oil Transfer System',
+            'Steam Traps &amp; EGB Drain Lines'
+        ]
+    }" x-init="initData()">```html
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
+
+
+    <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>KPS8 OSMAN BEY PMS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -49,87 +143,6 @@
         .nav-item.active { @apply bg-primary text-white font-bold shadow-lg; }
         .nav-item.active .material-symbols-outlined { @apply text-white; }
     </style>
-</head>
-<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
-        isLoggedIn: false,
-        loginData: { username: '', password: '' },
-        loginError: false,
-        handleLogin() {
-            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-                this.isLoggedIn = true;
-                this.loginError = false;
-            } else {
-                this.loginError = true;
-                this.loginData.password = '';
-            }
-        },
-        currentView: 'dashboard', 
-        sidebarOpen: true, 
-        notificationsOpen: false, 
-        selectedGts: 1,
-        // Central Data Pool for Engine Hours
-        engineHoursData: {
-            1: { total: 45200, weekly: 168, monthly: 672 },
-            2: { total: 43100, weekly: 162, monthly: 648 },
-            3: { total: 41800, weekly: 165, monthly: 660 },
-            4: { total: 39500, weekly: 42, monthly: 168 },
-            5: { total: 42300, weekly: 164, monthly: 656 },
-            6: { total: 44100, weekly: 166, monthly: 664 },
-            7: { total: 40900, weekly: 167, monthly: 668 },
-            8: { total: 41500, weekly: 168, monthly: 672 },
-            9: { total: 42800, weekly: 169, monthly: 676 },
-            10: { total: 43600, weekly: 170, monthly: 680 },
-            11: { total: 44400, weekly: 171, monthly: 684 },
-            12: { total: 45100, weekly: 172, monthly: 688 }
-        },
-        sparkPlugData: {},
-        initSparkPlugs() {
-            for(let gts=1; gts&lt;=12; gts++) {
-                this.sparkPlugData[gts] = { A: {}, B: {} };
-                ['A', 'B'].forEach(bank =&gt; {
-                    for(let cyl=1; cyl&lt;=9; cyl++) {
-                        this.sparkPlugData[gts][bank][cyl] = {
-                            lastDate: '2026-03-15',
-                            lastHours: 44000,
-                            prevDate: '2025-08-20',
-                            prevHours: 42000
-                        };
-                    }
-                });
-            }
-        },
-        downloadExcel() {
-            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
-        },
-        startingAirTasks: [
-            {name: 'Oil change', interval: 500},
-            {name: 'Drive mechanism inspection', interval: 500},
-            {name: 'Cylinder lubrication check', interval: 500},
-            {name: 'Pressure gauges', interval: 500},
-            {name: 'Intake air filter clean', interval: 100},
-            {name: 'Safety valves', interval: 500},
-            {name: 'Non return valve inspection', interval: 500},
-            {name: 'Solenoid valves clean', interval: 500},
-            {name: '1st, 2nd, 3rd stage valve overhaul', interval: 1000},
-            {name: 'Piston rings replacement', interval: 1000},
-            {name: 'Connecting rod bearing', interval: 1000},
-            {name: 'Crank shaft inspection', interval: 1000},
-            {name: 'Solenoid valves overhaul', interval: 1000},
-            {name: 'Oil filter / Air filter change', interval: 1000},
-            {name: 'Separator cartridge change', interval: 6000}
-        ],
-        cleaningTasks: [
-            'Engine Room Floor Plates &amp; Gratings',
-            'GTS Enclosures Exterior &amp; Interior',
-            'PCC Cubicle Filters &amp; Fans',
-            'Compressor Room &amp; Air Receivers',
-            'Oil Mist Separators &amp; Drain Pots',
-            'Tool Storage &amp; Workshop Area',
-            'MDO Transfer Pump Skids',
-            'Lube Oil Transfer System',
-            'Steam Traps &amp; EGB Drain Lines'
-        ]
-    }" x-init="initSparkPlugs()">
 <!-- LOGIN OVERLAY -->
 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
@@ -398,35 +411,63 @@
 </div>
 </div>
 <!-- PCC VALVE -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'pcc'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'PCC Valve - GTS ' + selectedGts"></h2>
+<div class="space-y-6" x-cloak="" x-show="currentView === 'pcc'">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'PCC Running Hours Follow - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                Engine Total Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
+            </p>
 </div>
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-<div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-3">
-<template x-for="i in 18">
-<div class="bg-slate-50 border border-slate-200 p-3 rounded text-center">
-<p class="text-[10px] font-black text-primary mb-2" x-text="'CYL ' + (i &lt;= 9 ? i : i-9) + (i &lt;= 9 ? 'A' : 'B')"></p>
-<div class="space-y-1">
-<div class="flex flex-col">
-<span class="text-[8px] uppercase text-slate-400 font-bold">KW</span>
-<input class="bg-transparent border-none p-0 text-center text-xs font-black text-primary outline-none focus:bg-white" type="text" value="915"/>
 </div>
-<div class="flex flex-col border-t border-slate-200 pt-1">
-<span class="text-[8px] uppercase text-slate-400 font-bold">TEMP</span>
-<input class="bg-transparent border-none p-0 text-center text-xs font-black text-emerald-600 outline-none focus:bg-white" type="text" value="412°C"/>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<template x-for="bank in ['A', 'B']">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<h3 class="text-xs font-black text-primary uppercase tracking-widest mb-4 border-b pb-2" x-text="'PCC SERVICE BANK ' + bank"></h3>
+<div class="space-y-4">
+<template x-for="cyl in 9">
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-4 rounded-lg border border-slate-100 bg-slate-50/30 transition-all items-center">
+<div class="sm:col-span-1 border-r border-slate-200 pr-2">
+<span class="text-[11px] font-black text-primary" x-text="cyl + bank"></span>
+</div>
+<div class="sm:col-span-8 grid grid-cols-3 gap-2">
+<div>
+<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Last Svc Date</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-semibold focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
+</div>
+<div>
+<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Eng. Hrs @ Svc</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-black text-primary focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="number" x-model.number="pccData[selectedGts][bank][cyl].lastServiceHours"/>
+</div>
+<div>
+<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Prev. Svc Hrs</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-medium text-slate-500 focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="number" x-model.number="pccData[selectedGts][bank][cyl].prevServiceHours"/>
+</div>
+</div>
+<div class="sm:col-span-3 text-center bg-white rounded border border-slate-200 flex flex-col justify-center py-1">
+<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight mb-0.5">Svc Life</label>
+<div class="flex items-baseline justify-center gap-0.5">
+<span :class="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours &gt; 2000 ? 'text-error' : 'text-primary'" class="text-xs font-black" x-text="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours"></span>
+<span class="text-[7px] font-bold text-slate-400 uppercase">hrs ago</span>
 </div>
 </div>
 </div>
 </template>
 </div>
 </div>
+</template>
+</div>
 </div>
 <!-- VALVE MEASUREMENT -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'valve'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearances (0.01 mm) - GTS ' + selectedGts"></h2>
-<button class="bg-slate-100 text-primary px-4 py-2 rounded text-[10px] font-black uppercase border border-slate-200 hover:bg-slate-200">Export Report</button>
+<div class="space-y-6" x-cloak="" x-show="currentView === 'valve'">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearance Advanced PMS - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                Current Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
+            </p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest shadow hover:opacity-90">Generate Clearance Report</button>
 </div>
 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
 <div class="overflow-x-auto no-scrollbar">
@@ -434,21 +475,51 @@
 <template x-for="cyl in 9">
 </template></template><table class="w-full text-[10px] border-collapse">
 <thead class="bg-slate-100 border-b border-slate-200 font-black">
-<tr>
-<th class="p-4 border-r bg-slate-200 text-primary sticky left-0 z-10 w-32 text-left uppercase">Cylinder</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve A (Inlet V1)</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve B (Inlet V2)</th>
-<th class="p-4 border-r text-center text-primary uppercase">Valve C (Exh V3)</th>
-<th class="p-4 text-center text-primary uppercase">Valve D (Exh V4)</th>
+<tr class="text-center uppercase text-primary">
+<th class="p-3 border-r bg-slate-200 text-left sticky left-0 z-10 w-24">Cylinder</th>
+<th class="p-3 border-r">Last Meas Date</th>
+<th class="p-3 border-r">Hrs @ Meas</th>
+<th class="p-2 border-r bg-sky-50">Intake A</th>
+<th class="p-2 border-r bg-sky-50">Intake B</th>
+<th class="p-2 border-r bg-red-50">Exhaust C</th>
+<th class="p-2 border-r bg-red-50">Exhaust D</th>
+<th class="p-3 border-r bg-slate-50">Next 500h</th>
+<th class="p-3 bg-slate-50">Next 1000h</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-sky-50 transition-colors">
-<td class="p-4 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="'CYLINDER ' + cyl + bank"></td>
-<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
-<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
-<td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/></td>
-<td class="p-0"><input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/></td>
+<tr class="hover:bg-slate-50 transition-colors text-center">
+<td class="p-3 border-r bg-slate-50 font-black text-primary sticky left-0 text-left" x-text="'CYL ' + cyl + bank"></td>
+<td class="p-1 border-r">
+<input class="w-full text-[9px] bg-transparent border-none text-center outline-none focus:bg-white" type="date" x-model="valveData[selectedGts][bank][cyl].lastMeasDate"/>
+</td>
+<td class="p-1 border-r">
+<input class="w-full text-[10px] font-black text-primary bg-transparent border-none text-center outline-none focus:bg-white" type="number" x-model.number="valveData[selectedGts][bank][cyl].lastMeasHours"/>
+</td>
+<td class="p-0 border-r bg-sky-50/20">
+<input class="grid-cell-input font-bold text-sky-700" type="text" x-model="valveData[selectedGts][bank][cyl].A"/>
+</td>
+<td class="p-0 border-r bg-sky-50/20">
+<input class="grid-cell-input font-bold text-sky-700" type="text" x-model="valveData[selectedGts][bank][cyl].B"/>
+</td>
+<td class="p-0 border-r bg-red-50/20">
+<input class="grid-cell-input font-bold text-red-700" type="text" x-model="valveData[selectedGts][bank][cyl].C"/>
+</td>
+<td class="p-0 border-r bg-red-50/20">
+<input class="grid-cell-input font-bold text-red-700" type="text" x-model="valveData[selectedGts][bank][cyl].D"/>
+</td>
+<td class="p-2 border-r bg-slate-50">
+<div class="flex flex-col">
+<span class="font-black text-primary" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 500"></span>
+<span :class="((valveData[selectedGts][bank][cyl].lastMeasHours + 500) - engineHoursData[selectedGts].total) &lt; 50 ? 'text-error' : 'text-slate-400'" class="text-[8px] font-bold" x-text="'Rem: ' + ((valveData[selectedGts][bank][cyl].lastMeasHours + 500) - engineHoursData[selectedGts].total) + 'h'"></span>
+</div>
+</td>
+<td class="p-2 bg-slate-50">
+<div class="flex flex-col">
+<span class="font-black text-primary" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 1000"></span>
+<span class="text-[8px] text-slate-400 font-bold" x-text="'Rem: ' + ((valveData[selectedGts][bank][cyl].lastMeasHours + 1000) - engineHoursData[selectedGts].total) + 'h'"></span>
+</div>
+</td>
 </tr>
 </tbody>
 </table>
@@ -719,48 +790,4 @@
                     {name: 'Thermal Analysis', icon: 'thermostat', color: 'text-orange-500'},
                     {name: 'Maintenance Summary', icon: 'construction', color: 'text-purple-500'}
                 ]">
-<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
-<div class="flex items-center gap-3">
-<span :class="report.color" class="material-symbols-outlined text-4xl" x-text="report.icon"></span>
-<h3 class="font-black text-primary text-sm uppercase" x-text="report.name"></h3>
-</div>
-<div class="border-2 border-dashed border-slate-200 rounded-lg p-4 flex flex-col items-center justify-center text-center">
-<span class="material-symbols-outlined text-slate-300 mb-2">upload_file</span>
-<span class="text-[8px] font-bold text-slate-400 uppercase">Drop PDF or Excel</span>
-</div>
-<button class="w-full py-2 bg-primary text-white text-[9px] font-black uppercase rounded shadow-sm hover:opacity-90">Submit Report</button>
-</div>
-</template>
-</div>
-</div>
-<!-- SHARED ENGINE SELECTOR TABS -->
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['pcc', 'shutdowns', 'valve', 'spark-plug'].includes(currentView)">
-<span class="text-[9px] font-black text-slate-400 uppercase">Engine</span>
-<div class="flex gap-2">
-<template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-primary text-white scale-110 shadow-lg' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'" @click="selectedGts = i" class="w-8 h-8 rounded-full text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
-</template>
-</div>
-</div>
-</div>
-</main>
-<!-- NOTIFICATION PANEL -->
-<div @click.away="notificationsOpen = false" class="fixed top-16 right-8 w-80 bg-white shadow-2xl rounded-xl overflow-hidden border border-slate-200 z-[60] transform origin-top-right transition-all" x-cloak="" x-show="notificationsOpen">
-<div class="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center">
-<h4 class="text-xs font-black uppercase tracking-widest text-primary">Notifications</h4>
-<span class="bg-error/10 text-error text-[9px] font-bold px-2 py-0.5 rounded uppercase">Critical Alert</span>
-</div>
-<div class="max-h-[400px] overflow-y-auto">
-<div @click="currentView = 'shutdowns'; selectedGts = 4; notificationsOpen = false" class="p-4 bg-red-50 border-l-4 border-error flex gap-3 cursor-pointer hover:bg-red-100/50 transition-colors">
-<span class="material-symbols-outlined text-error">warning</span>
-<div>
-<p class="text-xs font-black text-error uppercase mb-1">GTS 4 Shutdown</p>
-<p class="text-sm font-medium text-primary leading-tight">Low Lube Oil Pressure detected. Check Filter Bank B.</p>
-<p class="text-[10px] text-slate-500 mt-2 font-semibold">5m ago</p>
-</div>
-</div>
-</div>
-</div>
-<!-- OVERLAY for mobile -->
-<div @click="sidebarOpen = false" class="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity" x-cloak="" x-show="sidebarOpen"></div>
-</body></html>
+</template></div></div></div></main></body></html>
