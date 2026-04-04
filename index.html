@@ -1,58 +1,4 @@
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS - Mariner Core OS</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script id="tailwind-config">
-          tailwind.config = {
-            darkMode: "class",
-            theme: {
-              extend: {
-                colors: {
-                  "primary": "#003366",
-                  "primary-container": "#e0f2fe",
-                  "surface": "#ffffff",
-                  "surface-container": "#f8fafc",
-                  "surface-container-low": "#f1f5f9",
-                  "on-background": "#0f172a",
-                  "on-surface": "#1e293b",
-                  "on-surface-variant": "#64748b",
-                  "outline": "#cbd5e1",
-                  "error": "#ef4444"
-                },
-                fontFamily: {
-                  "sans": ["Inter", "sans-serif"],
-                  "body": ["Inter", "sans-serif"],
-                },
-                borderRadius: {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-                },
-              },
-            },
-          }
-    </script>
-<style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .glass-sidebar { background: #003366; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-primary/5 outline-none text-[10px] border-none p-1 transition-colors text-on-surface; }
-        [x-cloak] { display: none !important; }
-        .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
-        .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
-        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
-        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
-        .running-hours-table input { @apply bg-transparent border-none text-center focus:ring-0 w-full text-[10px]; }
-        .sticky-col { @apply sticky left-0 bg-white z-10 border-r border-slate-200; }
-        .sticky-header { @apply sticky top-0 z-30 bg-slate-50; }
-    </style>
-</head>
-<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
+<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
         isLoggedIn: false,
         loginData: { username: '', password: '' },
         loginError: false,
@@ -134,8 +80,8 @@
 
             this.runningHoursList = [...rawData];
             
-            // Expand to 500 rows
-            while(this.runningHoursList.length &lt; 500) {
+            // Expand to exactly 100 rows
+            while(this.runningHoursList.length &lt; 100) {
                  this.runningHoursList.push({ 
                      desc: '', 
                      sn: '', 
@@ -172,7 +118,60 @@
         downloadExcel() {
             alert('Exporting Fleet_Data_Pool_KPS8.xlsx');
         }
-    }" x-init="initData()">
+    }" x-init="initData()">```html
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KPS8 OSMAN BEY PMS - Mariner Core OS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                colors: {
+                  "primary": "#003366",
+                  "primary-container": "#e0f2fe",
+                  "surface": "#ffffff",
+                  "surface-container": "#f8fafc",
+                  "surface-container-low": "#f1f5f9",
+                  "on-background": "#0f172a",
+                  "on-surface": "#1e293b",
+                  "on-surface-variant": "#64748b",
+                  "outline": "#cbd5e1",
+                  "error": "#ef4444"
+                },
+                fontFamily: {
+                  "sans": ["Inter", "sans-serif"],
+                  "body": ["Inter", "sans-serif"],
+                },
+                borderRadius: {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+                },
+              },
+            },
+          }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-sidebar { background: #003366; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-primary/5 outline-none text-[10px] border-none p-1 transition-colors text-on-surface; }
+        [x-cloak] { display: none !important; }
+        .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
+        .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
+        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
+        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
+        .running-hours-table input { @apply bg-transparent border-none text-center focus:ring-0 w-full text-[10px]; }
+        .sticky-col { @apply sticky left-0 bg-white z-10 border-r border-slate-200; }
+        .sticky-header { @apply sticky top-0 z-30 bg-slate-50; }
+    </style>
 <!-- LOGIN OVERLAY -->
 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001f3f]" x-show="!isLoggedIn">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
@@ -318,7 +317,7 @@
 <div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (500 Units)</h2>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (100 Units)</h2>
 <div class="flex items-center gap-2 mt-2">
 <label class="text-[10px] font-bold text-slate-500 uppercase">Log Date:</label>
 <input class="text-[10px] font-bold text-primary border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
@@ -337,10 +336,14 @@
 <div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-350px)]">
 <template x-for="w in weeksCount">
 </template><template :key="index" x-for="(item, index) in runningHoursList">
-<template x-if="item.isHeader">
-</template></template><template x-if="!item.isHeader">
-</template><template x-for="(week, wIdx) in item.weeks">
-</template><table class="w-full text-[10px] border-collapse min-w-[5000px] running-hours-table">
+</template><template x-if="item.isHeader">
+</template><template x-if="!item.isHeader">
+</template><template x-if="!item.isHeader">
+</template><template x-if="!item.isHeader">
+</template><template x-if="!item.isHeader">
+</template><template x-if="!item.isHeader">
+<template x-for="(week, wIdx) in item.weeks">
+</template></template><table class="w-full text-[10px] border-collapse min-w-[5000px] running-hours-table">
 <thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
 <th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
@@ -351,10 +354,8 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="bg-slate-100/80">
+<tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50/30 transition-colors group'">
 <td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
-</tr>
-<tr class="hover:bg-sky-50/30 transition-colors group">
 <td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
 <input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
 </td>
@@ -505,4 +506,4 @@
 </template>
 </div>
 </main>
-</body></html>
+```</body></html>
