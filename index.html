@@ -54,10 +54,6 @@
         isLoggedIn: false,
         loginData: { username: '', password: '' },
         loginError: false,
-        currentView: 'dashboard', 
-        sidebarOpen: true, 
-        notificationsOpen: false, 
-        selectedGts: 1,
         handleLogin() {
             if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
                 this.isLoggedIn = true;
@@ -65,6 +61,29 @@
             } else {
                 this.loginError = true;
                 this.loginData.password = '';
+            }
+        },
+        currentView: 'dashboard', 
+        sidebarOpen: true, 
+        notificationsOpen: false, 
+        selectedGts: 1,
+        engineHours: {
+            1: 45200, 2: 43100, 3: 41800, 4: 39500, 5: 42300, 6: 44100,
+            7: 40900, 8: 41500, 9: 42800, 10: 43600, 11: 44400, 12: 45100
+        },
+        sparkPlugData: {},
+        initSparkPlugs() {
+            for(let gts=1; gts&lt;=12; gts++) {
+                this.sparkPlugData[gts] = { A: {}, B: {} };
+                ['A', 'B'].forEach(bank =&gt; {
+                    for(let cyl=1; cyl&lt;=9; cyl++) {
+                        this.sparkPlugData[gts][bank][cyl] = {
+                            lastDate: '2026-03-15',
+                            lastHours: this.engineHours[gts] - (1200 + (cyl * 10)),
+                            prevDate: '2025-08-20'
+                        };
+                    }
+                });
             }
         },
         startingAirTasks: [
@@ -95,10 +114,9 @@
             'Lube Oil Transfer System',
             'Steam Traps &amp; EGB Drain Lines'
         ]
-      }">
+    }" x-init="initSparkPlugs()">
 <!-- LOGIN OVERLAY -->
 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
-<!-- Background Pattern -->
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
 <div class="w-full max-w-md p-8 bg-white rounded-xl shadow-2xl relative z-10 mx-4 border-t-8 border-sky-500">
 <div class="text-center mb-8">
@@ -283,25 +301,53 @@
 </div>
 </div>
 <!-- SPARK PLUG -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'spark-plug'">
-<div class="flex items-center justify-between border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Replacement - GTS ' + selectedGts"></h2>
+<div class="space-y-6" x-cloak="" x-show="currentView === 'spark-plug'">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Life Cycle Management - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Current Engine Hours: <span class="text-primary" x-text="engineHours[selectedGts]"></span> hrs</p>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="flex gap-2 bg-slate-100 p-1 rounded-full">
+<template x-for="i in 12">
+<button :class="selectedGts === i ? 'bg-primary text-white shadow-md' : 'text-slate-500 hover:bg-white'" @click="selectedGts = i" class="w-7 h-7 rounded-full text-[9px] font-black flex items-center justify-center transition-all" x-text="i"></button>
+</template>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
 <template x-for="bank in ['A', 'B']">
-<div class="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-<h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4" x-text="'BANK ' + bank"></h3>
-<div class="grid grid-cols-3 gap-3">
-<template x-for="cyl in 9">
-<div class="border border-slate-100 p-3 rounded bg-slate-50 transition-colors hover:border-sky-300">
-<div class="flex justify-between items-center mb-2">
-<span class="text-[10px] font-black text-primary uppercase" x-text="'CYL ' + cyl + bank"></span>
-<span :class="(cyl + (bank === 'B' ? 9 : 0)) === 4 ? 'bg-orange-500' : 'bg-emerald-500'" class="w-2 h-2 rounded-full"></span>
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+<div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
+<h3 class="text-xs font-black text-primary uppercase tracking-widest" x-text="'CYLINDER BANK ' + bank"></h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span><span class="text-[8px] font-bold uppercase text-slate-400">Healthy</span></div>
+<div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-error"></span><span class="text-[8px] font-bold uppercase text-slate-400">Due (&gt;2000h)</span></div>
 </div>
-<input class="w-full text-[10px] border-none bg-transparent p-0 mb-1 font-medium" type="date" value="2023-11-01"/>
-<div class="flex items-center gap-1">
-<input :value="1200 + (cyl * 10)" class="w-full text-[10px] border-none bg-transparent p-0 font-black text-primary" type="number"/>
-<span class="text-[8px] text-slate-400 font-bold">HRS</span>
+</div>
+<div class="space-y-4">
+<template x-for="cyl in 9">
+<div :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'border-red-200 bg-red-50/10' : 'border-slate-100 bg-slate-50/50'" class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-3 rounded-lg border transition-all">
+<div class="sm:col-span-2 flex flex-col justify-center border-r border-slate-200 pr-2">
+<span class="text-[11px] font-black text-primary leading-none" x-text="'CYL ' + cyl + bank"></span>
+<span :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-emerald-600'" class="text-[8px] font-black uppercase mt-1" x-text="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'REPLACE DUE' : 'HEALTHY'"></span>
+</div>
+<div class="sm:col-span-3">
+<label class="block text-[8px] font-bold text-slate-400 uppercase mb-1">Last Change Date</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-semibold focus:ring-1 focus:ring-sky-500 outline-none" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
+</div>
+<div class="sm:col-span-2">
+<label class="block text-[8px] font-bold text-slate-400 uppercase mb-1">At Eng. Hrs</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-black text-primary focus:ring-1 focus:ring-sky-500 outline-none" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
+</div>
+<div class="sm:col-span-2 text-center bg-white rounded border border-slate-100 flex flex-col justify-center">
+<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight">Plug Age</label>
+<div class="flex items-baseline justify-center gap-0.5">
+<span :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-sky-700'" class="text-xs font-black" x-text="engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours"></span>
+<span class="text-[7px] font-bold text-slate-400 uppercase">hrs</span>
+</div>
+</div>
+<div class="sm:col-span-3">
+<label class="block text-[8px] font-bold text-slate-400 uppercase mb-1">Prev. Change Date</label>
+<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-medium bg-slate-100/50" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].prevDate"/>
 </div>
 </div>
 </template>
@@ -646,8 +692,8 @@
 </template>
 </div>
 </div>
-<!-- SHARED ENGINE SELECTOR TABS -->
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['spark-plug', 'pcc', 'shutdowns', 'valve'].includes(currentView)">
+<!-- SHARED ENGINE SELECTOR TABS (Only for specific views) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['pcc', 'shutdowns', 'valve'].includes(currentView)">
 <span class="text-[9px] font-black text-slate-400 uppercase">Engine</span>
 <div class="flex gap-2">
 <template x-for="i in 12">
