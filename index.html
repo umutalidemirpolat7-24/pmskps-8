@@ -30,7 +30,7 @@
                 { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162, 0, 0, 0, 0] },
                 { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169, 0, 0, 0, 0] },
                 { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168, 0, 0, 0, 0] },
-                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12268, last: 12268, weeks: [168, 170, 172, 170, 0, 0, 0, 0] },
+                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170, 0, 0, 0, 0] },
                 { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171, 0, 0, 0, 0] },
                 { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169, 0, 0, 0, 0] },
                 { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172, 0, 0, 0, 0] },
@@ -55,15 +55,12 @@
                 { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, weeks: [168, 165, 170, 168, 0, 0, 0, 0] }
             ];
 
-            // Build total of 220 rows (Original structure + empty rows)
+            // Build expanded 300 rows as requested
             this.runningHoursList = [...initialEquip];
-            // Subtract header rows from the count to aim for equipment rows
-            const equipmentCount = this.runningHoursList.filter(i =&gt; !i.isHeader).length;
-            const targetEquipmentRows = 220; 
-            const remaining = targetEquipmentRows - equipmentCount;
-            
+            const currentItemCount = this.runningHoursList.filter(i =&gt; !i.isHeader).length;
+            const remaining = 300 - currentItemCount;
             for(let i=0; i&lt;remaining; i++) {
-                this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(8).fill(0) });
+                this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(12).fill(0) });
             }
 
             for(let gts=1; gts&lt;=12; gts++) {
@@ -154,9 +151,6 @@
 <div class="h-1.5 w-full bg-sky-600"></div>
 <div class="p-10">
 <div class="text-center mb-10">
-<div class="inline-flex h-20 w-20 bg-[#001f3f] rounded-lg items-center justify-center text-white shadow-xl mb-6">
-<span class="material-symbols-outlined text-4xl">directions_boat</span>
-</div>
 <h1 class="text-2xl font-black text-[#001f3f] tracking-tight uppercase mb-1">KPS8 OSMAN BEY</h1>
 <p class="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase">Planned Maintenance System</p>
 </div>
@@ -211,7 +205,9 @@
             {id: 'starting-air', icon: 'air', label: 'Compressors'},
             {id: 'cleaning', icon: 'cleaning_services', label: 'Cleaning'},
             {id: 'boiler', icon: 'hvac', label: 'Boiler'},
-            {id: 'reports', icon: 'description', label: 'Reports'}
+            {id: 'lube-oil', icon: 'oil_barrel', label: 'Lube Oil'},
+            {id: 'reports', icon: 'description', label: 'Reports'},
+            {id: 'shutdowns', icon: 'error', label: 'Shutdowns'}
         ]">
 <button :class="currentView === item.id ? 'active' : 'text-white/60 hover:text-white hover:bg-white/5'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 text-left">
 <span class="material-symbols-outlined text-[18px]" x-text="item.icon"></span>
@@ -289,11 +285,11 @@
 </div>
 </template>
 </div>
-<!-- RUNNING HOURS TAB (EXPANDED VERSION) -->
+<!-- RUNNING HOURS TAB (EXPANDED TO 300 ROWS) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log</h2>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (300 Units)</h2>
 <div class="flex items-center gap-2 mt-2">
 <label class="text-[10px] font-bold text-slate-500 uppercase">Tarih Seçici:</label>
 <input class="text-[10px] font-bold text-primary border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
@@ -310,30 +306,30 @@
 </div>
 <div class="bg-white rounded shadow-xl border border-slate-200 overflow-hidden relative">
 <div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-350px)]">
-<template x-for="w in [0,1,2,3,4,5,6,7]">
+<template x-for="w in 12">
 </template><template x-for="(item, index) in runningHoursList">
 <template x-if="item.isHeader">
 </template></template><template x-if="!item.isHeader">
-</template><template x-for="(week, wIdx) in item.weeks">
-</template><table class="w-full text-[10px] border-collapse min-w-[1800px] running-hours-table">
+</template><template x-for="(week, wIdx) in [0,1,2,3,4,5,6,7,8,9,10,11]">
+</template><table class="w-full text-[10px] border-collapse min-w-[2200px] running-hours-table">
 <thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
-<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[280px]">Equipment Description</th>
-<th class="sticky left-[280px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[120px]">Serial No</th>
+<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[320px]">Equipment Description</th>
+<th class="sticky left-[320px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[140px]">Serial No</th>
 <th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[100px]">Total Hours</th>
 <th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[100px]">Last Hours</th>
-<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + (w+1)"></th>
+<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + (w-1)"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
 <tr class="bg-slate-100/80">
-<td class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" colspan="12" x-text="item.label"></td>
+<td class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" colspan="16" x-text="item.label"></td>
 </tr>
 <tr class="hover:bg-sky-50/30 transition-colors group">
 <td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
 <input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
 </td>
-<td class="sticky left-[280px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
+<td class="sticky left-[320px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
 <input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white" placeholder="S/N..." type="text" x-model="item.sn"/>
 </td>
 <td class="p-0 border-r border-slate-200 bg-sky-50/30">
@@ -442,7 +438,7 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50 transition-colors h-12 group">
+<tr class="hover:bg-slate-50 transition-colors h-12">
 <td class="px-6 py-2 border-r border-slate-200 font-black text-primary sticky left-0 bg-white group-hover:bg-slate-50" x-text="'CYL ' + cyl + bank"></td>
 <td class="p-1.5 border-r border-slate-200">
 <input class="w-full bg-transparent border-none text-[9px] text-center" type="date" x-model="valveData[selectedGts][bank][cyl].lastMeasDate"/>
@@ -463,8 +459,8 @@
 </div>
 </div>
 </div>
-<!-- OTHER SECTIONS PLACEHOLDERS -->
-<template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'reports']">
+<!-- OTHER SECTIONS -->
+<template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
 <div class="space-y-6" x-cloak="" x-show="currentView === viewId">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
