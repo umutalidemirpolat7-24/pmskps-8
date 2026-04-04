@@ -350,28 +350,48 @@
 <th class="sticky left-[350px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
 <th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[120px]">Total Hours</th>
 <th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[120px]">Last Hours</th>
-<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + w"></th>
+<template x-for="w in weeksCount">
+<th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]" x-text="'Week ' + w"></th>
+</template>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
+<template x-for="(item, index) in runningHoursList">
 <tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50/30 transition-colors group'">
+<!-- Header Row Condition -->
+<template x-if="item.isHeader">
 <td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
+</template>
+<!-- Data Row Condition -->
+<template x-if="!item.isHeader">
 <td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
-<input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
+<input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white w-full border-none" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
 </td>
+</template>
+<template x-if="!item.isHeader">
 <td class="sticky left-[350px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
-<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white" placeholder="S/N..." type="text" x-model="item.sn"/>
+<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none" placeholder="S/N..." type="text" x-model="item.sn"/>
 </td>
-<td class="p-0 border-r border-slate-200 bg-sky-50/30">
-<input @input="syncGtsHours()" class="py-3 font-black text-primary focus:bg-white" type="number" x-model="item.total"/>
+</template>
+<template x-if="!item.isHeader">
+<td class="p-0 border-r border-slate-200 bg-sky-50/30 w-[120px]">
+<input @input="syncGtsHours()" class="py-3 font-black text-primary focus:bg-white text-center w-full border-none" type="number" x-model="item.total"/>
 </td>
-<td class="p-0 border-r border-slate-200 bg-sky-100/20">
-<input class="py-3 font-bold text-sky-700 focus:bg-white" type="number" x-model="item.last"/>
+</template>
+<template x-if="!item.isHeader">
+<td class="p-0 border-r border-slate-200 bg-sky-100/20 w-[120px]">
+<input class="py-3 font-bold text-sky-700 focus:bg-white text-center w-full border-none" type="number" x-model="item.last"/>
 </td>
-<td class="p-0 border-r border-slate-200 historical-cell">
-<input class="py-3 font-medium text-emerald-700 focus:bg-emerald-100/50" type="number" x-model="item.weeks[wIdx]"/>
+</template>
+<template x-if="!item.isHeader">
+<template x-for="(week, wIdx) in item.weeks">
+<td class="p-0 border-r border-slate-200 historical-cell w-[80px]">
+<input class="py-3 font-medium text-emerald-700 focus:bg-emerald-100/50 text-center w-full border-none" type="number" x-model="item.weeks[wIdx]"/>
 </td>
+</template>
+</template>
 </tr>
+</template>
 </tbody>
 </table>
 </div>
