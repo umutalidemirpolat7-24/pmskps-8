@@ -1,101 +1,5 @@
-<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
-        isLoggedIn: false,
-        loginData: { username: '', password: '' },
-        loginError: false,
-        handleLogin() {
-            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-                this.isLoggedIn = true;
-                this.loginError = false;
-            } else {
-                this.loginError = true;
-                this.loginData.password = '';
-            }
-        },
-        currentView: 'dashboard', 
-        sidebarOpen: true, 
-        notificationsOpen: false, 
-        selectedGts: 1,
-        // Central Data Pool for Engine Hours
-        engineHoursData: {
-            1: { total: 45200, weekly: 168, monthly: 672 },
-            2: { total: 43100, weekly: 162, monthly: 648 },
-            3: { total: 41800, weekly: 165, monthly: 660 },
-            4: { total: 39500, weekly: 42, monthly: 168 },
-            5: { total: 42300, weekly: 164, monthly: 656 },
-            6: { total: 44100, weekly: 166, monthly: 664 },
-            7: { total: 40900, weekly: 167, monthly: 668 },
-            8: { total: 41500, weekly: 168, monthly: 672 },
-            9: { total: 42800, weekly: 169, monthly: 676 },
-            10: { total: 43600, weekly: 170, monthly: 680 },
-            11: { total: 44400, weekly: 171, monthly: 684 },
-            12: { total: 45100, weekly: 172, monthly: 688 }
-        },
-        sparkPlugData: {},
-        pccData: {},
-        valveData: {},
-        initData() {
-            for(let gts=1; gts&lt;=12; gts++) {
-                this.sparkPlugData[gts] = { A: {}, B: {} };
-                this.pccData[gts] = { A: {}, B: {} };
-                this.valveData[gts] = { A: {}, B: {} };
-                ['A', 'B'].forEach(bank =&gt; {
-                    for(let cyl=1; cyl&lt;=9; cyl++) {
-                        this.sparkPlugData[gts][bank][cyl] = {
-                            lastDate: '2026-03-15',
-                            lastHours: 44000,
-                            prevDate: '2025-08-20',
-                            prevHours: 42000
-                        };
-                        this.pccData[gts][bank][cyl] = {
-                            lastServiceDate: '2026-01-10',
-                            lastServiceHours: 43000,
-                            prevServiceHours: 40000
-                        };
-                        this.valveData[gts][bank][cyl] = {
-                            lastMeasDate: '2026-02-05',
-                            lastMeasHours: 44500,
-                            A: 0.45, B: 0.45, C: 0.90, D: 0.90
-                        };
-                    }
-                });
-            }
-        },
-        downloadExcel() {
-            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
-        },
-        startingAirTasks: [
-            {name: 'Oil change', interval: 500},
-            {name: 'Drive mechanism inspection', interval: 500},
-            {name: 'Cylinder lubrication check', interval: 500},
-            {name: 'Pressure gauges', interval: 500},
-            {name: 'Intake air filter clean', interval: 100},
-            {name: 'Safety valves', interval: 500},
-            {name: 'Non return valve inspection', interval: 500},
-            {name: 'Solenoid valves clean', interval: 500},
-            {name: '1st, 2nd, 3rd stage valve overhaul', interval: 1000},
-            {name: 'Piston rings replacement', interval: 1000},
-            {name: 'Connecting rod bearing', interval: 1000},
-            {name: 'Crank shaft inspection', interval: 1000},
-            {name: 'Solenoid valves overhaul', interval: 1000},
-            {name: 'Oil filter / Air filter change', interval: 1000},
-            {name: 'Separator cartridge change', interval: 6000}
-        ],
-        cleaningTasks: [
-            'Engine Room Floor Plates &amp; Gratings',
-            'GTS Enclosures Exterior &amp; Interior',
-            'PCC Cubicle Filters &amp; Fans',
-            'Compressor Room &amp; Air Receivers',
-            'Oil Mist Separators &amp; Drain Pots',
-            'Tool Storage &amp; Workshop Area',
-            'MDO Transfer Pump Skids',
-            'Lube Oil Transfer System',
-            'Steam Traps &amp; EGB Drain Lines'
-        ]
-    }" x-init="initData()">```html
-
-
-
-    <meta charset="utf-8"/>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>KPS8 OSMAN BEY PMS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -143,6 +47,153 @@
         .nav-item.active { @apply bg-primary text-white font-bold shadow-lg; }
         .nav-item.active .material-symbols-outlined { @apply text-white; }
     </style>
+</head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
+        isLoggedIn: false,
+        loginData: { username: '', password: '' },
+        loginError: false,
+        handleLogin() {
+            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
+                this.isLoggedIn = true;
+                this.loginError = false;
+            } else {
+                this.loginError = true;
+                this.loginData.password = '';
+            }
+        },
+        currentView: 'dashboard', 
+        sidebarOpen: true, 
+        notificationsOpen: false, 
+        selectedGts: 1,
+        // Central Data Pool for Engine Hours
+        engineHoursData: {
+            1: { total: 45200, weekly: 168, monthly: 672 },
+            2: { total: 43100, weekly: 162, monthly: 648 },
+            3: { total: 41800, weekly: 165, monthly: 660 },
+            4: { total: 39500, weekly: 42, monthly: 168 },
+            5: { total: 42300, weekly: 164, monthly: 656 },
+            6: { total: 44100, weekly: 166, monthly: 664 },
+            7: { total: 40900, weekly: 167, monthly: 668 },
+            8: { total: 41500, weekly: 168, monthly: 672 },
+            9: { total: 42800, weekly: 169, monthly: 676 },
+            10: { total: 43600, weekly: 170, monthly: 680 },
+            11: { total: 44400, weekly: 171, monthly: 684 },
+            12: { total: 45100, weekly: 172, monthly: 688 }
+        },
+        // Detailed Running Hours for Equipment List
+        runningHoursList: [
+            { id: 'gts1', desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, monthly: 12 },
+            { id: 'gts2', desc: 'NO.2 18V5160 GTS', sn: '1145137', total: 2012, monthly: 13 },
+            { id: 'gts3', desc: 'NO.3 18V5160 GTS', sn: '1145138', total: 2289, monthly: 12 },
+            { id: 'gts4', desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3418, monthly: 11 },
+            { id: 'gts5', desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 3783, monthly: 13 },
+            { id: 'gts6', desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 10425, monthly: 102 },
+            { id: 'gts7', desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, monthly: 69 },
+            { id: 'gts8', desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 10234, monthly: 98 },
+            { id: 'gts9', desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, monthly: 88 },
+            { id: 'gts10', desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, monthly: 32 },
+            { id: 'gts11', desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, monthly: 11 },
+            { id: 'gts12', desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, monthly: 93 },
+            { id: 'sac1', desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/21', total: 1246, monthly: 14 },
+            { id: 'sac2', desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '73/20', total: 1246, monthly: 14 },
+            { id: 'sac3', desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1515, monthly: 15 },
+            { id: 'sac4', desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '121/19', total: 1562, monthly: 16 },
+            { id: 'cac1', desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '13931047154', total: 2289, monthly: 13 },
+            { id: 'cac2', desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2931-7509652', total: 1217, monthly: 0 },
+            { id: 'svac1', desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, monthly: 31 },
+            { id: 'svac2', desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, monthly: 0 },
+            { id: 'nx1', desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 41, monthly: 0 },
+            { id: 'nx2', desc: 'NOX CONTROL AIR COMPRESSOR NO:2', sn: 'TRD133000', total: 1756, monthly: 0 },
+            { id: 'nx3', desc: 'NOX CONTROL AIR COMPRESSOR NO:3', sn: 'TRD133001', total: 1120, monthly: 0 },
+            { id: 'nx4', desc: 'NOX CONTROL AIR COMPRESSOR NO:4', sn: 'TRD132996', total: 3826, monthly: 172 },
+            { id: 'nx5', desc: 'NOX CONTROL AIR COMPRESSOR NO:5', sn: 'TRD133003', total: 1047, monthly: 0 },
+            { id: 'nx6', desc: 'NOX CONTROL AIR COMPRESSOR NO:6', sn: 'TRD133002', total: 4280, monthly: 0 },
+            { id: 'nx7', desc: 'NOX CONTROL AIR COMPRESSOR NO:7', sn: 'TRD1239921', total: 377, monthly: 0 },
+            { id: 'nx8', desc: 'NOX CONTROL AIR COMPRESSOR NO:8', sn: 'TRD123991', total: 5548, monthly: 0 },
+            { id: 'nx9', desc: 'NOX CONTROL AIR COMPRESSOR NO:9', sn: 'TRD1239921', total: 715, monthly: 0 },
+            { id: 'nx10', desc: 'NOX CONTROL AIR COMPRESSOR NO:10', sn: 'TRD132991', total: 5842, monthly: 0 },
+            { id: 'nx11', desc: 'NOX CONTROL AIR COMPRESSOR NO:11', sn: 'TRD132993', total: 140, monthly: 0 },
+            { id: 'nx12', desc: 'NOX CONTROL AIR COMPRESSOR NO:12', sn: 'TRD132999', total: 2366, monthly: 0 },
+            { id: 'swp1', desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, monthly: 13 },
+            { id: 'swp2', desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, monthly: 12 },
+            { id: 'swp16', desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 5845, monthly: 24 },
+            { id: 'auxsw1', desc: 'AUX. MACH. COOLER SW PUMP 1', sn: '458226-08-01', total: 10833, monthly: 145 },
+            { id: 'auxsw2', desc: 'AUX. MACH. COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, monthly: 168 },
+            { id: 'fwgsw1', desc: 'FWG SW PUMP 1 (GG 5)', sn: 'SH193071-036', total: 2322, monthly: 0 },
+            { id: 'foam1', desc: 'FOAM-FIRE PUMP', sn: '458226-01-01', total: 1, monthly: 0 },
+            { id: 'fire1', desc: 'EMG. FIRE PUMP', sn: '469408-01-01', total: 1, monthly: 0 },
+            { id: 'evb1', desc: 'Exhaust Vent Blower No:1', sn: '1013961517', total: 2036, monthly: 2036 }
+        ],
+        sparkPlugData: {},
+        pccData: {},
+        valveData: {},
+        initData() {
+            for(let gts=1; gts&lt;=12; gts++) {
+                this.sparkPlugData[gts] = { A: {}, B: {} };
+                this.pccData[gts] = { A: {}, B: {} };
+                this.valveData[gts] = { A: {}, B: {} };
+                ['A', 'B'].forEach(bank =&gt; {
+                    for(let cyl=1; cyl&lt;=9; cyl++) {
+                        this.sparkPlugData[gts][bank][cyl] = {
+                            lastDate: '2026-03-15',
+                            lastHours: 44000,
+                            prevDate: '2025-08-20',
+                            prevHours: 42000
+                        };
+                        this.pccData[gts][bank][cyl] = {
+                            lastServiceDate: '2026-01-10',
+                            lastServiceHours: 43000,
+                            prevServiceHours: 40000
+                        };
+                        this.valveData[gts][bank][cyl] = {
+                            lastMeasDate: '2026-02-05',
+                            lastMeasHours: 44500,
+                            A: 0.45, B: 0.45, C: 0.90, D: 0.90
+                        };
+                    }
+                });
+            }
+        },
+        syncGtsHours() {
+            // Synchronize the GTS specific total hours into the global engineHoursData object
+            for(let i=1; i&lt;=12; i++) {
+                let found = this.runningHoursList.find(item =&gt; item.id === 'gts' + i);
+                if(found) {
+                    this.engineHoursData[i].total = parseInt(found.total) || 0;
+                }
+            }
+        },
+        downloadExcel() {
+            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
+        },
+        startingAirTasks: [
+            {name: 'Oil change', interval: 500},
+            {name: 'Drive mechanism inspection', interval: 500},
+            {name: 'Cylinder lubrication check', interval: 500},
+            {name: 'Pressure gauges', interval: 500},
+            {name: 'Intake air filter clean', interval: 100},
+            {name: 'Safety valves', interval: 500},
+            {name: 'Non return valve inspection', interval: 500},
+            {name: 'Solenoid valves clean', interval: 500},
+            {name: '1st, 2nd, 3rd stage valve overhaul', interval: 1000},
+            {name: 'Piston rings replacement', interval: 1000},
+            {name: 'Connecting rod bearing', interval: 1000},
+            {name: 'Crank shaft inspection', interval: 1000},
+            {name: 'Solenoid valves overhaul', interval: 1000},
+            {name: 'Oil filter / Air filter change', interval: 1000},
+            {name: 'Separator cartridge change', interval: 6000}
+        ],
+        cleaningTasks: [
+            'Engine Room Floor Plates &amp; Gratings',
+            'GTS Enclosures Exterior &amp; Interior',
+            'PCC Cubicle Filters &amp; Fans',
+            'Compressor Room &amp; Air Receivers',
+            'Oil Mist Separators &amp; Drain Pots',
+            'Tool Storage &amp; Workshop Area',
+            'MDO Transfer Pump Skids',
+            'Lube Oil Transfer System',
+            'Steam Traps &amp; EGB Drain Lines'
+        ]
+    }" x-init="initData()">
 <!-- LOGIN OVERLAY -->
 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
@@ -199,6 +250,7 @@
 <nav class="flex-1 space-y-1 no-scrollbar overflow-y-auto">
 <template x-for="item in [
             {id: 'dashboard', icon: 'dashboard', label: 'Dashboard'},
+            {id: 'running-hours', icon: 'schedule', label: 'Running Hours'},
             {id: 'spark-plug', icon: 'bolt', label: 'Spark Plug'},
             {id: 'pcc', icon: 'settings_input_component', label: 'PCC Valve'},
             {id: 'valve', icon: 'straighten', label: 'Valve Measurement'},
@@ -320,7 +372,7 @@
 </div>
 </div>
 <div class="space-y-4">
-<h2 class="text-xl font-bold text-primary">GTS Engine Running Status (Editable Logs)</h2>
+<h2 class="text-xl font-bold text-primary">GTS Engine Running Status (From Master Log)</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
 <template x-for="i in 12">
 <div :class="i === 4 ? 'border-red-300 bg-red-50 ring-1 ring-red-100' : 'border-slate-200 bg-white'" class="p-4 rounded-xl border shadow-sm transition-all hover:shadow-md group">
@@ -333,19 +385,57 @@
 <div class="space-y-2">
 <div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
 <label class="text-[9px] font-bold text-slate-400 uppercase">Total Running Hours</label>
-<input class="w-24 text-right bg-slate-50 rounded px-2 py-1 text-xs font-black text-primary focus:bg-white focus:ring-1 focus:ring-primary outline-none transition-all" type="number" x-model.number="engineHoursData[i].total"/>
+<span class="text-sm font-black text-primary" x-text="engineHoursData[i].total"></span>
 </div>
 <div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
 <label class="text-[9px] font-bold text-slate-400 uppercase">Weekly Hours</label>
-<input class="w-20 text-right bg-transparent rounded px-2 py-0.5 text-xs font-bold text-sky-700 outline-none focus:bg-slate-50" type="number" x-model.number="engineHoursData[i].weekly"/>
+<span class="text-xs font-bold text-sky-700" x-text="engineHoursData[i].weekly"></span>
 </div>
 <div class="flex justify-between items-center">
 <label class="text-[9px] font-bold text-slate-400 uppercase">Monthly Hours</label>
-<input class="w-20 text-right bg-transparent rounded px-2 py-0.5 text-xs font-bold text-emerald-700 outline-none focus:bg-slate-50" type="number" x-model.number="engineHoursData[i].monthly"/>
+<span class="text-xs font-bold text-emerald-700" x-text="engineHoursData[i].monthly"></span>
 </div>
 </div>
 </div>
 </template>
+</div>
+</div>
+</div>
+<!-- RUNNING HOURS MASTER ENTRY -->
+<div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Master Equipment Running Hours Log</h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Data Entry for Monthly Performance Analysis</p>
+</div>
+<button @click="syncGtsHours()" class="bg-primary text-white px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest shadow hover:opacity-90 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sync</span>
+            Synchronize Maintenance Calculations
+        </button>
+</div>
+<div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar">
+<template x-for="item in runningHoursList">
+</template><table class="w-full text-[11px] border-collapse">
+<thead class="bg-slate-100 border-b border-slate-200 font-black">
+<tr class="text-center uppercase text-primary">
+<th class="p-4 border-r text-left w-64">Ekipman Tanımı / Equipment Description</th>
+<th class="p-4 border-r">Serial Number</th>
+<th class="p-4 border-r bg-sky-50">Total RHRS (Editable)</th>
+<th class="p-4">RH This Month</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50 transition-colors">
+<td class="p-3 border-r font-bold text-primary" x-text="item.desc"></td>
+<td class="p-3 border-r text-center text-slate-500 font-medium" x-text="item.sn"></td>
+<td class="p-1 border-r bg-sky-50/30">
+<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[12px] font-black text-primary focus:bg-white outline-none" type="number" x-model="item.total"/>
+</td>
+<td class="p-3 text-center font-bold text-emerald-600" x-text="item.monthly"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -647,147 +737,4 @@
 </div>
 <div class="pt-2 border-t border-slate-100">
 <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
-<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2026-11-05"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- SW PUMPS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'sw-pumps'">
-<div class="flex justify-between items-end border-l-4 border-sky-500 pl-4">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Sea Water Pumps &amp; Filtration</h2>
-<span class="text-[10px] font-bold text-error uppercase">2 Filters Overdue</span>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-<template x-for="i in 16">
-<div :class="(i === 4 || i === 9) ? 'border-red-300 bg-red-50' : 'border-slate-100 bg-white'" class="p-4 rounded-xl border shadow-sm text-center group cursor-pointer transition-all">
-<p class="text-[8px] font-black text-slate-400 uppercase mb-2" x-text="'PUMP ' + i"></p>
-<div :class="(i === 4 || i === 9) ? 'text-red-600' : 'text-emerald-600'" class="w-10 h-10 rounded-full mx-auto flex items-center justify-center mb-3">
-<span class="material-symbols-outlined text-lg">rotate_right</span>
-</div>
-<input :value="(i === 4 || i === 9) ? 'OVERDUE' : 'RUNNING'" class="w-full text-center text-[9px] font-black border-none bg-transparent p-0 mb-1" type="text"/>
-<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2026-11-10"/>
-</div>
-</template>
-</div>
-</div>
-<!-- LUBE OIL SYSTEM -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'lube-oil'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Lube Oil Consumption &amp; Analysis</h2>
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="i in 12">
-</template><table class="w-full text-[10px] font-bold border-collapse">
-<thead class="bg-slate-50 border-b border-slate-200">
-<tr class="text-slate-400 uppercase tracking-widest text-center">
-<th class="p-4 text-left border-r sticky left-0 bg-slate-50 min-w-[100px]">GTS UNIT</th>
-<th class="p-4 border-r">Top-up (L/24h)</th>
-<th class="p-4 border-r">Viscosity @ 40°C</th>
-<th class="p-4 border-r">TBN (BN)</th>
-<th class="p-4 border-r">Water %</th>
-<th class="p-4 border-r">Flash Point °C</th>
-<th class="p-4">Last Sample</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-sky-50/30 transition-colors text-center">
-<td class="p-4 font-black border-r text-primary text-left sticky left-0 bg-white" x-text="'GTS ' + i"></td>
-<td class="p-2 border-r"><input class="grid-cell-input font-black" type="number" value="120"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="105.4"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input text-sky-600" type="text" value="32.5"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="0.01"/></td>
-<td class="p-2 border-r"><input class="grid-cell-input" type="text" value="225"/></td>
-<td class="p-2 text-slate-400">2026-11-01</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- CLEANING -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'cleaning'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Engine Room Hygiene Log</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<template x-for="task in cleaningTasks">
-<div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center justify-between group hover:border-sky-500 transition-colors">
-<div class="flex items-center gap-4">
-<div class="h-12 w-12 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined">cleaning_services</span>
-</div>
-<div>
-<p class="text-[10px] font-black text-primary uppercase" x-text="task"></p>
-<p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Daily Routine</p>
-</div>
-</div>
-<input checked="" class="rounded text-sky-600 focus:ring-sky-500 h-5 w-5 border-slate-300" type="checkbox"/>
-</div>
-</template>
-</div>
-</div>
-<!-- BOILER -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'boiler'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Exhaust Gas Boiler (EGB) Tracking</h2>
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-<template x-for="i in 12">
-<div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-<div class="flex justify-between items-center mb-4">
-<p class="text-[10px] font-black text-primary uppercase" x-text="'EGB UNIT ' + i"></p>
-<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-</div>
-<div class="space-y-4">
-<div class="flex justify-between text-[11px] font-bold">
-<span class="text-slate-400 uppercase">Damper Check</span>
-<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2026-11-08"/>
-</div>
-<div class="flex justify-between text-[11px] font-bold">
-<span class="text-slate-400 uppercase text-[9px]">Weekly Soot Blow</span>
-<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black text-primary" type="datetime-local"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- SHUTDOWNS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'shutdowns'">
-<div class="flex items-center gap-3 border-l-4 border-error pl-4">
-<span class="material-symbols-outlined text-error font-black">power_settings_new</span>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Emergency Shutdown Log - GTS ' + selectedGts"></h2>
-</div>
-<div class="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-300">
-<template x-for="i in 12">
-</template><table class="w-full text-left">
-<thead>
-<tr class="bg-slate-100 text-primary border-b border-slate-300 font-black text-[10px] uppercase">
-<th class="px-6 py-4 w-32 border-r">Unit</th>
-<th class="px-6 py-4 border-r">Reason</th>
-<th class="px-6 py-4">Action Taken</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-200">
-<tr :class="selectedGts === i ? 'bg-red-50' : 'hidden'">
-<td class="px-6 py-4 font-black text-sm border-r text-primary" x-text="'GTS ' + i"></td>
-<td class="px-6 py-4 border-r">
-<input :class="i === 4 ? 'text-error' : ''" :value="i === 4 ? 'Low Lube Oil Pressure' : 'Normal'" class="w-full bg-transparent border-none focus:ring-0 text-sm font-bold" type="text"/>
-</td>
-<td class="px-6 py-4">
-<input class="w-full bg-transparent border-none focus:ring-0 text-sm" placeholder="Details..." type="text"/>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- REPORTS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'reports'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Technical Reports Hub</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<template x-for="report in [
-                    {name: 'Monthly Operational', icon: 'assignment', color: 'text-blue-500'},
-                    {name: 'Daily Sounding', icon: 'analytics', color: 'text-emerald-500'},
-                    {name: 'Thermal Analysis', icon: 'thermostat', color: 'text-orange-500'},
-                    {name: 'Maintenance Summary', icon: 'construction', color: 'text-purple-500'}
-                ]">
-</template></div></div></div></main></body></html>
+</div></div></div></template></div></div></div></main></body></html>
