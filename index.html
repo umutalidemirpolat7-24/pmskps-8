@@ -1,204 +1,124 @@
-<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
-        isLoggedIn: false,
-        loginData: { username: '', password: '' },
-        loginError: false,
-        handleLogin() {
-            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-                this.isLoggedIn = true;
-                this.loginError = false;
-                this.currentView = 'dashboard';
-            } else {
-                this.loginError = true;
-                this.loginData.password = '';
-            }
-        },
-        currentView: 'dashboard', 
-        sidebarOpen: true, 
-        selectedGts: 1,
-        selectedLogDate: new Date().toISOString().split('T')[0],
-        engineHoursData: {},
-        runningHoursList: [],
-        sparkPlugData: {},
-        pccData: {},
-        valveData: {},
-        weeksCount: 52,
-        initData() {
-            const rawData = [
-                { isHeader: true, label: 'MAIN ENGINES (GTS)' },
-                { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170] },
-                { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165] },
-                { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168] },
-                { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38] },
-                { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162] },
-                { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169] },
-                { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168] },
-                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170] },
-                { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171] },
-                { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169] },
-                { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172] },
-                { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170] },
-                { isHeader: true, label: 'COMPRESSORS' },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [14, 12, 15, 14] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 11, 9, 10] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, last: 1578, weeks: [16, 14, 15, 16] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 18, 16, 17] },
-                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 30, 32, 31] },
-                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, last: 7907, weeks: [0, 0, 0, 0] },
-                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0, 0, 0] },
-                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2133-22421214', total: 1393, last: 1393, weeks: [0, 0, 0, 0] },
-                { isHeader: true, label: 'SEA WATER PUMPS' },
-                { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, last: 2687, weeks: [13, 14, 12, 13] },
-                { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, last: 2446, weeks: [12, 11, 13, 12] },
-                { desc: 'SEA WATER PUMP 3', sn: '458226-07-06', total: 2477, last: 2490, weeks: [13, 12, 14, 13] },
-                { desc: 'SEA WATER PUMP 4', sn: '458226-07-12', total: 3636, last: 3649, weeks: [13, 12, 14, 13] },
-                { desc: 'SEA WATER PUMP 5', sn: '458226-07-13', total: 3208, last: 3222, weeks: [14, 14, 14, 14] },
-                { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 10833, last: 10978, weeks: [145, 140, 148, 145] },
-                { isHeader: true, label: 'AUXILIARY EQUIPMENT' },
-                { desc: 'AUX.MACH.COOLER SW PUMP 1', sn: '458226-08-01', total: 12651, last: 12651, weeks: [0, 0, 0, 0] },
-                { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, weeks: [168, 165, 170, 168] },
-                { desc: 'FW SW PUMP 1 (SG 6)', sn: 'SH593075-055', total: 2322, last: 2322, weeks: [0, 0, 0, 0] },
-                { desc: 'FW SW PUMP 2 (SG 6)', sn: 'SH593075-047', total: 2295, last: 2295, weeks: [0, 0, 0, 0] },
-                { desc: 'FW SW PUMP 3 (4SGB)', sn: 'SH593075-033', total: 12722, last: 12887, weeks: [165, 165, 165, 165] },
-                { desc: 'FW SW PUMP 4 (4SGB)', sn: 'SH593075-031', total: 11753, last: 11843, weeks: [90, 90, 90, 90] },
-                { isHeader: true, label: 'PREHEATING PUMPS' },
-                { desc: 'SG HT PREHEATING PUMP 1', sn: '449595', total: 20732, last: 20883, weeks: [151, 150, 152, 151] },
-                { desc: 'SG HT PREHEATING PUMP 2', sn: '449600', total: 20218, last: 20361, weeks: [143, 142, 144, 143] },
-                { desc: 'SG HT PREHEATING PUMP 3', sn: '449596', total: 17827, last: 17977, weeks: [150, 149, 151, 150] },
-                { isHeader: true, label: 'LUBE OIL SYSTEMS' },
-                { desc: 'SG PRELUB. PUMP 1', sn: '512257', total: 542, last: 543, weeks: [1, 1, 1, 1] },
-                { desc: 'SG PRELUB. PUMP 2', sn: '512258', total: 600, last: 607, weeks: [7, 7, 7, 7] },
-                { desc: 'SG PRELUB. PUMP 3', sn: '512256', total: 701, last: 702, weeks: [1, 1, 1, 1] }
-            ];
+<!DOCTYPE html>
 
-            // Normalize weeks array for existing data
-            rawData.forEach(item =&gt; {
-                if(!item.isHeader) {
-                    const currentWeeks = item.weeks || [];
-                    item.weeks = Array(this.weeksCount).fill(0).map((_, i) =&gt; currentWeeks[i] || 0);
-                }
-            });
-
-            this.runningHoursList = [...rawData];
-            
-            // Expand to exactly 100 rows
-            while(this.runningHoursList.length &lt; 100) {
-                 this.runningHoursList.push({ 
-                     desc: '', 
-                     sn: '', 
-                     total: 0, 
-                     last: 0, 
-                     weeks: Array(this.weeksCount).fill(0) 
-                 });
-            }
-
-            for(let gts=1; gts&lt;=12; gts++) {
-                this.engineHoursData[gts] = { total: 0, weekly: 0 };
-                this.sparkPlugData[gts] = { A: {}, B: {} };
-                this.pccData[gts] = { A: {}, B: {} };
-                this.valveData[gts] = { A: {}, B: {} };
-                ['A', 'B'].forEach(bank =&gt; {
-                    for(let cyl=1; cyl&lt;=9; cyl++) {
-                        this.sparkPlugData[gts][bank][cyl] = { lastDate: '2026-03-15', lastHours: 44000, prevDate: '2025-08-20', prevHours: 42000 };
-                        this.pccData[gts][bank][cyl] = { lastServiceDate: '2026-01-10', lastServiceHours: 43000 };
-                        this.valveData[gts][bank][cyl] = { lastMeasDate: '2026-02-05', lastMeasHours: 44500, A: 0.45, B: 0.45, C: 0.90, D: 0.90 };
-                    }
-                });
-            }
-            this.syncGtsHours();
-        },
-        syncGtsHours() {
-            for(let i=1; i&lt;=12; i++) {
-                let found = this.runningHoursList.find(item =&gt; item.desc &amp;&amp; item.desc.includes('NO.' + i + ' '));
-                if(found) {
-                    this.engineHoursData[i].total = parseInt(found.total) || 0;
-                    this.engineHoursData[i].weekly = parseInt(found.weeks[0]) || 0;
-                }
-            }
-        },
-        downloadExcel() {
-            alert('Exporting Fleet_Data_Pool_KPS8.xlsx');
-        }
-    }" x-init="initData()">```html
-
+<html class="h-full bg-slate-50" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS - Mariner Core OS</title>
+<title>KPS8 OSMAN BEY | PMS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
 <script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script id="tailwind-config">
-          tailwind.config = {
-            darkMode: "class",
-            theme: {
-              extend: {
-                colors: {
-                  "primary": "#003366",
-                  "primary-container": "#e0f2fe",
-                  "surface": "#ffffff",
-                  "surface-container": "#f8fafc",
-                  "surface-container-low": "#f1f5f9",
-                  "on-background": "#0f172a",
-                  "on-surface": "#1e293b",
-                  "on-surface-variant": "#64748b",
-                  "outline": "#cbd5e1",
-                  "error": "#ef4444"
-                },
-                fontFamily: {
-                  "sans": ["Inter", "sans-serif"],
-                  "body": ["Inter", "sans-serif"],
-                },
-                borderRadius: {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-                },
-              },
-            },
-          }
-    </script>
 <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .glass-sidebar { background: #003366; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-primary/5 outline-none text-[10px] border-none p-1 transition-colors text-on-surface; }
+        body { font-family: 'Inter', sans-serif; }
         [x-cloak] { display: none !important; }
-        .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
-        .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
         .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
-        .running-hours-table input { @apply bg-transparent border-none text-center focus:ring-0 w-full text-[10px]; }
-        .sticky-col { @apply sticky left-0 bg-white z-10 border-r border-slate-200; }
-        .sticky-header { @apply sticky top-0 z-30 bg-slate-50; }
+        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-sky-50 outline-none text-[10px] border-none p-1 transition-colors; }
     </style>
+</head>
+<body class="h-full overflow-hidden" x-data="{ 
+    isLoggedIn: false,
+    loginData: { username: '', password: '' },
+    loginError: false,
+    currentView: 'dashboard',
+    sidebarOpen: true,
+    selectedGts: 1,
+    selectedLogDate: new Date().toISOString().split('T')[0],
+    weeksCount: 52,
+    runningHoursList: [],
+    engineHoursData: {},
+    sparkPlugData: {},
+    pccData: {},
+    valveData: {},
+
+    handleLogin() {
+        if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
+            this.isLoggedIn = true;
+            this.loginError = false;
+        } else {
+            this.loginError = true;
+            this.loginData.password = '';
+        }
+    },
+
+    initData() {
+        const rawData = [
+            { isHeader: true, label: 'MAIN ENGINES (GTS)' },
+            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170] },
+            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165] },
+            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168] },
+            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38] },
+            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162] },
+            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169] },
+            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168] },
+            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170] },
+            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171] },
+            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169] },
+            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172] },
+            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170] },
+            { isHeader: true, label: 'COMPRESSORS' },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260 },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104 }
+        ];
+
+        rawData.forEach(item =&gt; {
+            if(!item.isHeader) {
+                const currentWeeks = item.weeks || [];
+                item.weeks = Array(this.weeksCount).fill(0).map((_, i) =&gt; currentWeeks[i] || 0);
+            }
+        });
+
+        this.runningHoursList = [...rawData];
+        while(this.runningHoursList.length &lt; 100) {
+            this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(this.weeksCount).fill(0) });
+        }
+
+        for(let i=1; i&lt;=12; i++) {
+            this.engineHoursData[i] = { total: 20000 + (i * 1500), weekly: 168 };
+            this.sparkPlugData[i] = { A: {}, B: {} };
+            this.pccData[i] = { A: {}, B: {} };
+            this.valveData[i] = { A: {}, B: {} };
+            ['A', 'B'].forEach(bank =&gt; {
+                for(let cyl=1; cyl&lt;=9; cyl++) {
+                    this.sparkPlugData[i][bank][cyl] = { lastDate: '2024-03-15', lastHours: 44000, prevDate: '2023-08-20', prevHours: 42000 };
+                    this.pccData[i][bank][cyl] = { lastServiceDate: '2024-01-10', lastServiceHours: 43000 };
+                    this.valveData[i][bank][cyl] = { lastMeasDate: '2024-02-05', lastMeasHours: 44500, A: 0.45, B: 0.45, C: 0.90, D: 0.90 };
+                }
+            });
+        }
+    }
+}" x-init="initData()">
 <!-- LOGIN OVERLAY -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001f3f]" x-show="!isLoggedIn">
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900" x-show="!isLoggedIn">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
-<div class="w-full max-w-[450px] bg-white rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative z-10 mx-4 overflow-hidden">
-<div class="h-1.5 w-full bg-sky-600"></div>
+<div class="w-full max-w-[450px] bg-white rounded-xl shadow-2xl relative z-10 mx-4 overflow-hidden border border-white/20">
+<div class="h-2 w-full bg-sky-950"></div>
 <div class="p-10">
 <div class="text-center mb-10">
-<h1 class="text-2xl font-black text-[#001f3f] tracking-tight uppercase mb-1">KPS8 OSMAN BEY</h1>
+<div class="bg-sky-950 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+<span class="material-symbols-outlined text-white">directions_boat</span>
+</div>
+<h1 class="text-2xl font-black text-sky-950 tracking-tight uppercase mb-1">KPS8 OSMAN BEY</h1>
 <p class="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase">Planned Maintenance System</p>
 </div>
 <form @submit.prevent="handleLogin()" class="space-y-6">
 <div>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xl group-focus-within:text-sky-600 transition-colors">person</span>
-<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-sm font-medium outline-none focus:ring-1 focus:ring-sky-600 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="SYSTEM ID" required="" type="text" x-model="loginData.username"/>
+<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium outline-none focus:ring-2 focus:ring-sky-600/20 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="SYSTEM ID" required="" type="text" x-model="loginData.username"/>
 </div>
 </div>
 <div>
 <div class="relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xl group-focus-within:text-sky-600 transition-colors">lock</span>
-<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded text-sm font-medium outline-none focus:ring-1 focus:ring-sky-600 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="PASSWORD" required="" type="password" x-model="loginData.password"/>
+<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium outline-none focus:ring-2 focus:ring-sky-600/20 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="PASSWORD" required="" type="password" x-model="loginData.password"/>
 </div>
 </div>
 <div class="h-4">
-<p class="text-[10px] text-error font-bold text-center uppercase tracking-wider" x-cloak="" x-show="loginError">Access Denied: Invalid Credentials</p>
+<p class="text-[10px] text-red-600 font-bold text-center uppercase tracking-wider" x-cloak="" x-show="loginError">Access Denied: Invalid Credentials</p>
 </div>
-<button class="w-full bg-[#001f3f] text-white font-black py-4 rounded shadow-lg hover:bg-sky-900 active:scale-[0.98] transition-all uppercase tracking-widest text-[11px]" type="submit">
+<button class="w-full bg-sky-950 text-white font-black py-4 rounded-lg shadow-lg hover:bg-sky-900 active:scale-[0.98] transition-all uppercase tracking-widest text-[11px]" type="submit">
                     Authorize Access
                 </button>
 </form>
@@ -208,134 +128,140 @@
 </div>
 </div>
 </div>
-<!-- SIDEBAR -->
-<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-50 overflow-y-auto glass-sidebar transition-transform duration-300 lg:translate-x-0 border-r border-white/10 shadow-2xl">
-<div class="mb-8 px-2 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="h-9 w-9 bg-sky-500 rounded flex items-center justify-center text-white shadow-lg">
-<span class="material-symbols-outlined text-xl">directions_boat</span>
+<div class="flex h-full" x-cloak="" x-show="isLoggedIn">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-slate-100 border-r border-slate-200 flex flex-col z-50">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-sky-950 p-2 rounded-lg">
+<span class="material-symbols-outlined text-white">directions_boat</span>
 </div>
 <div>
-<h1 class="font-black text-white text-xs tracking-tight uppercase leading-tight">KPS8<br/>OSMAN BEY</h1>
+<h1 class="text-sky-950 font-black tracking-tighter text-lg leading-none uppercase">KPS8 OSMAN BEY</h1>
+<p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1">OPERATIONAL • PMS v4.2</p>
 </div>
 </div>
-<button @click="sidebarOpen = false" class="lg:hidden text-white/50">
-<span class="material-symbols-outlined">close</span>
-</button>
-</div>
-<nav class="flex-1 space-y-0.5 no-scrollbar overflow-y-auto">
+<nav class="space-y-1">
 <template x-for="item in [
-            {id: 'dashboard', icon: 'dashboard', label: 'Dashboard'},
-            {id: 'running-hours', icon: 'schedule', label: 'Running Hours'},
-            {id: 'spark-plug', icon: 'bolt', label: 'Spark Plug'},
-            {id: 'pcc', icon: 'settings_input_component', label: 'PCC Valve'},
-            {id: 'valve', icon: 'straighten', label: 'Valve Measurement'},
-            {id: 'starting-air', icon: 'air', label: 'Compressors'},
-            {id: 'cleaning', icon: 'cleaning_services', label: 'Cleaning'},
-            {id: 'boiler', icon: 'hvac', label: 'Boiler'},
-            {id: 'lube-oil', icon: 'oil_barrel', label: 'Lube Oil'},
-            {id: 'reports', icon: 'description', label: 'Reports'},
-            {id: 'shutdowns', icon: 'error', label: 'Shutdowns'}
-        ]">
-<button :class="currentView === item.id ? 'active' : 'text-white/60 hover:text-white hover:bg-white/5'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 text-left">
-<span class="material-symbols-outlined text-[18px]" x-text="item.icon"></span>
-<span class="text-[10px] font-bold uppercase tracking-widest" x-text="item.label"></span>
+                    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+                    { id: 'running-hours', label: 'Running Hours', icon: 'schedule' },
+                    { id: 'spark-plug', label: 'Spark Plug', icon: 'bolt' },
+                    { id: 'pcc', label: 'PCC (Non Return Valve)', icon: 'settings_input_component' },
+                    { id: 'valve', label: 'Valve Measurement', icon: 'straighten' },
+                    { id: 'starting-air', label: 'Compressors', icon: 'air' },
+                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
+                    { id: 'boiler', label: 'Boiler', icon: 'hvac' },
+                    { id: 'lube-oil', label: 'Lube Oil System', icon: 'oil_barrel' },
+                    { id: 'reports', label: 'Reports', icon: 'description' },
+                    { id: 'shutdowns', label: 'Shutdowns', icon: 'error' }
+                ]">
+<button :class="currentView === item.id ? 'bg-white text-sky-900 shadow-sm rounded-lg font-bold' : 'text-slate-600 hover:bg-slate-200/50'" @click="currentView = item.id" class="w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200">
+<span class="material-symbols-outlined text-[20px]" x-text="item.icon"></span>
+<span class="truncate" x-text="item.label"></span>
 </button>
 </template>
 </nav>
+</div>
+<div class="mt-auto p-6 space-y-4">
+<div class="bg-sky-950 rounded-xl p-4 text-white shadow-lg">
+<p class="text-[10px] uppercase tracking-widest font-bold opacity-60 mb-2">System Status</p>
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium">Network Online</span>
+<div class="h-2 w-2 rounded-full bg-green-400 animate-pulse"></div>
+</div>
+</div>
+<button @click="isLoggedIn = false" class="w-full flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-red-600 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Logout System</span>
+</button>
+</div>
 </aside>
-<main class="lg:ml-64 min-h-screen h-screen flex flex-col overflow-hidden relative bg-slate-50">
-<!-- HEADER -->
-<header class="bg-white sticky top-0 z-40 flex justify-between items-center w-full px-4 lg:px-8 py-3.5 border-b border-slate-200 shrink-0 shadow-sm">
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden relative">
+<!-- Header -->
+<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-40">
 <div class="flex items-center gap-4">
-<button @click="sidebarOpen = true" class="lg:hidden p-2 text-slate-400">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<span class="text-lg font-black tracking-tighter text-primary uppercase">Fleet Precision PMS</span>
+<h2 class="text-lg font-bold text-sky-950 uppercase tracking-tight" x-text="currentView.replace('-', ' ')"></h2>
+<div class="h-4 w-px bg-slate-200"></div>
+<p class="text-xs text-slate-500 font-medium">IMO: 9876543 | Engine Deck Level 2</p>
 </div>
-<div class="flex items-center gap-4">
-<div class="hidden sm:flex flex-col items-end mr-4">
-<span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Operator Session</span>
-<span class="text-[11px] font-black text-primary">CHIEF ENGINEER / KPS8</span>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-slate-400 hover:text-sky-950 cursor-pointer">notifications</span>
+<div class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full border-2 border-white"></div>
 </div>
-<button @click="isLoggedIn = false" class="p-2 text-slate-400 hover:text-primary transition-colors flex items-center gap-2 border border-slate-200 rounded px-3">
-<span class="material-symbols-outlined text-xl">logout</span>
-<span class="text-[10px] font-bold uppercase hidden md:inline">Sign Out</span>
-</button>
+<button class="bg-sky-950 text-white text-xs font-bold px-4 py-2 rounded-md hover:bg-sky-900 transition-colors uppercase tracking-wider">Sync All Data</button>
 </div>
 </header>
-<div class="flex-1 overflow-y-auto no-scrollbar p-4 lg:p-8">
-<!-- SUMMARY WIDGETS -->
-<div class="mb-8 bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-<div class="space-y-1">
-<h2 class="text-xl font-black text-primary uppercase tracking-tight">Vessel Telemetry</h2>
-<p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Active Link: KPS8-SAT-01</p>
-</div>
-<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
-<div class="h-10 w-10 bg-primary/10 rounded flex items-center justify-center text-primary">
-<span class="material-symbols-outlined text-xl">settings_slow_motion_video</span>
-</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-8 no-scrollbar">
+<!-- Dashboard View -->
+<div class="space-y-8" x-show="currentView === 'dashboard'">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+<p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-4">Total Operating Time</p>
+<div class="flex items-end justify-between">
 <div>
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Running Units</p>
-<p class="text-lg font-black text-primary">11/12 GTS</p>
+<h3 class="text-4xl font-black text-sky-950 tracking-tighter">1,324,580</h3>
+<p class="text-xs text-slate-500 mt-1 font-medium">Fleet Hours Accumulated</p>
+</div>
+<span class="material-symbols-outlined text-sky-950 opacity-20 text-4xl">timer</span>
 </div>
 </div>
-<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
-<div class="h-10 w-10 bg-sky-100 rounded flex items-center justify-center text-sky-600">
-<span class="material-symbols-outlined text-xl">speed</span>
-</div>
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-2 h-full bg-red-500"></div>
+<p class="text-[10px] text-red-500 font-bold uppercase tracking-widest mb-4">Critical Alerts</p>
+<div class="flex items-end justify-between">
 <div>
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Average Load</p>
-<p class="text-lg font-black text-sky-600">88.4 MW</p>
+<h3 class="text-4xl font-black text-red-600 tracking-tighter">24</h3>
+<p class="text-xs text-slate-500 mt-1 font-medium italic">Overdue Tasks Detected</p>
+</div>
+<span class="material-symbols-outlined text-red-500 opacity-20 text-4xl">warning</span>
 </div>
 </div>
-<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
-<div class="h-10 w-10 bg-emerald-100 rounded flex items-center justify-center text-emerald-600">
-<span class="material-symbols-outlined text-xl">monitoring</span>
-</div>
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+<p class="text-[10px] text-sky-600 font-bold uppercase tracking-widest mb-4">Planned Schedule</p>
+<div class="flex items-end justify-between">
 <div>
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Fleet Efficiency</p>
-<p class="text-lg font-black text-emerald-600">94.2%</p>
+<h3 class="text-4xl font-black text-sky-950 tracking-tighter">42</h3>
+<p class="text-xs text-slate-500 mt-1 font-medium">Upcoming Checks (72h)</p>
+</div>
+<span class="material-symbols-outlined text-sky-600 opacity-20 text-4xl">calendar_today</span>
 </div>
 </div>
 </div>
-</div>
-<!-- DASHBOARD GRID -->
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" x-cloak="" x-show="currentView === 'dashboard'">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
 <template x-for="i in 12">
-<div @click="currentView = 'spark-plug'; selectedGts = i" class="bg-white p-4 rounded border border-slate-200 hover:border-sky-500 transition-all cursor-pointer hover:shadow-md group">
+<div @click="currentView = 'spark-plug'; selectedGts = i" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-sky-500 transition-all cursor-pointer hover:shadow-md group">
 <div class="flex justify-between items-start mb-1">
 <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-sky-500">GTS <span x-text="i"></span></p>
 <span class="material-symbols-outlined text-[14px] text-slate-300">bolt</span>
 </div>
-<p class="text-xl font-black text-primary" x-text="(engineHoursData[i]?.total || 0).toLocaleString()"></p>
+<p class="text-xl font-black text-sky-950" x-text="(engineHoursData[i]?.total || 0).toLocaleString()"></p>
 </div>
 </template>
 </div>
-<!-- RUNNING HOURS TAB -->
-<div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
+</div>
+<!-- Running Hours Tab -->
+<div class="space-y-6" x-show="currentView === 'running-hours'">
+<div class="flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (100 Units)</h2>
+<h2 class="text-2xl font-black text-sky-950 uppercase">Fleet Equipment Log (100 Units)</h2>
 <div class="flex items-center gap-2 mt-2">
 <label class="text-[10px] font-bold text-slate-500 uppercase">Log Date:</label>
-<input class="text-[10px] font-bold text-primary border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
+<input class="text-[10px] font-bold text-sky-900 border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
 </div>
 </div>
 <div class="flex gap-2">
-<button @click="downloadExcel()" class="bg-emerald-600 text-white px-5 py-2.5 rounded text-[10px] font-black uppercase tracking-widest shadow-md hover:bg-emerald-700 flex items-center gap-2 transition-all">
+<button class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-emerald-700 flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">download</span> Export XLS
-                    </button>
-<button class="bg-white border border-slate-200 text-slate-600 px-5 py-2.5 rounded text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 flex items-center gap-2 transition-all">
-<span class="material-symbols-outlined text-sm">print</span> Print Log
-                    </button>
+                        </button>
 </div>
 </div>
-<div class="bg-white rounded shadow-xl border border-slate-200 overflow-hidden relative">
-<div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-350px)]">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-320px)]">
 <template x-for="w in weeksCount">
-</template><template :key="index" x-for="(item, index) in runningHoursList">
+</template><template x-for="(item, index) in runningHoursList">
 </template><template x-if="item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
@@ -343,90 +269,69 @@
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
 <template x-for="(week, wIdx) in item.weeks">
-</template></template><table class="w-full text-[10px] border-collapse min-w-[5000px] running-hours-table">
+</template></template><table class="w-full text-[10px] border-collapse min-w-[4000px]">
 <thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
 <th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
 <th class="sticky left-[350px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[120px]">Total Hours</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[120px]">Last Hours</th>
-<template x-for="w in weeksCount">
+<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-sky-900 w-[120px]">Total Hours</th>
+<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-sky-900 w-[120px]">Last Hours</th>
 <th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]" x-text="'Week ' + w"></th>
-</template>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<template x-for="(item, index) in runningHoursList">
-<tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50/30 transition-colors group'">
-<!-- Header Row Condition -->
-<template x-if="item.isHeader">
+<tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50 transition-colors group'">
 <td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
-</template>
-<!-- Data Row Condition -->
-<template x-if="!item.isHeader">
-<td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
-<input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white w-full border-none" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
+<td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50 p-0 border-r border-slate-200">
+<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none" placeholder="Manual Equipment Entry..." type="text" x-model="item.desc"/>
 </td>
-</template>
-<template x-if="!item.isHeader">
-<td class="sticky left-[350px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
-<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none" placeholder="S/N..." type="text" x-model="item.sn"/>
+<td class="sticky left-[350px] z-20 bg-white group-hover:bg-sky-50 p-0 border-r border-slate-200">
+<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none" placeholder="S/N..." type="text" x-model="item.sn"/>
 </td>
-</template>
-<template x-if="!item.isHeader">
-<td class="p-0 border-r border-slate-200 bg-sky-50/30 w-[120px]">
-<input @input="syncGtsHours()" class="py-3 font-black text-primary focus:bg-white text-center w-full border-none" type="number" x-model="item.total"/>
+<td class="p-0 border-r border-slate-200 bg-sky-50/30">
+<input class="py-3 font-black text-sky-900 text-center w-full border-none outline-none focus:bg-white" type="number" x-model="item.total"/>
 </td>
-</template>
-<template x-if="!item.isHeader">
-<td class="p-0 border-r border-slate-200 bg-sky-100/20 w-[120px]">
-<input class="py-3 font-bold text-sky-700 focus:bg-white text-center w-full border-none" type="number" x-model="item.last"/>
+<td class="p-0 border-r border-slate-200 bg-sky-100/20">
+<input class="py-3 font-bold text-sky-700 text-center w-full border-none outline-none focus:bg-white" type="number" x-model="item.last"/>
 </td>
-</template>
-<template x-if="!item.isHeader">
-<template x-for="(week, wIdx) in item.weeks">
-<td class="p-0 border-r border-slate-200 historical-cell w-[80px]">
-<input class="py-3 font-medium text-emerald-700 focus:bg-emerald-100/50 text-center w-full border-none" type="number" x-model="item.weeks[wIdx]"/>
+<td class="p-0 border-r border-slate-200 historical-cell">
+<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50" type="number" x-model="item.weeks[wIdx]"/>
 </td>
-</template>
-</template>
 </tr>
-</template>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<!-- SPARK PLUG -->
-<div class="space-y-6" x-cloak="" x-show="currentView === 'spark-plug'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
+<!-- Spark Plug Tab -->
+<div class="space-y-6" x-show="currentView === 'spark-plug'">
+<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Lifecycle - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-                        Engine Master Time: <span class="text-sky-600 font-black" x-text="engineHoursData[selectedGts]?.total || 0"></span> hrs
-                    </p>
+<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'Spark Plug Lifecycle - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Master Time: <span class="text-sky-600 font-black" x-text="engineHoursData[selectedGts]?.total"></span> hrs</p>
 </div>
-<div class="flex gap-1.5 bg-white p-1.5 rounded border border-slate-200 overflow-x-auto max-w-full no-scrollbar shadow-sm">
+<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
 <template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-primary text-white shadow-md' : 'text-slate-400 hover:text-primary hover:bg-slate-50'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
+<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
 </template>
 </div>
 </div>
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
 <template x-for="bank in ['A', 'B']">
-<div class="bg-white p-8 rounded border border-slate-200 shadow-sm">
-<h3 class="text-[11px] font-black text-primary uppercase tracking-[0.2em] mb-8 border-b border-slate-100 pb-4" x-text="'CYLINDER BANK ' + bank"></h3>
+<div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+<h3 class="text-[11px] font-black text-sky-950 uppercase tracking-[0.2em] mb-6 border-b border-slate-100 pb-4" x-text="'Cylinder Bank ' + bank"></h3>
 <div class="space-y-3">
 <template x-for="cyl in 9">
-<div class="grid grid-cols-12 gap-4 p-4 rounded bg-slate-50 border border-slate-100 items-center">
+<div class="grid grid-cols-12 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 items-center">
 <div class="col-span-1 border-r border-slate-200 pr-3 text-center">
-<span class="text-xs font-black text-primary" x-text="cyl + bank"></span>
+<span class="text-xs font-black text-sky-900" x-text="cyl + bank"></span>
 </div>
 <div class="col-span-11 grid grid-cols-3 gap-4">
-<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-bold" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
-<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-black text-sky-600" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
+<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-bold outline-none focus:border-sky-500" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
+<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-black text-sky-600 outline-none focus:border-sky-500" type="number" x-model="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
 <div class="text-right flex items-center justify-end">
 <span class="text-xs font-black text-emerald-600" x-text="sparkPlugData[selectedGts][bank][cyl].lastHours - sparkPlugData[selectedGts][bank][cyl].prevHours"></span>
+<span class="text-[8px] text-slate-400 font-bold ml-1 uppercase">hrs run</span>
 </div>
 </div>
 </div>
@@ -436,94 +341,29 @@
 </template>
 </div>
 </div>
-<!-- PCC VALVE -->
-<div class="space-y-6" x-cloak="" x-show="currentView === 'pcc'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'PCC Valve Monitoring - GTS ' + selectedGts"></h2>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-<template x-for="bank in ['A', 'B']">
-<div class="bg-white p-8 rounded border border-slate-200 shadow-sm">
-<h3 class="text-[11px] font-black text-primary uppercase tracking-[0.2em] mb-8 border-b border-slate-100 pb-4" x-text="'PCC MAINTENANCE BANK ' + bank"></h3>
-<div class="space-y-3">
-<template x-for="cyl in 9">
-<div class="grid grid-cols-12 gap-4 p-4 rounded bg-slate-50 border border-slate-100 items-center">
-<div class="col-span-1 border-r border-slate-200 pr-3 text-center">
-<span class="text-xs font-black text-primary" x-text="cyl + bank"></span>
-</div>
-<div class="col-span-8 grid grid-cols-2 gap-3">
-<input class="bg-white border border-slate-200 rounded px-2 py-1.5 text-[10px]" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
-<input class="bg-white border border-slate-200 rounded px-2 py-1.5 text-[10px] font-black text-sky-600" type="number" x-model.number="pccData[selectedGts][bank][cyl].lastServiceHours"/>
-</div>
-<div class="col-span-3 text-right">
-<span class="text-[9px] font-black px-2 py-1 rounded border border-emerald-600 text-emerald-600 uppercase" x-text="(engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours) + 'h ago'"></span>
+<!-- Placeholder View for other tabs -->
+<template x-for="viewId in ['pcc', 'valve', 'starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
+<div class="space-y-6" x-show="currentView === viewId">
+<div class="bg-white p-20 rounded-3xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center opacity-60">
+<span class="material-symbols-outlined text-6xl text-slate-300 mb-4">analytics</span>
+<h3 class="text-xl font-bold text-sky-950 uppercase" x-text="viewId.replace('-', ' ')"></h3>
+<p class="text-sm text-slate-500 font-medium mt-2 max-w-sm">Section content loading from secure database link...</p>
 </div>
 </div>
 </template>
 </div>
+<!-- Global Footer -->
+<footer class="h-10 bg-sky-950 flex items-center justify-between px-8 text-[9px] text-white/50 font-black uppercase tracking-widest z-40">
+<div class="flex items-center gap-6">
+<p>Terminal ID: BRIDGE-MAIN-KPS8</p>
+<p class="text-white/20">|</p>
+<p>Active Users: 4 Shift Personnel</p>
 </div>
-</template>
+<div class="flex items-center gap-4">
+<p>UTC Timestamp: 2024-05-20 14:32:05</p>
+<div class="h-2 w-2 rounded-full bg-green-400/50 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></div>
 </div>
-</div>
-<!-- VALVE MEASUREMENT -->
-<div class="space-y-6" x-cloak="" x-show="currentView === 'valve'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearance Matrix - GTS ' + selectedGts"></h2>
-</div>
-<div class="bg-white rounded shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="bank in ['A', 'B']">
-<template x-for="cyl in 9">
-</template></template><table class="w-full text-[10px] border-collapse min-w-[1000px]">
-<thead class="bg-slate-50 border-b border-slate-200 font-bold h-14 text-slate-500 uppercase">
-<tr>
-<th class="px-6 py-4 border-r border-slate-200 text-left sticky left-0 bg-slate-50">Cylinder</th>
-<th class="px-4 py-4 border-r border-slate-200">Last Meas Date</th>
-<th class="px-4 py-4 border-r border-slate-200">Hrs @ Meas</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-sky-50 text-sky-700">Intake A</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-sky-50 text-sky-700">Intake B</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-red-50 text-red-700">Exhaust C</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-red-50 text-red-700">Exhaust D</th>
-<th class="px-4 py-4 text-emerald-700">Next Service</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50 transition-colors h-12">
-<td class="px-6 py-2 border-r border-slate-200 font-black text-primary sticky left-0 bg-white group-hover:bg-slate-50" x-text="'CYL ' + cyl + bank"></td>
-<td class="p-1.5 border-r border-slate-200">
-<input class="w-full bg-transparent border-none text-[9px] text-center" type="date" x-model="valveData[selectedGts][bank][cyl].lastMeasDate"/>
-</td>
-<td class="p-1.5 border-r border-slate-200">
-<input class="w-full bg-transparent border-none text-[11px] font-black text-sky-600 text-center" type="number" x-model.number="valveData[selectedGts][bank][cyl].lastMeasHours"/>
-</td>
-<td class="p-1.5 border-r border-slate-200 bg-sky-50/20"><input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].A"/></td>
-<td class="p-1.5 border-r border-slate-200 bg-sky-50/20"><input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].B"/></td>
-<td class="p-1.5 border-r border-slate-200 bg-red-50/20"><input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].C"/></td>
-<td class="p-1.5 border-r border-slate-200 bg-red-50/20"><input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].D"/></td>
-<td class="px-4 py-2 text-center">
-<span class="text-[11px] font-black text-emerald-600" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 500"></span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- PLACEHOLDER VIEWS -->
-<template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
-<div class="space-y-6" x-cloak="" x-show="currentView === viewId">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
-<div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="viewId.replace('-', ' ') + ' Control'"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Maritime Authority Compliant Data Pool</p>
-</div>
-</div>
-<div class="bg-white rounded p-20 flex flex-col items-center justify-center text-center border border-slate-200 border-dashed">
-<span class="material-symbols-outlined text-6xl text-slate-200 mb-4">analytics</span>
-<p class="text-slate-400 font-bold text-xs uppercase tracking-widest">Section content loading from master link...</p>
-</div>
-</div>
-</template>
-</div>
+</footer>
 </main>
-```</body></html>
+</div>
+</body></html>
