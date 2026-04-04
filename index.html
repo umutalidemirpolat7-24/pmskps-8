@@ -67,9 +67,20 @@
         sidebarOpen: true, 
         notificationsOpen: false, 
         selectedGts: 1,
-        engineHours: {
-            1: 45200, 2: 43100, 3: 41800, 4: 39500, 5: 42300, 6: 44100,
-            7: 40900, 8: 41500, 9: 42800, 10: 43600, 11: 44400, 12: 45100
+        // Central Data Pool for Engine Hours
+        engineHoursData: {
+            1: { total: 45200, weekly: 168, monthly: 672 },
+            2: { total: 43100, weekly: 162, monthly: 648 },
+            3: { total: 41800, weekly: 165, monthly: 660 },
+            4: { total: 39500, weekly: 42, monthly: 168 },
+            5: { total: 42300, weekly: 164, monthly: 656 },
+            6: { total: 44100, weekly: 166, monthly: 664 },
+            7: { total: 40900, weekly: 167, monthly: 668 },
+            8: { total: 41500, weekly: 168, monthly: 672 },
+            9: { total: 42800, weekly: 169, monthly: 676 },
+            10: { total: 43600, weekly: 170, monthly: 680 },
+            11: { total: 44400, weekly: 171, monthly: 684 },
+            12: { total: 45100, weekly: 172, monthly: 688 }
         },
         sparkPlugData: {},
         initSparkPlugs() {
@@ -79,12 +90,15 @@
                     for(let cyl=1; cyl&lt;=9; cyl++) {
                         this.sparkPlugData[gts][bank][cyl] = {
                             lastDate: '2026-03-15',
-                            lastHours: this.engineHours[gts] - (1200 + (cyl * 10)),
+                            lastHours: this.engineHoursData[gts].total - (1200 + (cyl * 10)),
                             prevDate: '2025-08-20'
                         };
                     }
                 });
             }
+        },
+        downloadExcel() {
+            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
         },
         startingAirTasks: [
             {name: 'Oil change', interval: 500},
@@ -233,11 +247,17 @@
 <div class="flex justify-between items-start">
 <div>
 <h2 class="text-2xl font-bold text-primary mb-1">Fleet Operational Status</h2>
-<p class="text-sm text-on-surface-variant">Vessel active at 12.4 knots. All systems within nominal variance.</p>
+<p class="text-sm text-on-surface-variant">Vessel active at 12.4 knots. Central Data Pool active for 2026 logs.</p>
 </div>
+<div class="flex flex-col sm:flex-row gap-2">
+<button @click="downloadExcel()" class="bg-white border border-slate-200 text-primary px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 shadow-sm hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Download Reports (Excel)
+                    </button>
 <div class="flex gap-2">
 <span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Online</span>
 <span class="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Normal</span>
+</div>
 </div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
@@ -286,14 +306,29 @@
 </div>
 </div>
 <div class="space-y-4">
-<h2 class="text-xl font-bold text-primary">GTS Engine Running Status</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
+<h2 class="text-xl font-bold text-primary">GTS Engine Running Status (Editable Logs)</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
 <template x-for="i in 12">
-<div :class="i === 4 ? 'border-red-300 bg-red-50/20 ring-1 ring-red-100' : 'border-slate-100 bg-white'" @click="currentView = 'spark-plug'; selectedGts = i" class="p-5 rounded-lg border shadow-sm transition-all hover:shadow-md cursor-pointer group">
-<p :class="i === 4 ? 'text-error' : 'text-slate-400'" class="text-[10px] font-black uppercase tracking-widest mb-1" x-text="'GTS ' + i"></p>
-<div class="flex items-end justify-between">
-<p :class="i === 4 ? 'text-error' : 'text-primary'" class="text-2xl font-black" x-text="i === 4 ? 42 : 160 + i"></p>
-<p class="text-[9px] font-bold text-slate-400 mb-1">WEEKLY HRS</p>
+<div :class="i === 4 ? 'border-red-300 bg-red-50 ring-1 ring-red-100' : 'border-slate-200 bg-white'" class="p-4 rounded-xl border shadow-sm transition-all hover:shadow-md group">
+<div class="flex justify-between items-center mb-3">
+<p :class="i === 4 ? 'text-error' : 'text-slate-500'" class="text-[10px] font-black uppercase tracking-widest" x-text="'GTS ' + i"></p>
+<button @click="currentView = 'spark-plug'; selectedGts = i" class="text-primary hover:text-sky-600 transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_forward_ios</span>
+</button>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
+<label class="text-[9px] font-bold text-slate-400 uppercase">Total Running Hours</label>
+<input class="w-24 text-right bg-slate-50 rounded px-2 py-1 text-xs font-black text-primary focus:bg-white focus:ring-1 focus:ring-primary outline-none transition-all" type="number" x-model.number="engineHoursData[i].total"/>
+</div>
+<div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
+<label class="text-[9px] font-bold text-slate-400 uppercase">Weekly Hours</label>
+<input class="w-20 text-right bg-transparent rounded px-2 py-0.5 text-xs font-bold text-sky-700 outline-none focus:bg-slate-50" type="number" x-model.number="engineHoursData[i].weekly"/>
+</div>
+<div class="flex justify-between items-center">
+<label class="text-[9px] font-bold text-slate-400 uppercase">Monthly Hours</label>
+<input class="w-20 text-right bg-transparent rounded px-2 py-0.5 text-xs font-bold text-emerald-700 outline-none focus:bg-slate-50" type="number" x-model.number="engineHoursData[i].monthly"/>
+</div>
 </div>
 </div>
 </template>
@@ -305,7 +340,9 @@
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
 <div>
 <h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Life Cycle Management - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Current Engine Hours: <span class="text-primary" x-text="engineHours[selectedGts]"></span> hrs</p>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+                        Current Engine Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs (Linked to Dashboard)
+                    </p>
 </div>
 <div class="flex gap-2 bg-slate-100 p-1 rounded-full">
 <template x-for="i in 12">
@@ -325,10 +362,10 @@
 </div>
 <div class="space-y-4">
 <template x-for="cyl in 9">
-<div :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'border-red-200 bg-red-50/10' : 'border-slate-100 bg-slate-50/50'" class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-3 rounded-lg border transition-all">
+<div :class="(engineHoursData[selectedGts].total - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'border-red-200 bg-red-50/10' : 'border-slate-100 bg-slate-50/50'" class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-3 rounded-lg border transition-all">
 <div class="sm:col-span-2 flex flex-col justify-center border-r border-slate-200 pr-2">
 <span class="text-[11px] font-black text-primary leading-none" x-text="'CYL ' + cyl + bank"></span>
-<span :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-emerald-600'" class="text-[8px] font-black uppercase mt-1" x-text="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'REPLACE DUE' : 'HEALTHY'"></span>
+<span :class="(engineHoursData[selectedGts].total - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-emerald-600'" class="text-[8px] font-black uppercase mt-1" x-text="(engineHoursData[selectedGts].total - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'REPLACE DUE' : 'HEALTHY'"></span>
 </div>
 <div class="sm:col-span-3">
 <label class="block text-[8px] font-bold text-slate-400 uppercase mb-1">Last Change Date</label>
@@ -339,9 +376,9 @@
 <input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-black text-primary focus:ring-1 focus:ring-sky-500 outline-none" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
 </div>
 <div class="sm:col-span-2 text-center bg-white rounded border border-slate-100 flex flex-col justify-center">
-<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight">Plug Age</label>
+<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight">Net Run Hrs</label>
 <div class="flex items-baseline justify-center gap-0.5">
-<span :class="(engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-sky-700'" class="text-xs font-black" x-text="engineHours[selectedGts] - sparkPlugData[selectedGts][bank][cyl].lastHours"></span>
+<span :class="(engineHoursData[selectedGts].total - sparkPlugData[selectedGts][bank][cyl].lastHours) &gt; 2000 ? 'text-error' : 'text-sky-700'" class="text-xs font-black" x-text="engineHoursData[selectedGts].total - sparkPlugData[selectedGts][bank][cyl].lastHours"></span>
 <span class="text-[7px] font-bold text-slate-400 uppercase">hrs</span>
 </div>
 </div>
@@ -403,7 +440,7 @@
 </thead>
 <tbody class="divide-y divide-slate-100">
 <tr class="hover:bg-sky-50 transition-colors">
-<td class="p-4 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="'CYLINDER ' + bank + cyl"></td>
+<td class="p-4 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="'CYLINDER ' + cyl + bank"></td>
 <td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
 <td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-sky-700" type="text" value="0.45"/></td>
 <td class="p-0 border-r"><input class="grid-cell-input h-10 font-bold text-red-600" type="text" value="0.90"/></td>
@@ -466,7 +503,7 @@
 </div>
 <div class="flex justify-between items-center">
 <span class="text-xs font-bold uppercase text-slate-400">Last Service Date</span>
-<input class="border border-slate-200 rounded p-1 text-xs w-32 font-bold" type="date" value="2023-10-15"/>
+<input class="border border-slate-200 rounded p-1 text-xs w-32 font-bold" type="date" value="2026-10-15"/>
 </div>
 </div>
 </div>
@@ -535,7 +572,7 @@
 </div>
 <div class="pt-2 border-t border-slate-100">
 <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
-<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2023-11-05"/>
+<input class="w-full text-[10px] border border-slate-200 rounded p-1.5 font-bold" type="date" value="2026-11-05"/>
 </div>
 </div>
 </div>
@@ -556,7 +593,7 @@
 <span class="material-symbols-outlined text-lg">rotate_right</span>
 </div>
 <input :value="(i === 4 || i === 9) ? 'OVERDUE' : 'RUNNING'" class="w-full text-center text-[9px] font-black border-none bg-transparent p-0 mb-1" type="text"/>
-<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2023-11-10"/>
+<input class="w-full text-[8px] bg-transparent border-none text-center p-0 opacity-60 font-bold" type="date" value="2026-11-10"/>
 </div>
 </template>
 </div>
@@ -587,7 +624,7 @@
 <td class="p-2 border-r"><input class="grid-cell-input text-sky-600" type="text" value="32.5"/></td>
 <td class="p-2 border-r"><input class="grid-cell-input" type="text" value="0.01"/></td>
 <td class="p-2 border-r"><input class="grid-cell-input" type="text" value="225"/></td>
-<td class="p-2 text-slate-400">2023-11-01</td>
+<td class="p-2 text-slate-400">2026-11-01</td>
 </tr>
 </tbody>
 </table>
@@ -627,7 +664,7 @@
 <div class="space-y-4">
 <div class="flex justify-between text-[11px] font-bold">
 <span class="text-slate-400 uppercase">Damper Check</span>
-<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2023-11-08"/>
+<input class="text-[9px] bg-slate-50 rounded px-1 border-none font-black" type="date" value="2026-11-08"/>
 </div>
 <div class="flex justify-between text-[11px] font-bold">
 <span class="text-slate-400 uppercase text-[9px]">Weekly Soot Blow</span>
@@ -693,7 +730,7 @@
 </div>
 </div>
 <!-- SHARED ENGINE SELECTOR TABS (Only for specific views) -->
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['pcc', 'shutdowns', 'valve'].includes(currentView)">
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-[calc(50%+128px)] bg-white/90 backdrop-blur px-6 py-3 rounded-full shadow-2xl border border-slate-200 flex items-center gap-4 z-[45]" x-cloak="" x-show="['pcc', 'shutdowns', 'valve', 'spark-plug'].includes(currentView)">
 <span class="text-[9px] font-black text-slate-400 uppercase">Engine</span>
 <div class="flex gap-2">
 <template x-for="i in 12">
