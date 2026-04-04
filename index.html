@@ -1,148 +1,7 @@
-<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
-        isLoggedIn: false,
-        loginData: { username: '', password: '' },
-        loginError: false,
-        handleLogin() {
-            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-                this.isLoggedIn = true;
-                this.loginError = false;
-            } else {
-                this.loginError = true;
-                this.loginData.password = '';
-            }
-        },
-        currentView: 'running-hours', 
-        sidebarOpen: true, 
-        notificationsOpen: false, 
-        selectedGts: 1,
-        engineHoursData: {
-            1: { total: 2575, weekly: 168, monthly: 12 },
-            2: { total: 2408, weekly: 162, monthly: 7 },
-            3: { total: 2505, weekly: 165, monthly: 13 },
-            4: { total: 3569, weekly: 42, monthly: 13 },
-            5: { total: 4004, weekly: 164, monthly: 13 },
-            6: { total: 4312, weekly: 166, monthly: 12 },
-            7: { total: 15397, weekly: 167, monthly: 69 },
-            8: { total: 12170, weekly: 168, monthly: 98 },
-            9: { total: 9418, weekly: 169, monthly: 88 },
-            10: { total: 5129, weekly: 170, monthly: 32 },
-            11: { total: 3349, weekly: 171, monthly: 11 },
-            12: { total: 4928, weekly: 172, monthly: 93 }
-        },
-        runningHoursList: [
-            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, monthly: 12, last: 1263, july: 1247, aug: 1234, sept: 1133, oct: 1133, nov: 935, dec: 809, jan: 657 },
-            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, monthly: 7, last: 1004, july: 973, aug: 928, sept: 825, oct: 825, nov: 686, dec: 593, jan: 481 },
-            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, monthly: 13, last: 1222, july: 1184, aug: 1125, sept: 1018, oct: 1018, nov: 841, dec: 728, jan: 591 },
-            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, monthly: 13, last: 907, july: 887, aug: 815, sept: 755, oct: 755, nov: 575, dec: 483, jan: 357 },
-            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, monthly: 13, last: 1520, july: 1466, aug: 1245, sept: 1149, oct: 1149, nov: 934, dec: 743, jan: 616 },
-            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, monthly: 12, last: 1400, july: 1362, aug: 1284, sept: 1152, oct: 1152, nov: 934, dec: 743, jan: 616 },
-            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, monthly: 69, last: 3051, july: 2467, aug: 1904, sept: 1508, oct: 1374, nov: 701, dec: 448, jan: 357 },
-            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, weekly: 168, monthly: 98, last: 2639, july: 2042, aug: 1570, sept: 1400, oct: 1092, nov: 1092, dec: 883, jan: 787 },
-            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, monthly: 88, last: 1243, july: 1207, aug: 1199, sept: 903, oct: 767, nov: 767, dec: 767, jan: 590 },
-            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, monthly: 32, last: 961, july: 944, aug: 902, sept: 806, oct: 683, nov: 683, dec: 493, jan: 366 },
-            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, monthly: 11, last: 856, july: 835, aug: 835, sept: 835, oct: 825, nov: 825, dec: 787, jan: 653 },
-            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, monthly: 93, last: 1031, july: 1016, aug: 1016, sept: 789, oct: 677, nov: 677, dec: 481, jan: 354 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/21', total: 1246, monthly: 14, last: 165, july: 165, aug: 165, sept: 165, oct: 165, nov: 165, dec: 165, jan: 165 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '73/20', total: 1246, monthly: 14, last: 381, july: 349, aug: 349, sept: 349, oct: 349, nov: 349, dec: 349, jan: 349 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 2591, monthly: 15, last: 125, july: 116, aug: 116, sept: 116, oct: 116, nov: 116, dec: 116, jan: 116 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '121/19', total: 2591, monthly: 16, last: 384, july: 346, aug: 346, sept: 346, oct: 346, nov: 346, dec: 346, jan: 346 },
-            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, monthly: 0, last: 1213, july: 1213, aug: 1213, sept: 1213, oct: 1199, nov: 1199, dec: 4683, jan: 4592 },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, monthly: 31, last: 492, july: 342, aug: 290, sept: 281, oct: 263, nov: 236, dec: 222, jan: 220 },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, monthly: 0, last: 583, july: 526, aug: 515, sept: 495, oct: 426, nov: 381, dec: 337, jan: 312 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 41, monthly: 0, last: 41, july: 41, aug: 41, sept: 41, oct: 41, nov: 41, dec: 41, jan: 41 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:2', sn: 'TRD133000', total: 1756, monthly: 0, last: 182, july: 181, aug: 181, sept: 181, oct: 181, nov: 181, dec: 181, jan: 181 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:3', sn: 'TRD133001', total: 1120, monthly: 0, last: 1130, july: 1120, aug: 1120, sept: 1047, oct: 1047, nov: 1047, dec: 809, jan: 191 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:4', sn: 'TRD132996', total: 3826, monthly: 172, last: 2026, july: 2026, aug: 2026, sept: 2026, oct: 2026, nov: 2026, dec: 2026, jan: 2026 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:5', sn: 'TRD133003', total: 1047, monthly: 0, last: 389, july: 379, aug: 379, sept: 379, oct: 379, nov: 377, dec: 377, jan: 377 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:6', sn: 'TRD133002', total: 4280, monthly: 0, last: 1548, july: 1515, aug: 1515, sept: 1515, oct: 1515, nov: 1515, dec: 1515, jan: 1515 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:7', sn: 'TRD1239921', total: 377, monthly: 0, last: 179, july: 179, aug: 179, sept: 179, oct: 140, nov: 140, dec: 140, jan: 140 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:8', sn: 'TRD123991', total: 5548, monthly: 0, last: 1133, july: 1133, aug: 1133, sept: 1133, oct: 1133, nov: 1133, dec: 1133, jan: 1133 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:9', sn: 'TRD1239921', total: 715, monthly: 0, last: 1031, july: 993, aug: 993, sept: 715, oct: 715, nov: 715, dec: 680, jan: 101 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:10', sn: 'TRD132991', total: 5842, monthly: 0, last: 1031, july: 993, aug: 993, sept: 715, oct: 715, nov: 715, dec: 660, jan: 101 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:11', sn: 'TRD132993', total: 140, monthly: 0, last: 964, july: 679, aug: 679, sept: 678, oct: 170, nov: 2, dec: 2, jan: 2 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:12', sn: 'TRD132999', total: 2366, monthly: 0, last: 940, july: 929, aug: 902, sept: 901, oct: 758, nov: 758, dec: 698, jan: 556 },
-            { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, monthly: 13, last: 1263, july: 1247, aug: 1234, sept: 1234, oct: 1133, nov: 1133, dec: 935, jan: 809 },
-            { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, monthly: 12, last: 709, july: 681, aug: 673, sept: 663, oct: 576, nov: 576, dec: 517, jan: 376 },
-            { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 5845, monthly: 24, last: 1665, july: 1316, aug: 1002, sept: 888, oct: 888, nov: 688, dec: 629, jan: 484 },
-            { desc: 'AUX. MACH. COOLER SW PUMP 1', sn: '458226-08-01', total: 10833, monthly: 145, last: 1483, july: 1454, aug: 1453, sept: 1093, oct: 1002, nov: 1002, dec: 943, jan: 800 },
-            { desc: 'AUX. MACH. COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, monthly: 168, last: 3842, july: 3833, aug: 3832, sept: 3807, oct: 3693, nov: 3129, dec: 2496, jan: 2447 },
-            { desc: 'FWG SW PUMP 1 (GG 5)', sn: 'SH193071-036', total: 2322, monthly: 0, last: 1133, july: 745, aug: 673, sept: 663, oct: 576, nov: 576, dec: 517, jan: 376 }
-        ],
-        sparkPlugData: {},
-        pccData: {},
-        valveData: {},
-        initData() {
-            for(let gts=1; gts&lt;=12; gts++) {
-                this.sparkPlugData[gts] = { A: {}, B: {} };
-                this.pccData[gts] = { A: {}, B: {} };
-                this.valveData[gts] = { A: {}, B: {} };
-                ['A', 'B'].forEach(bank =&gt; {
-                    for(let cyl=1; cyl&lt;=9; cyl++) {
-                        this.sparkPlugData[gts][bank][cyl] = {
-                            lastDate: '2026-03-15',
-                            lastHours: 44000,
-                            prevDate: '2025-08-20',
-                            prevHours: 42000
-                        };
-                        this.pccData[gts][bank][cyl] = {
-                            lastServiceDate: '2026-01-10',
-                            lastServiceHours: 43000,
-                            prevServiceHours: 40000
-                        };
-                        this.valveData[gts][bank][cyl] = {
-                            lastMeasDate: '2026-02-05',
-                            lastMeasHours: 44500,
-                            A: 0.45, B: 0.45, C: 0.90, D: 0.90
-                        };
-                    }
-                });
-            }
-        },
-        syncGtsHours() {
-            for(let i=1; i&lt;=12; i++) {
-                let found = this.runningHoursList.find(item =&gt; item.desc.includes('NO.' + i + ' '));
-                if(found) {
-                    this.engineHoursData[i].total = parseInt(found.total) || 0;
-                    this.engineHoursData[i].monthly = parseInt(found.monthly) || 0;
-                }
-            }
-        },
-        downloadExcel() {
-            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
-        },
-        startingAirTasks: [
-            {name: 'Oil change', interval: 500},
-            {name: 'Drive mechanism inspection', interval: 500},
-            {name: 'Cylinder lubrication check', interval: 500},
-            {name: 'Pressure gauges', interval: 500},
-            {name: 'Intake air filter clean', interval: 100},
-            {name: 'Safety valves', interval: 500},
-            {name: 'Non return valve inspection', interval: 500},
-            {name: 'Solenoid valves clean', interval: 500},
-            {name: '1st, 2nd, 3rd stage valve overhaul', interval: 1000},
-            {name: 'Piston rings replacement', interval: 1000},
-            {name: 'Connecting rod bearing', interval: 1000},
-            {name: 'Crank shaft inspection', interval: 1000},
-            {name: 'Solenoid valves overhaul', interval: 1000},
-            {name: 'Oil filter / Air filter change', interval: 1000},
-            {name: 'Separator cartridge change', interval: 6000}
-        ],
-        cleaningTasks: [
-            'Engine Room Floor Plates &amp; Gratings',
-            'GTS Enclosures Exterior &amp; Interior',
-            'PCC Cubicle Filters &amp; Fans',
-            'Compressor Room &amp; Air Receivers',
-            'Oil Mist Separators &amp; Drain Pots',
-            'Tool Storage &amp; Workshop Area',
-            'MDO Transfer Pump Skids',
-            'Lube Oil Transfer System',
-            'Steam Traps &amp; EGB Drain Lines'
-        ]
-    }" x-init="initData()">```html
-
+<html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS</title>
+<title>KPS8 OSMAN BEY PMS - Mariner Core OS</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -187,11 +46,111 @@
         [x-cloak] { display: none !important; }
         .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
         .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
-        .historical-cell { @apply bg-emerald-900/20 text-emerald-400 text-center border-r border-slate-800/50 min-w-[60px]; }
+        .historical-cell { @apply bg-emerald-900/20 text-emerald-400 text-center border-r border-slate-800/50 min-w-[60px] text-[10px] font-mono; }
         .header-historical { @apply bg-emerald-900/40 text-emerald-300 font-bold text-[9px] uppercase tracking-tighter; }
     </style>
+</head>
+<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
+        isLoggedIn: false,
+        loginData: { username: '', password: '' },
+        loginError: false,
+        handleLogin() {
+            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
+                this.isLoggedIn = true;
+                this.loginError = false;
+                this.currentView = 'dashboard';
+            } else {
+                this.loginError = true;
+                this.loginData.password = '';
+            }
+        },
+        currentView: 'dashboard', 
+        sidebarOpen: true, 
+        notificationsOpen: false, 
+        selectedGts: 1,
+        engineHoursData: {
+            1: { total: 2575, weekly: 168, monthly: 12 },
+            2: { total: 2408, weekly: 162, monthly: 7 },
+            3: { total: 2505, weekly: 165, monthly: 13 },
+            4: { total: 3569, weekly: 42, monthly: 13 },
+            5: { total: 4004, weekly: 164, monthly: 13 },
+            6: { total: 4312, weekly: 166, monthly: 12 },
+            7: { total: 15397, weekly: 167, monthly: 69 },
+            8: { total: 12170, weekly: 168, monthly: 98 },
+            9: { total: 9418, weekly: 169, monthly: 88 },
+            10: { total: 5129, weekly: 170, monthly: 32 },
+            11: { total: 3349, weekly: 171, monthly: 11 },
+            12: { total: 4928, weekly: 172, monthly: 93 }
+        },
+        runningHoursList: [
+            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, monthly: 12, last: 1263, july: 1247, aug: 1234, sept: 1234, oct: 1133, nov: 1133, dec: 935, jan: 809, feb: 657 },
+            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, monthly: 7, last: 1004, july: 973, aug: 928, sept: 825, oct: 825, nov: 686, dec: 593, jan: 481, feb: 481 },
+            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, monthly: 13, last: 1222, july: 1184, aug: 1125, sept: 1018, oct: 1018, nov: 841, dec: 728, jan: 591, feb: 591 },
+            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, monthly: 13, last: 907, july: 887, aug: 815, sept: 755, oct: 755, nov: 575, dec: 483, jan: 357, feb: 357 },
+            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, monthly: 13, last: 1520, july: 1466, aug: 1245, sept: 1149, oct: 1149, nov: 934, dec: 743, jan: 616, feb: 616 },
+            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, monthly: 12, last: 1400, july: 1362, aug: 1284, sept: 1152, oct: 1152, nov: 934, dec: 743, jan: 616, feb: 616 },
+            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, monthly: 69, last: 3051, july: 2467, aug: 1904, sept: 1508, oct: 1374, nov: 701, dec: 448, jan: 357, feb: 357 },
+            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, monthly: 98, last: 2639, july: 2042, aug: 1570, sept: 1400, oct: 1092, nov: 1092, dec: 883, jan: 787, feb: 787 },
+            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, monthly: 88, last: 1243, july: 1207, aug: 1199, sept: 903, oct: 767, nov: 767, dec: 767, jan: 590, feb: 590 },
+            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, monthly: 32, last: 961, july: 944, aug: 902, sept: 806, oct: 683, nov: 683, dec: 493, jan: 366, feb: 366 },
+            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, monthly: 11, last: 856, july: 835, aug: 835, sept: 835, oct: 825, nov: 825, dec: 787, jan: 653, feb: 653 },
+            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, monthly: 93, last: 1031, july: 1016, aug: 1016, sept: 789, oct: 677, nov: 677, dec: 481, jan: 354, feb: 354 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, monthly: 14, last: 165, july: 165, aug: 165, sept: 165, oct: 165, nov: 165, dec: 165, jan: 165, feb: 165 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, monthly: 10, last: 381, july: 349, aug: 349, sept: 349, oct: 349, nov: 349, dec: 349, jan: 349, feb: 349 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, monthly: 16, last: 125, july: 116, aug: 116, sept: 116, oct: 116, nov: 116, dec: 116, jan: 116, feb: 116 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, monthly: 17, last: 384, july: 346, aug: 346, sept: 346, oct: 346, nov: 346, dec: 346, jan: 346, feb: 346 },
+            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, monthly: 0, last: 1213, july: 1213, aug: 1213, sept: 1213, oct: 1199, nov: 1199, dec: 4683, jan: 4592, feb: 4592 },
+            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2133-2242514', total: 1217, monthly: 0, last: 1213, july: 1213, aug: 1213, sept: 1213, oct: 1199, nov: 1199, dec: 4683, jan: 4592, feb: 4592 },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, monthly: 31, last: 492, july: 342, aug: 290, sept: 281, oct: 263, nov: 236, dec: 222, jan: 220, feb: 220 },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, monthly: 0, last: 583, july: 526, aug: 515, sept: 495, oct: 426, nov: 381, dec: 337, jan: 312, feb: 312 },
+            { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, monthly: 13, last: 1263, july: 1247, aug: 1234, sept: 1234, oct: 1133, nov: 1133, dec: 935, jan: 809, feb: 809 },
+            { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, monthly: 12, last: 709, july: 681, aug: 673, sept: 663, oct: 576, nov: 576, dec: 517, jan: 376, feb: 376 }
+        ],
+        sparkPlugData: {},
+        pccData: {},
+        valveData: {},
+        initData() {
+            for(let gts=1; gts&lt;=12; gts++) {
+                this.sparkPlugData[gts] = { A: {}, B: {} };
+                this.pccData[gts] = { A: {}, B: {} };
+                this.valveData[gts] = { A: {}, B: {} };
+                ['A', 'B'].forEach(bank =&gt; {
+                    for(let cyl=1; cyl&lt;=9; cyl++) {
+                        this.sparkPlugData[gts][bank][cyl] = {
+                            lastDate: '2026-03-15',
+                            lastHours: 44000,
+                            prevDate: '2025-08-20',
+                            prevHours: 42000
+                        };
+                        this.pccData[gts][bank][cyl] = {
+                            lastServiceDate: '2026-01-10',
+                            lastServiceHours: 43000,
+                            prevServiceHours: 40000
+                        };
+                        this.valveData[gts][bank][cyl] = {
+                            lastMeasDate: '2026-02-05',
+                            lastMeasHours: 44500,
+                            A: 0.45, B: 0.45, C: 0.90, D: 0.90
+                        };
+                    }
+                });
+            }
+        },
+        syncGtsHours() {
+            for(let i=1; i&lt;=12; i++) {
+                let found = this.runningHoursList.find(item =&gt; item.desc.includes('NO.' + i + ' '));
+                if(found) {
+                    this.engineHoursData[i].total = parseInt(found.total) || 0;
+                    this.engineHoursData[i].monthly = parseInt(found.monthly) || 0;
+                }
+            }
+        },
+        downloadExcel() {
+            alert('Aggregating Central Data Pool... Exporting KPS8_PMS_Report_2026.xlsx');
+        }
+    }" x-init="initData()">
 <!-- LOGIN OVERLAY -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001422]" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001422]" x-show="!isLoggedIn">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
 <div class="w-full max-w-md p-10 bg-white rounded-lg shadow-2xl relative z-10 mx-4 border-t-8 border-sky-600">
 <div class="text-center mb-10">
@@ -217,11 +176,11 @@
 </div>
 </div>
 <div class="h-6">
-<p class="text-[11px] text-error font-bold text-center uppercase" x-show="loginError" x-transition="">Invalid credentials. Access Denied.</p>
+<p class="text-[11px] text-error font-bold text-center uppercase" x-cloak="" x-show="loginError">Invalid credentials. Access Denied.</p>
 </div>
 <button class="w-full bg-primary text-white font-black py-5 rounded-lg shadow-xl hover:bg-[#003d66] active:scale-[0.98] transition-all uppercase tracking-widest text-xs" type="submit">
-                Authorize Access
-            </button>
+                    Authorize Access
+                </button>
 </form>
 <div class="mt-10 pt-8 border-t border-slate-100 text-center">
 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Technical Marine Support System v2.4.0</p>
@@ -245,24 +204,24 @@
 </div>
 <nav class="flex-1 space-y-1 no-scrollbar overflow-y-auto">
 <template x-for="item in [
-            {id: 'dashboard', icon: 'dashboard', label: 'Dashboard'},
-            {id: 'running-hours', icon: 'schedule', label: 'Running Hours'},
-            {id: 'spark-plug', icon: 'bolt', label: 'Spark Plug'},
-            {id: 'pcc', icon: 'settings_input_component', label: 'PCC Valve'},
-            {id: 'valve', icon: 'straighten', label: 'Valve Measurement'},
-            {id: 'starting-air', icon: 'air', label: 'Starting Air Compressors'},
-            {id: 'service-air', icon: 'compress', label: 'Service Air Compressors'},
-            {id: 'control-air', icon: 'settings_suggest', label: 'Control Air Compressors'},
-            {id: 'denox', icon: 'filter_alt', label: 'Denox Compressors'},
-            {id: 'fwg', icon: 'water_drop', label: 'FWG'},
-            {id: 'sw-pumps', icon: 'propane_tank', label: 'SW Pumps'},
-            {id: 'lube-oil', icon: 'oil_barrel', label: 'Lube Oil System'},
-            {id: 'cleaning', icon: 'cleaning_services', label: 'Cleaning'},
-            {id: 'boiler', icon: 'hvac', label: 'Boiler'},
-            {id: 'shutdowns', icon: 'report_problem', label: 'Shutdowns'},
-            {id: 'reports', icon: 'description', label: 'Reports'}
-        ]">
-<button :class="currentView === item.id ? 'active' : 'text-slate-400'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 hover:translate-x-1">
+                {id: 'dashboard', icon: 'dashboard', label: 'Dashboard'},
+                {id: 'running-hours', icon: 'schedule', label: 'Running Hours'},
+                {id: 'spark-plug', icon: 'bolt', label: 'Spark Plug'},
+                {id: 'pcc', icon: 'settings_input_component', label: 'PCC Valve'},
+                {id: 'valve', icon: 'straighten', label: 'Valve Measurement'},
+                {id: 'starting-air', icon: 'air', label: 'Starting Air Compressors'},
+                {id: 'service-air', icon: 'compress', label: 'Service Air Compressors'},
+                {id: 'control-air', icon: 'settings_suggest', label: 'Control Air Compressors'},
+                {id: 'denox', icon: 'filter_alt', label: 'Denox Compressors'},
+                {id: 'fwg', icon: 'water_drop', label: 'FWG'},
+                {id: 'sw-pumps', icon: 'propane_tank', label: 'SW Pumps'},
+                {id: 'lube-oil', icon: 'oil_barrel', label: 'Lube Oil System'},
+                {id: 'cleaning', icon: 'cleaning_services', label: 'Cleaning'},
+                {id: 'boiler', icon: 'hvac', label: 'Boiler'},
+                {id: 'shutdowns', icon: 'report_problem', label: 'Shutdowns'},
+                {id: 'reports', icon: 'description', label: 'Reports'}
+            ]">
+<button :class="currentView === item.id ? 'active' : 'text-slate-400'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 hover:translate-x-1 text-left">
 <span class="material-symbols-outlined text-[20px]" x-text="item.icon"></span>
 <span class="text-[10px] font-bold uppercase tracking-widest" x-text="item.label"></span>
 </button>
@@ -271,8 +230,8 @@
 <div class="mt-6 border-t border-slate-800 pt-6">
 <button class="w-full bg-sky-600 text-white text-[10px] font-black py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg uppercase tracking-widest">
 <span class="material-symbols-outlined text-sm">add</span>
-            New Entry
-        </button>
+                New Entry
+            </button>
 </div>
 </aside>
 <main class="lg:ml-64 min-h-screen h-screen flex flex-col overflow-hidden relative">
@@ -283,92 +242,15 @@
 <span class="material-symbols-outlined">menu</span>
 </button>
 <span class="text-sm lg:text-xl font-black tracking-tighter text-white uppercase">Fleet Precision PMS</span>
-<div class="hidden md:flex bg-slate-900 border border-slate-800 rounded px-3 py-1.5 items-center gap-2 w-80">
-<span class="material-symbols-outlined text-slate-500 text-lg">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-xs w-full placeholder-slate-600 text-white" placeholder="Search equipment ID..." type="text"/>
-</div>
 </div>
 <div class="flex items-center gap-4">
-<button @click="notificationsOpen = !notificationsOpen" class="p-2 text-slate-400 hover:text-white transition-colors relative">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-1.5 right-1.5 h-2 w-2 bg-error rounded-full ring-2 ring-surface"></span>
-</button>
-<button class="p-2 text-slate-400 hover:text-white transition-colors">
-<span class="material-symbols-outlined">settings</span>
-</button>
 <button @click="isLoggedIn = false" class="p-2 text-slate-400 hover:text-white transition-colors">
 <span class="material-symbols-outlined">logout</span>
 </button>
 </div>
 </header>
 <div class="flex-1 overflow-y-auto no-scrollbar p-4 lg:p-8 bg-surface">
-<!-- RUNNING HOURS MASTER ENTRY (ACTIVE BY REQUEST) -->
-<div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
-<div>
-<h2 class="text-3xl font-black text-white tracking-tight uppercase">Master Equipment Running Hours Log</h2>
-<p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Data Engine: Mariner Core OS | Central Performance Analysis</p>
-</div>
-<div class="flex gap-3">
-<button @click="syncGtsHours()" class="bg-primary border border-sky-800/50 text-sky-400 px-5 py-2.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-sky-900/50 flex items-center gap-2 transition-all">
-<span class="material-symbols-outlined text-base">sync</span>
-                Sync Maintenance
-            </button>
-<button @click="downloadExcel()" class="bg-emerald-600 text-white px-5 py-2.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-emerald-700 flex items-center gap-2 transition-all">
-<span class="material-symbols-outlined text-base">description</span>
-                Export Excel
-            </button>
-</div>
-</div>
-<div class="bg-surface-container rounded-lg shadow-2xl border border-slate-800 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="item in runningHoursList">
-</template><table class="w-full text-[11px] border-collapse min-w-[1400px]">
-<thead class="bg-slate-900 border-b border-slate-800 font-black">
-<tr class="text-center uppercase text-slate-400 h-16">
-<th class="p-4 border-r border-slate-800 text-left sticky left-0 z-20 bg-slate-900 w-80">Ekipman Tanımı / Equipment Description</th>
-<th class="p-4 border-r border-slate-800 w-40">Serial Number</th>
-<th class="p-4 border-r border-slate-800 bg-sky-950/40 text-sky-400 w-40">TOTAL RHRS.<br/><span class="text-[9px] opacity-60">(Current)</span></th>
-<th class="p-4 border-r border-slate-800 bg-sky-900/40 text-sky-300 w-32">R.H. THIS MONTH</th>
-<th class="p-4 border-r border-slate-800 header-historical">R.H. LAST MONTH<br/><span class="text-[8px]">(OCTOBER)</span></th>
-<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JULY</th>
-<th class="p-4 border-r border-slate-800 header-historical">R.H. AT AUGUST</th>
-<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JUNE</th>
-<th class="p-4 border-r border-slate-800 header-historical">R.H. AT MAY</th>
-<th class="p-4 border-r border-slate-800 header-historical">MAY</th>
-<th class="p-4 border-r border-slate-800 header-historical">APRIL</th>
-<th class="p-4 border-r border-slate-800 header-historical">MARCH</th>
-<th class="p-4 border-r border-slate-800 header-historical">FEBRUARY</th>
-<th class="p-4 header-historical">JANUARY</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-800">
-<tr class="hover:bg-slate-800/50 transition-colors group">
-<td class="p-4 border-r border-slate-800 font-bold text-slate-200 sticky left-0 z-10 bg-slate-900/90" x-text="item.desc"></td>
-<td class="p-4 border-r border-slate-800 text-center text-slate-500 font-mono tracking-tighter" x-text="item.sn"></td>
-<td class="p-1 border-r border-slate-800 bg-sky-950/20">
-<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-400 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.total"/>
-</td>
-<td class="p-1 border-r border-slate-800 bg-sky-900/20">
-<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-300 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.monthly"/>
-</td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.last || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.aug || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.nov || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.dec || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.jan || '-'"></td>
-<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.jan || '-'"></td>
-<td class="p-4 historical-cell" x-text="item.jan || '-'"></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- DASHBOARD -->
+<!-- DASHBOARD SECTION -->
 <div class="space-y-10" x-cloak="" x-show="currentView === 'dashboard'">
 <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
 <div class="xl:col-span-8 bg-surface-container-low rounded-lg p-10 border border-slate-800 shadow-xl">
@@ -377,11 +259,9 @@
 <h2 class="text-3xl font-black text-white mb-2 uppercase tracking-tighter">Fleet Operational Status</h2>
 <p class="text-sm text-slate-400 font-medium">Vessel active at 12.4 knots. Master Telemetry active for 2026 logs.</p>
 </div>
-<div class="flex flex-col sm:flex-row gap-3">
 <div class="flex gap-2">
 <span class="bg-emerald-600/20 text-emerald-400 border border-emerald-600/30 px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest">System Online</span>
 <span class="bg-sky-600/20 text-sky-400 border border-sky-600/30 px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest">Normal Load</span>
-</div>
 </div>
 </div>
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mt-12">
@@ -429,6 +309,78 @@
 </div>
 </div>
 </div>
+<!-- Engine Summary Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8">
+<template x-for="i in 12">
+<div @click="currentView = 'spark-plug'; selectedGts = i" class="bg-surface-container p-4 rounded-lg border border-slate-800 hover:border-sky-500 transition-colors cursor-pointer">
+<p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">GTS <span x-text="i"></span></p>
+<p class="text-xl font-black text-white mt-1" x-text="engineHoursData[i].total.toLocaleString()"></p>
+<div class="flex justify-between items-center mt-2">
+<span class="text-[9px] font-bold text-emerald-500">+<span x-text="engineHoursData[i].monthly"></span>h this mo.</span>
+</div>
+</div>
+</template>
+</div>
+</div>
+<!-- RUNNING HOURS TAB (RECONSTRUCTED FROM SCREENSHOTS) -->
+<div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
+<div>
+<h2 class="text-3xl font-black text-white tracking-tight uppercase">Master Equipment Running Hours Log</h2>
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Data Source: Mariner Core OS | Maintenance Telemetry System</p>
+</div>
+<div class="flex gap-3">
+<button @click="downloadExcel()" class="bg-emerald-600 text-white px-5 py-2.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-emerald-700 flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base">description</span>
+                            Export Excel
+                        </button>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg shadow-2xl border border-slate-800 overflow-hidden">
+<div class="overflow-x-auto no-scrollbar">
+<template x-for="item in runningHoursList">
+</template><table class="w-full text-[11px] border-collapse min-w-[1600px]">
+<thead class="bg-slate-900 border-b border-slate-800 font-black">
+<tr class="text-center uppercase text-slate-400 h-16">
+<th class="p-4 border-r border-slate-800 text-left sticky left-0 z-20 bg-slate-900 w-80">Ekipman Tanımı / Equipment Description</th>
+<th class="p-4 border-r border-slate-800 w-40">Serial Number</th>
+<th class="p-4 border-r border-slate-800 bg-sky-950/40 text-sky-400 w-40">TOTAL RHRS.<br/><span class="text-[9px] opacity-60">(Current)</span></th>
+<th class="p-4 border-r border-slate-800 bg-sky-900/40 text-sky-300 w-32">R.H. THIS MONTH</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. LAST MONTH<br/><span class="text-[8px]">(OCTOBER)</span></th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JULY</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT AUGUST</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT SEPTEMBER</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT OCTOBER</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT NOVEMBER</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT DECEMBER</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JANUARY</th>
+<th class="p-4 header-historical">R.H. AT FEBRUARY</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-800">
+<tr class="hover:bg-slate-800/50 transition-colors group">
+<td class="p-4 border-r border-slate-800 font-bold text-slate-200 sticky left-0 z-10 bg-slate-900/90" x-text="item.desc"></td>
+<td class="p-4 border-r border-slate-800 text-center text-slate-500 font-mono tracking-tighter" x-text="item.sn"></td>
+<td class="p-1 border-r border-slate-800 bg-sky-950/20">
+<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-400 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.total"/>
+</td>
+<td class="p-1 border-r border-slate-800 bg-sky-900/20">
+<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-300 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.monthly"/>
+</td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.last || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.aug || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.sept || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.oct || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.nov || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.dec || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.jan || '-'"></td>
+<td class="p-4 historical-cell" x-text="item.feb || '-'"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <!-- SPARK PLUG -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'spark-plug'">
@@ -436,16 +388,15 @@
 <div>
 <h2 class="text-3xl font-black text-white tracking-tight uppercase" x-text="'Spark Plug Lifecycle - GTS ' + selectedGts"></h2>
 <p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                        Engine Master Time: <span class="text-sky-400 font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
-                    </p>
+                            Engine Master Time: <span class="text-sky-400 font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
+                        </p>
 </div>
-<div class="flex gap-2 bg-slate-900 p-1 rounded border border-slate-800">
+<div class="flex gap-2 bg-slate-900 p-1 rounded border border-slate-800 overflow-x-auto max-w-full no-scrollbar">
 <template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-sky-600 text-white shadow-xl scale-110' : 'text-slate-500 hover:text-slate-200'" @click="selectedGts = i" class="w-8 h-8 rounded text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
+<button :class="selectedGts === i ? 'bg-sky-600 text-white shadow-xl scale-110' : 'text-slate-500 hover:text-slate-200'" @click="selectedGts = i" class="min-w-[32px] h-8 rounded text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
 </template>
 </div>
 </div>
-<!-- Spark plug logic... similar structure to original but dark theme -->
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
 <template x-for="bank in ['A', 'B']">
 <div class="bg-surface-container p-8 rounded-lg border border-slate-800 shadow-xl">
@@ -561,5 +512,22 @@
 </div>
 </div>
 </div>
+<!-- Generic placeholder for other sections to maintain nav consistency -->
+<template x-for="viewId in ['starting-air', 'service-air', 'control-air', 'denox', 'fwg', 'sw-pumps', 'lube-oil', 'cleaning', 'boiler', 'shutdowns', 'reports']">
+<div class="space-y-6" x-cloak="" x-show="currentView === viewId">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
+<div>
+<h2 class="text-3xl font-black text-white tracking-tight uppercase" x-text="viewId.replace('-', ' ') + ' Status'"></h2>
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Section in Master Telemetry Analysis</p>
 </div>
-</main>```</body></html>
+</div>
+<div class="bg-surface-container-low rounded-lg p-20 flex flex-col items-center justify-center text-center border border-slate-800 border-dashed">
+<span class="material-symbols-outlined text-6xl text-slate-700 mb-4">analytics</span>
+<p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Section Telemetry Live Link Under Construction</p>
+<p class="text-[10px] text-slate-600 mt-2 max-w-sm">Data integration for this specific module is scheduled for Phase 3 rollout of Mariner Core OS.</p>
+</div>
+</div>
+</template>
+</div>
+</main>
+</body></html>
