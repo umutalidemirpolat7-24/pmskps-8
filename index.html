@@ -45,8 +45,11 @@
         [x-cloak] { display: none !important; }
         .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
         .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
-        .historical-cell { @apply bg-emerald-50/50 text-emerald-700 text-center border-r border-slate-200 min-w-[60px] text-[10px] font-mono; }
-        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter; }
+        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[65px] text-[10px] font-mono p-0; }
+        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[65px]; }
+        .running-hours-table input { @apply bg-transparent border-none text-center focus:ring-0 w-full text-[10px]; }
+        .sticky-col { @apply sticky left-0 bg-white z-10 border-r border-slate-200; }
+        .sticky-header { @apply sticky top-0 z-30 bg-slate-50; }
     </style>
 </head>
 <body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
@@ -68,56 +71,51 @@
         selectedGts: 1,
         selectedLogDate: '2026-03-24',
         engineHoursData: {},
-        runningHoursList: [
-            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, week1: 168, week2: 165, week3: 162, week4: 170 },
-            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, week1: 162, week2: 160, week3: 158, week4: 165 },
-            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, week1: 165, week2: 162, week3: 160, week4: 168 },
-            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, week1: 42, week2: 45, week3: 40, week4: 38 },
-            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, week1: 164, week2: 166, week3: 165, week4: 162 },
-            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, week1: 166, week2: 168, week3: 170, week4: 169 },
-            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, week1: 167, week2: 169, week3: 170, week4: 168 },
-            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, week1: 168, week2: 170, week3: 172, week4: 170 },
-            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, week1: 169, week2: 170, week3: 168, week4: 171 },
-            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, week1: 170, week2: 172, week3: 171, week4: 169 },
-            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, week1: 171, week2: 170, week3: 169, week4: 172 },
-            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, week1: 172, week2: 168, week3: 165, week4: 170 },
-            { isHeader: true, label: 'COMPRESSORS' },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, week1: 14, week2: 12, week3: 15, week4: 14 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, week1: 10, week2: 11, week3: 9, week4: 10 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, last: 1578, week1: 16, week2: 14, week3: 15, week4: 16 },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, week1: 17, week2: 18, week3: 16, week4: 17 },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, week1: 31, week2: 30, week3: 32, week4: 31 },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, last: 7907, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 1786, last: 1786, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'NOX CONTROL AIR COMPRESSOR NO:2', sn: 'TRD133000', total: 1786, last: 1786, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { isHeader: true, label: 'SEA WATER PUMPS' },
-            { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, last: 2687, week1: 13, week2: 14, week3: 12, week4: 13 },
-            { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, last: 2446, week1: 12, week2: 11, week3: 13, week4: 12 },
-            { desc: 'SEA WATER PUMP 3', sn: '458226-07-06', total: 2477, last: 2490, week1: 13, week2: 12, week3: 14, week4: 13 },
-            { desc: 'SEA WATER PUMP 4', sn: '458226-07-12', total: 3636, last: 3649, week1: 13, week2: 12, week3: 14, week4: 13 },
-            { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 10833, last: 10978, week1: 145, week2: 140, week3: 148, week4: 145 },
-            { isHeader: true, label: 'AUXILIARY EQUIPMENT' },
-            { desc: 'AUX.MACH.COOLER SW PUMP 1', sn: '458226-08-01', total: 12651, last: 12651, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, week1: 168, week2: 165, week3: 170, week4: 168 },
-            { desc: 'FWG SW PUMP 1', sn: 'SH593075-046', total: 1133, week1: 14, week2: 12, week3: 10, week4: 11 },
-            { desc: 'FWG SW PUMP 2', sn: 'SH593075-047', total: 2295, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'FOAM-FIRE PUMP', sn: '458226-01-01', total: 1, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { desc: 'EMG.FIRE PUMP', sn: '469408-01-01', total: 1, week1: 0, week2: 0, week3: 0, week4: 0 },
-            { isHeader: true, label: 'FANS &amp; VENTILATION' },
-            { desc: 'NO.1 SG VENT.FAN', sn: '2666', week1: 14 },
-            { desc: 'NO.2 SG VENT.FAN', sn: '3448', week1: 15 },
-            { desc: 'PUMP ROOM FORE EXHAUST FAN', sn: '489', week1: 0 },
-            { desc: 'STG ROOM FAN NO:1', sn: '223', week1: 0 },
-            { isHeader: true, label: 'BILGE &amp; SLUDGE SYSTEM' },
-            { desc: 'DAILY BILGE PUMP 1', sn: '16038426', total: 179, week1: 0 },
-            { desc: 'DAILY BILGE PUMP 2', sn: '16038306', total: 68, week1: 0 },
-            { desc: 'SEWAGE TRANSFER 1', sn: '8412479', total: 537, week1: 0 }
-        ],
+        runningHoursList: [],
         sparkPlugData: {},
         pccData: {},
         valveData: {},
         initData() {
+            const initialEquip = [
+                { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170, 0, 0, 0, 0] },
+                { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165, 0, 0, 0, 0] },
+                { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168, 0, 0, 0, 0] },
+                { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38, 0, 0, 0, 0] },
+                { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162, 0, 0, 0, 0] },
+                { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169, 0, 0, 0, 0] },
+                { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168, 0, 0, 0, 0] },
+                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170, 0, 0, 0, 0] },
+                { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171, 0, 0, 0, 0] },
+                { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169, 0, 0, 0, 0] },
+                { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172, 0, 0, 0, 0] },
+                { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170, 0, 0, 0, 0] },
+                { isHeader: true, label: 'COMPRESSORS' },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [14, 12, 15, 14, 0, 0, 0, 0] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 11, 9, 10, 0, 0, 0, 0] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, last: 1578, weeks: [16, 14, 15, 16, 0, 0, 0, 0] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 18, 16, 17, 0, 0, 0, 0] },
+                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 30, 32, 31, 0, 0, 0, 0] },
+                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, last: 7907, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
+                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
+                { desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 1786, last: 1786, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
+                { isHeader: true, label: 'SEA WATER PUMPS' },
+                { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, last: 2687, weeks: [13, 14, 12, 13, 0, 0, 0, 0] },
+                { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, last: 2446, weeks: [12, 11, 13, 12, 0, 0, 0, 0] },
+                { desc: 'SEA WATER PUMP 3', sn: '458226-07-06', total: 2477, last: 2490, weeks: [13, 12, 14, 13, 0, 0, 0, 0] },
+                { desc: 'SEA WATER PUMP 4', sn: '458226-07-12', total: 3636, last: 3649, weeks: [13, 12, 14, 13, 0, 0, 0, 0] },
+                { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 10833, last: 10978, weeks: [145, 140, 148, 145, 0, 0, 0, 0] },
+                { isHeader: true, label: 'AUXILIARY EQUIPMENT' },
+                { desc: 'AUX.MACH.COOLER SW PUMP 1', sn: '458226-08-01', total: 12651, last: 12651, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
+                { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, weeks: [168, 165, 170, 168, 0, 0, 0, 0] }
+            ];
+
+            // Build full 100 rows
+            this.runningHoursList = [...initialEquip];
+            const remaining = 100 - this.runningHoursList.filter(i =&gt; !i.isHeader).length;
+            for(let i=0; i&lt;remaining; i++) {
+                this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(8).fill(0) });
+            }
+
             for(let gts=1; gts&lt;=12; gts++) {
                 this.engineHoursData[gts] = { total: 0, weekly: 0, monthly: 0 };
                 this.sparkPlugData[gts] = { A: {}, B: {} };
@@ -138,7 +136,7 @@
                 let found = this.runningHoursList.find(item =&gt; item.desc &amp;&amp; item.desc.includes('NO.' + i + ' '));
                 if(found) {
                     this.engineHoursData[i].total = parseInt(found.total) || 0;
-                    this.engineHoursData[i].weekly = parseInt(found.week1) || 0;
+                    this.engineHoursData[i].weekly = parseInt(found.weeks[0]) || 0;
                 }
             }
         },
@@ -240,33 +238,44 @@
 </div>
 </header>
 <div class="flex-1 overflow-y-auto no-scrollbar p-4 lg:p-8">
-<!-- DASHBOARD SECTION -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'dashboard'">
-<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-<div class="xl:col-span-8 bg-white rounded-lg p-8 border border-slate-200 shadow-sm">
-<div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+<!-- DASHBOARD SECTION (Shared across all views as summary) -->
+<div class="mb-8 bg-white rounded-lg p-6 border border-slate-200 shadow-sm" x-show="currentView === 'dashboard' || currentView === 'running-hours'">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="space-y-1">
+<h2 class="text-xl font-black text-primary uppercase tracking-tight">Vessel Telemetry</h2>
+<p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Active Link: KPS8-SAT-01</p>
+</div>
+<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
+<div class="h-10 w-10 bg-primary/10 rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">settings_slow_motion_video</span>
+</div>
 <div>
-<h2 class="text-2xl font-black text-primary mb-1 uppercase tracking-tight">Fleet Operational Status</h2>
-<p class="text-[11px] text-slate-500 font-bold uppercase tracking-widest">Master Telemetry Link: Active | Vessel Speed: 12.4 knots</p>
+<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Running Units</p>
+<p class="text-lg font-black text-primary">11/12 GTS</p>
 </div>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
-<div class="space-y-2 p-4 bg-slate-50 rounded border border-slate-100">
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Active Engines</p>
-<p class="text-4xl font-black text-primary">11/12</p>
+<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
+<div class="h-10 w-10 bg-sky-100 rounded flex items-center justify-center text-sky-600">
+<span class="material-symbols-outlined text-xl">speed</span>
 </div>
-<div class="space-y-2 p-4 bg-slate-50 rounded border border-slate-100">
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Avg. Efficiency</p>
-<p class="text-4xl font-black text-sky-600">94.2%</p>
-</div>
-<div class="space-y-2 p-4 bg-slate-50 rounded border border-slate-100">
-<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Gas Consumption</p>
-<p class="text-4xl font-black text-emerald-600">3,485m³</p>
+<div>
+<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Average Load</p>
+<p class="text-lg font-black text-sky-600">88.4 MW</p>
 </div>
 </div>
+<div class="flex items-center gap-4 bg-slate-50 p-3 rounded border border-slate-100">
+<div class="h-10 w-10 bg-emerald-100 rounded flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-xl">monitoring</span>
+</div>
+<div>
+<p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Fleet Efficiency</p>
+<p class="text-lg font-black text-emerald-600">94.2%</p>
 </div>
 </div>
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+</div>
+</div>
+<!-- DASHBOARD GRID -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4" x-cloak="" x-show="currentView === 'dashboard'">
 <template x-for="i in 12">
 <div @click="currentView = 'spark-plug'; selectedGts = i" class="bg-white p-4 rounded border border-slate-200 hover:border-sky-500 transition-all cursor-pointer hover:shadow-md group">
 <div class="flex justify-between items-start mb-1">
@@ -277,8 +286,7 @@
 </div>
 </template>
 </div>
-</div>
-<!-- RUNNING HOURS TAB -->
+<!-- RUNNING HOURS TAB (EXPANDED VERSION) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
@@ -297,48 +305,50 @@
                     </button>
 </div>
 </div>
-<div class="bg-white rounded shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="item in runningHoursList">
+<div class="bg-white rounded shadow-xl border border-slate-200 overflow-hidden relative">
+<div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-350px)]">
+<template x-for="w in 12">
+</template><template x-for="(item, index) in runningHoursList">
 <template x-if="item.isHeader">
 </template></template><template x-if="!item.isHeader">
-</template><table class="w-full text-[10px] border-collapse min-w-[1400px]">
-<thead class="bg-slate-50 border-b border-slate-200 font-bold">
-<tr class="text-center uppercase text-slate-500 h-14">
-<th class="px-6 py-4 border-r border-slate-200 text-left sticky left-0 z-20 bg-slate-50 w-80">Ekipman Tanımı / Equipment Description</th>
-<th class="px-4 py-4 border-r border-slate-200 w-32">Serial Number</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-sky-50 text-primary w-32 font-black">TOTAL RHRS.</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-sky-100 text-primary w-32 font-black">LAST RHRS.</th>
-<th class="px-4 py-4 border-r border-slate-200 bg-emerald-50 text-emerald-700 w-28">R.H. THIS WEEK</th>
-<th class="px-4 py-4 border-r border-slate-200 header-historical">WEEK 1</th>
-<th class="px-4 py-4 border-r border-slate-200 header-historical">WEEK 2</th>
-<th class="px-4 py-4 border-r border-slate-200 header-historical">WEEK 3</th>
-<th class="px-4 py-4 header-historical">WEEK 4</th>
+</template><template x-for="(week, wIdx) in [0,1,2,3,4,5,6,7,8,9,10,11]">
+</template><table class="w-full text-[10px] border-collapse min-w-[1800px] running-hours-table">
+<thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
+<tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
+<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[280px]">Equipment Description</th>
+<th class="sticky left-[280px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[120px]">Serial No</th>
+<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[100px]">Total Hours</th>
+<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[100px]">Last Hours</th>
+<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + w"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr class="bg-slate-50/80">
-<td class="px-6 py-2 border-r border-slate-200 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-10" colspan="9" x-text="item.label"></td>
+<tr class="bg-slate-100/80">
+<td class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" colspan="16" x-text="item.label"></td>
 </tr>
-<tr class="hover:bg-slate-50/80 transition-colors group">
-<td class="px-6 py-3 border-r border-slate-200 font-bold text-primary sticky left-0 z-10 bg-white group-hover:bg-slate-50" x-text="item.desc"></td>
-<td class="px-4 py-3 border-r border-slate-200 text-center text-slate-400 font-mono" x-text="item.sn"></td>
-<td class="p-1 border-r border-slate-200 bg-sky-50/30">
-<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[12px] font-black text-primary focus:bg-white outline-none rounded h-8" type="number" x-model="item.total"/>
+<tr class="hover:bg-sky-50/30 transition-colors group">
+<td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
+<input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
 </td>
-<td class="px-4 py-3 border-r border-slate-200 text-center font-bold text-sky-700 bg-sky-100/20" x-text="item.last || '-'"></td>
-<td class="px-4 py-3 border-r border-slate-200 text-center font-bold text-emerald-700 bg-emerald-50/30" x-text="item.week1"></td>
-<td class="px-4 py-3 border-r border-slate-200 historical-cell" x-text="item.week1 || '-'"></td>
-<td class="px-4 py-3 border-r border-slate-200 historical-cell" x-text="item.week2 || '-'"></td>
-<td class="px-4 py-3 border-r border-slate-200 historical-cell" x-text="item.week3 || '-'"></td>
-<td class="px-4 py-3 historical-cell" x-text="item.week4 || '-'"></td>
+<td class="sticky left-[280px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
+<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white" placeholder="S/N..." type="text" x-model="item.sn"/>
+</td>
+<td class="p-0 border-r border-slate-200 bg-sky-50/30">
+<input @input="syncGtsHours()" class="py-3 font-black text-primary focus:bg-white" type="number" x-model="item.total"/>
+</td>
+<td class="p-0 border-r border-slate-200 bg-sky-100/20">
+<input class="py-3 font-bold text-sky-700 focus:bg-white" type="number" x-model="item.last"/>
+</td>
+<td class="p-0 border-r border-slate-200 historical-cell">
+<input class="py-3 font-medium text-emerald-700 focus:bg-emerald-100/50" type="number" x-model="item.weeks[wIdx]"/>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<!-- SPARK PLUG -->
+<!-- SPARK PLUG (Kept as requested) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'spark-plug'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
@@ -377,7 +387,7 @@
 </template>
 </div>
 </div>
-<!-- PCC VALVE -->
+<!-- PCC VALVE (Kept as requested) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'pcc'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'PCC Valve Monitoring - GTS ' + selectedGts"></h2>
@@ -406,7 +416,7 @@
 </template>
 </div>
 </div>
-<!-- VALVE MEASUREMENT -->
+<!-- VALVE MEASUREMENT (Kept as requested) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'valve'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearance Matrix - GTS ' + selectedGts"></h2>
@@ -450,7 +460,7 @@
 </div>
 </div>
 </div>
-<!-- OTHER SECTIONS PLACEHOLDERS -->
+<!-- OTHER SECTIONS PLACEHOLDERS (Kept functional) -->
 <template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'reports']">
 <div class="space-y-6" x-cloak="" x-show="currentView === viewId">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
