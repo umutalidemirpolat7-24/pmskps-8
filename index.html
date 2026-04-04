@@ -15,6 +15,17 @@
         .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
         .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
         .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-sky-50 outline-none text-[10px] border-none p-1 transition-colors; }
+        
+        /* Sticky Column Styles for Large Table */
+        .sticky-col-1 { position: sticky; left: 0; z-index: 20; background: white; }
+        .sticky-col-2 { position: sticky; left: 350px; z-index: 20; background: white; }
+        .sticky-col-3 { position: sticky; left: 510px; z-index: 20; background: #f0f9ff; } /* sky-50 */
+        .sticky-col-4 { position: sticky; left: 630px; z-index: 20; background: #e0f2fe; } /* sky-100 */
+        
+        thead th.sticky-col-1 { z-index: 50; background: #f8fafc; }
+        thead th.sticky-col-2 { z-index: 50; background: #f8fafc; }
+        thead th.sticky-col-3 { z-index: 50; background: #f0f9ff; }
+        thead th.sticky-col-4 { z-index: 50; background: #e0f2fe; }
     </style>
 </head>
 <body class="h-full overflow-hidden" x-data="{ 
@@ -62,6 +73,7 @@
             { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104 }
         ];
 
+        // Process existing data
         rawData.forEach(item =&gt; {
             if(!item.isHeader) {
                 const currentWeeks = item.weeks || [];
@@ -70,10 +82,13 @@
         });
 
         this.runningHoursList = [...rawData];
+        
+        // Fill up to 100 rows
         while(this.runningHoursList.length &lt; 100) {
             this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(this.weeksCount).fill(0) });
         }
 
+        // Init subsystem data
         for(let i=1; i&lt;=12; i++) {
             this.engineHoursData[i] = { total: 20000 + (i * 1500), weekly: 168 };
             this.sparkPlugData[i] = { A: {}, B: {} };
@@ -242,7 +257,7 @@
 </template>
 </div>
 </div>
-<!-- Running Hours Tab -->
+<!-- Running Hours Tab (Detailed 100-Row Table) -->
 <div class="space-y-6" x-show="currentView === 'running-hours'">
 <div class="flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
 <div>
@@ -261,41 +276,43 @@
 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 <div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-320px)]">
 <template x-for="w in weeksCount">
-</template><template x-for="(item, index) in runningHoursList">
+</template><template :key="index" x-for="(item, index) in runningHoursList">
 </template><template x-if="item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
-<template x-for="(week, wIdx) in item.weeks">
-</template></template><table class="w-full text-[10px] border-collapse min-w-[4000px]">
-<thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
+<template x-for="(weekVal, wIdx) in item.weeks">
+</template></template><table class="w-full text-[10px] border-collapse min-w-[5000px]">
+<thead class="sticky top-0 z-40 shadow-sm bg-slate-50">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
-<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
-<th class="sticky left-[350px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-sky-900 w-[120px]">Total Hours</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-sky-900 w-[120px]">Last Hours</th>
+<th class="sticky-col-1 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
+<th class="sticky-col-2 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
+<th class="sticky-col-3 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Total Hours</th>
+<th class="sticky-col-4 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Last Hours</th>
 <th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]" x-text="'Week ' + w"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
 <tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50 transition-colors group'">
-<td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
-<td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50 p-0 border-r border-slate-200">
-<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none" placeholder="Manual Equipment Entry..." type="text" x-model="item.desc"/>
+<!-- Header Row (Sub-sections) -->
+<td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-30 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
+<!-- Equipment Row -->
+<td class="sticky-col-1 p-0 border-r border-slate-200">
+<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Manual Equipment Entry..." type="text" x-model="item.desc"/>
 </td>
-<td class="sticky left-[350px] z-20 bg-white group-hover:bg-sky-50 p-0 border-r border-slate-200">
-<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none" placeholder="S/N..." type="text" x-model="item.sn"/>
+<td class="sticky-col-2 p-0 border-r border-slate-200">
+<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="S/N..." type="text" x-model="item.sn"/>
 </td>
-<td class="p-0 border-r border-slate-200 bg-sky-50/30">
-<input class="py-3 font-black text-sky-900 text-center w-full border-none outline-none focus:bg-white" type="number" x-model="item.total"/>
+<td class="sticky-col-3 p-0 border-r border-slate-200">
+<input class="py-3 font-black text-sky-900 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.total"/>
 </td>
-<td class="p-0 border-r border-slate-200 bg-sky-100/20">
-<input class="py-3 font-bold text-sky-700 text-center w-full border-none outline-none focus:bg-white" type="number" x-model="item.last"/>
+<td class="sticky-col-4 p-0 border-r border-slate-200">
+<input class="py-3 font-bold text-sky-700 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.last"/>
 </td>
 <td class="p-0 border-r border-slate-200 historical-cell">
-<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50" type="number" x-model="item.weeks[wIdx]"/>
+<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50 bg-transparent" type="number" x-model="item.weeks[wIdx]"/>
 </td>
 </tr>
 </tbody>
@@ -341,13 +358,94 @@
 </template>
 </div>
 </div>
-<!-- Placeholder View for other tabs -->
-<template x-for="viewId in ['pcc', 'valve', 'starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
+<!-- PCC (Non Return Valve) Tab -->
+<div class="space-y-6" x-show="currentView === 'pcc'">
+<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
+<div>
+<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'PCC Valve Service - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Non-Return Valve Maintenance Schedule</p>
+</div>
+<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
+<template x-for="i in 12">
+<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
+</template>
+</div>
+</div>
+<div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+<div class="grid grid-cols-2 gap-8">
+<template x-for="bank in ['A', 'B']">
+<div class="space-y-4">
+<h4 class="font-black text-sky-900 text-xs border-b pb-2 uppercase" x-text="'Bank ' + bank"></h4>
+<template x-for="cyl in 9">
+<div class="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-100">
+<span class="text-xs font-bold text-sky-950" x-text="cyl + bank"></span>
+<div class="flex gap-2">
+<input class="text-[10px] px-2 py-1 rounded border border-slate-200" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
+<input class="text-[10px] px-2 py-1 rounded border border-slate-200 w-24 font-mono" placeholder="Hours" type="number" x-model="pccData[selectedGts][bank][cyl].lastServiceHours"/>
+</div>
+</div>
+</template>
+</div>
+</template>
+</div>
+</div>
+</div>
+<!-- Valve Measurement Tab -->
+<div class="space-y-6" x-show="currentView === 'valve'">
+<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
+<div>
+<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'Valve Clearance - GTS ' + selectedGts"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Tolerance Settings: Intake 0.45mm / Exhaust 0.90mm</p>
+</div>
+<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
+<template x-for="i in 12">
+<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
+</template>
+</div>
+</div>
+<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
+<template x-for="bank in ['A', 'B']">
+<template x-for="cyl in 9">
+</template></template><table class="w-full text-[11px]">
+<thead>
+<tr class="bg-slate-50 text-slate-500 uppercase font-bold text-[9px] h-10 border-b">
+<th class="px-4 text-left">Cyl</th>
+<th class="px-4 text-center">Service Hours</th>
+<th class="px-4 text-center">Intake (A)</th>
+<th class="px-4 text-center">Intake (B)</th>
+<th class="px-4 text-center">Exhaust (C)</th>
+<th class="px-4 text-center">Exhaust (D)</th>
+<th class="px-4 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y">
+<tr class="hover:bg-sky-50/30 transition-colors h-10">
+<td class="px-4 font-black text-sky-900" x-text="cyl + bank"></td>
+<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-mono" type="number" x-model="valveData[selectedGts][bank][cyl].lastMeasHours"/></td>
+<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].A"/></td>
+<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].B"/></td>
+<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].C"/></td>
+<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].D"/></td>
+<td class="px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[8px] font-black uppercase">Within Specs</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Generic Views Placeholder for others -->
+<template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
 <div class="space-y-6" x-show="currentView === viewId">
 <div class="bg-white p-20 rounded-3xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center opacity-60">
 <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">analytics</span>
 <h3 class="text-xl font-bold text-sky-950 uppercase" x-text="viewId.replace('-', ' ')"></h3>
 <p class="text-sm text-slate-500 font-medium mt-2 max-w-sm">Section content loading from secure database link...</p>
+<div class="mt-8 grid grid-cols-3 gap-4 w-full max-w-lg">
+<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
+<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
+<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
+</div>
 </div>
 </div>
 </template>
