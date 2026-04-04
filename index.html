@@ -1,53 +1,4 @@
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary": "#001f3d",
-              "primary-container": "#003461",
-              "surface": "#f4faff",
-              "surface-container": "#e3f0f8",
-              "surface-container-low": "#e9f6fd",
-              "on-background": "#111d23",
-              "on-surface": "#111d23",
-              "on-surface-variant": "#43474f",
-              "outline": "#737780",
-              "error": "#ba1a1a"
-            },
-            fontFamily: {
-              "sans": ["Inter", "sans-serif"],
-              "body": ["Inter", "sans-serif"],
-            },
-            borderRadius: {
-                "DEFAULT": "0.125rem",
-                "lg": "0.25rem",
-                "xl": "0.5rem",
-                "full": "0.75rem"
-            },
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .glass-sidebar { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .premium-gradient { background: linear-gradient(135deg, #001f3d 0%, #003461 100%); }
-        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-white outline-none text-[10px] border-none p-1 transition-colors; }
-        [x-cloak] { display: none !important; }
-        .nav-item.active { @apply bg-primary text-white font-bold shadow-lg; }
-        .nav-item.active .material-symbols-outlined { @apply text-white; }
-    </style>
-</head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
+<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-white overflow-hidden" x-data="{ 
         isLoggedIn: false,
         loginData: { username: '', password: '' },
         loginError: false,
@@ -60,68 +11,62 @@
                 this.loginData.password = '';
             }
         },
-        currentView: 'dashboard', 
+        currentView: 'running-hours', 
         sidebarOpen: true, 
         notificationsOpen: false, 
         selectedGts: 1,
-        // Central Data Pool for Engine Hours
         engineHoursData: {
-            1: { total: 45200, weekly: 168, monthly: 672 },
-            2: { total: 43100, weekly: 162, monthly: 648 },
-            3: { total: 41800, weekly: 165, monthly: 660 },
-            4: { total: 39500, weekly: 42, monthly: 168 },
-            5: { total: 42300, weekly: 164, monthly: 656 },
-            6: { total: 44100, weekly: 166, monthly: 664 },
-            7: { total: 40900, weekly: 167, monthly: 668 },
-            8: { total: 41500, weekly: 168, monthly: 672 },
-            9: { total: 42800, weekly: 169, monthly: 676 },
-            10: { total: 43600, weekly: 170, monthly: 680 },
-            11: { total: 44400, weekly: 171, monthly: 684 },
-            12: { total: 45100, weekly: 172, monthly: 688 }
+            1: { total: 2575, weekly: 168, monthly: 12 },
+            2: { total: 2408, weekly: 162, monthly: 7 },
+            3: { total: 2505, weekly: 165, monthly: 13 },
+            4: { total: 3569, weekly: 42, monthly: 13 },
+            5: { total: 4004, weekly: 164, monthly: 13 },
+            6: { total: 4312, weekly: 166, monthly: 12 },
+            7: { total: 15397, weekly: 167, monthly: 69 },
+            8: { total: 12170, weekly: 168, monthly: 98 },
+            9: { total: 9418, weekly: 169, monthly: 88 },
+            10: { total: 5129, weekly: 170, monthly: 32 },
+            11: { total: 3349, weekly: 171, monthly: 11 },
+            12: { total: 4928, weekly: 172, monthly: 93 }
         },
-        // Detailed Running Hours for Equipment List
         runningHoursList: [
-            { id: 'gts1', desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, monthly: 12 },
-            { id: 'gts2', desc: 'NO.2 18V5160 GTS', sn: '1145137', total: 2012, monthly: 13 },
-            { id: 'gts3', desc: 'NO.3 18V5160 GTS', sn: '1145138', total: 2289, monthly: 12 },
-            { id: 'gts4', desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3418, monthly: 11 },
-            { id: 'gts5', desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 3783, monthly: 13 },
-            { id: 'gts6', desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 10425, monthly: 102 },
-            { id: 'gts7', desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, monthly: 69 },
-            { id: 'gts8', desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 10234, monthly: 98 },
-            { id: 'gts9', desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, monthly: 88 },
-            { id: 'gts10', desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, monthly: 32 },
-            { id: 'gts11', desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, monthly: 11 },
-            { id: 'gts12', desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, monthly: 93 },
-            { id: 'sac1', desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/21', total: 1246, monthly: 14 },
-            { id: 'sac2', desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '73/20', total: 1246, monthly: 14 },
-            { id: 'sac3', desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1515, monthly: 15 },
-            { id: 'sac4', desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '121/19', total: 1562, monthly: 16 },
-            { id: 'cac1', desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '13931047154', total: 2289, monthly: 13 },
-            { id: 'cac2', desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2931-7509652', total: 1217, monthly: 0 },
-            { id: 'svac1', desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, monthly: 31 },
-            { id: 'svac2', desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, monthly: 0 },
-            { id: 'nx1', desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 41, monthly: 0 },
-            { id: 'nx2', desc: 'NOX CONTROL AIR COMPRESSOR NO:2', sn: 'TRD133000', total: 1756, monthly: 0 },
-            { id: 'nx3', desc: 'NOX CONTROL AIR COMPRESSOR NO:3', sn: 'TRD133001', total: 1120, monthly: 0 },
-            { id: 'nx4', desc: 'NOX CONTROL AIR COMPRESSOR NO:4', sn: 'TRD132996', total: 3826, monthly: 172 },
-            { id: 'nx5', desc: 'NOX CONTROL AIR COMPRESSOR NO:5', sn: 'TRD133003', total: 1047, monthly: 0 },
-            { id: 'nx6', desc: 'NOX CONTROL AIR COMPRESSOR NO:6', sn: 'TRD133002', total: 4280, monthly: 0 },
-            { id: 'nx7', desc: 'NOX CONTROL AIR COMPRESSOR NO:7', sn: 'TRD1239921', total: 377, monthly: 0 },
-            { id: 'nx8', desc: 'NOX CONTROL AIR COMPRESSOR NO:8', sn: 'TRD123991', total: 5548, monthly: 0 },
-            { id: 'nx9', desc: 'NOX CONTROL AIR COMPRESSOR NO:9', sn: 'TRD1239921', total: 715, monthly: 0 },
-            { id: 'nx10', desc: 'NOX CONTROL AIR COMPRESSOR NO:10', sn: 'TRD132991', total: 5842, monthly: 0 },
-            { id: 'nx11', desc: 'NOX CONTROL AIR COMPRESSOR NO:11', sn: 'TRD132993', total: 140, monthly: 0 },
-            { id: 'nx12', desc: 'NOX CONTROL AIR COMPRESSOR NO:12', sn: 'TRD132999', total: 2366, monthly: 0 },
-            { id: 'swp1', desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, monthly: 13 },
-            { id: 'swp2', desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, monthly: 12 },
-            { id: 'swp16', desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 5845, monthly: 24 },
-            { id: 'auxsw1', desc: 'AUX. MACH. COOLER SW PUMP 1', sn: '458226-08-01', total: 10833, monthly: 145 },
-            { id: 'auxsw2', desc: 'AUX. MACH. COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, monthly: 168 },
-            { id: 'fwgsw1', desc: 'FWG SW PUMP 1 (GG 5)', sn: 'SH193071-036', total: 2322, monthly: 0 },
-            { id: 'foam1', desc: 'FOAM-FIRE PUMP', sn: '458226-01-01', total: 1, monthly: 0 },
-            { id: 'fire1', desc: 'EMG. FIRE PUMP', sn: '469408-01-01', total: 1, monthly: 0 },
-            { id: 'evb1', desc: 'Exhaust Vent Blower No:1', sn: '1013961517', total: 2036, monthly: 2036 }
+            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, monthly: 12, last: 1263, july: 1247, aug: 1234, sept: 1133, oct: 1133, nov: 935, dec: 809, jan: 657 },
+            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, monthly: 7, last: 1004, july: 973, aug: 928, sept: 825, oct: 825, nov: 686, dec: 593, jan: 481 },
+            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, monthly: 13, last: 1222, july: 1184, aug: 1125, sept: 1018, oct: 1018, nov: 841, dec: 728, jan: 591 },
+            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, monthly: 13, last: 907, july: 887, aug: 815, sept: 755, oct: 755, nov: 575, dec: 483, jan: 357 },
+            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, monthly: 13, last: 1520, july: 1466, aug: 1245, sept: 1149, oct: 1149, nov: 934, dec: 743, jan: 616 },
+            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, monthly: 12, last: 1400, july: 1362, aug: 1284, sept: 1152, oct: 1152, nov: 934, dec: 743, jan: 616 },
+            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, monthly: 69, last: 3051, july: 2467, aug: 1904, sept: 1508, oct: 1374, nov: 701, dec: 448, jan: 357 },
+            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, weekly: 168, monthly: 98, last: 2639, july: 2042, aug: 1570, sept: 1400, oct: 1092, nov: 1092, dec: 883, jan: 787 },
+            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, monthly: 88, last: 1243, july: 1207, aug: 1199, sept: 903, oct: 767, nov: 767, dec: 767, jan: 590 },
+            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, monthly: 32, last: 961, july: 944, aug: 902, sept: 806, oct: 683, nov: 683, dec: 493, jan: 366 },
+            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, monthly: 11, last: 856, july: 835, aug: 835, sept: 835, oct: 825, nov: 825, dec: 787, jan: 653 },
+            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, monthly: 93, last: 1031, july: 1016, aug: 1016, sept: 789, oct: 677, nov: 677, dec: 481, jan: 354 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/21', total: 1246, monthly: 14, last: 165, july: 165, aug: 165, sept: 165, oct: 165, nov: 165, dec: 165, jan: 165 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '73/20', total: 1246, monthly: 14, last: 381, july: 349, aug: 349, sept: 349, oct: 349, nov: 349, dec: 349, jan: 349 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 2591, monthly: 15, last: 125, july: 116, aug: 116, sept: 116, oct: 116, nov: 116, dec: 116, jan: 116 },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '121/19', total: 2591, monthly: 16, last: 384, july: 346, aug: 346, sept: 346, oct: 346, nov: 346, dec: 346, jan: 346 },
+            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, monthly: 0, last: 1213, july: 1213, aug: 1213, sept: 1213, oct: 1199, nov: 1199, dec: 4683, jan: 4592 },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, monthly: 31, last: 492, july: 342, aug: 290, sept: 281, oct: 263, nov: 236, dec: 222, jan: 220 },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, monthly: 0, last: 583, july: 526, aug: 515, sept: 495, oct: 426, nov: 381, dec: 337, jan: 312 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 41, monthly: 0, last: 41, july: 41, aug: 41, sept: 41, oct: 41, nov: 41, dec: 41, jan: 41 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:2', sn: 'TRD133000', total: 1756, monthly: 0, last: 182, july: 181, aug: 181, sept: 181, oct: 181, nov: 181, dec: 181, jan: 181 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:3', sn: 'TRD133001', total: 1120, monthly: 0, last: 1130, july: 1120, aug: 1120, sept: 1047, oct: 1047, nov: 1047, dec: 809, jan: 191 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:4', sn: 'TRD132996', total: 3826, monthly: 172, last: 2026, july: 2026, aug: 2026, sept: 2026, oct: 2026, nov: 2026, dec: 2026, jan: 2026 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:5', sn: 'TRD133003', total: 1047, monthly: 0, last: 389, july: 379, aug: 379, sept: 379, oct: 379, nov: 377, dec: 377, jan: 377 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:6', sn: 'TRD133002', total: 4280, monthly: 0, last: 1548, july: 1515, aug: 1515, sept: 1515, oct: 1515, nov: 1515, dec: 1515, jan: 1515 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:7', sn: 'TRD1239921', total: 377, monthly: 0, last: 179, july: 179, aug: 179, sept: 179, oct: 140, nov: 140, dec: 140, jan: 140 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:8', sn: 'TRD123991', total: 5548, monthly: 0, last: 1133, july: 1133, aug: 1133, sept: 1133, oct: 1133, nov: 1133, dec: 1133, jan: 1133 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:9', sn: 'TRD1239921', total: 715, monthly: 0, last: 1031, july: 993, aug: 993, sept: 715, oct: 715, nov: 715, dec: 680, jan: 101 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:10', sn: 'TRD132991', total: 5842, monthly: 0, last: 1031, july: 993, aug: 993, sept: 715, oct: 715, nov: 715, dec: 660, jan: 101 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:11', sn: 'TRD132993', total: 140, monthly: 0, last: 964, july: 679, aug: 679, sept: 678, oct: 170, nov: 2, dec: 2, jan: 2 },
+            { desc: 'NOX CONTROL AIR COMPRESSOR NO:12', sn: 'TRD132999', total: 2366, monthly: 0, last: 940, july: 929, aug: 902, sept: 901, oct: 758, nov: 758, dec: 698, jan: 556 },
+            { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, monthly: 13, last: 1263, july: 1247, aug: 1234, sept: 1234, oct: 1133, nov: 1133, dec: 935, jan: 809 },
+            { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, monthly: 12, last: 709, july: 681, aug: 673, sept: 663, oct: 576, nov: 576, dec: 517, jan: 376 },
+            { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 5845, monthly: 24, last: 1665, july: 1316, aug: 1002, sept: 888, oct: 888, nov: 688, dec: 629, jan: 484 },
+            { desc: 'AUX. MACH. COOLER SW PUMP 1', sn: '458226-08-01', total: 10833, monthly: 145, last: 1483, july: 1454, aug: 1453, sept: 1093, oct: 1002, nov: 1002, dec: 943, jan: 800 },
+            { desc: 'AUX. MACH. COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, monthly: 168, last: 3842, july: 3833, aug: 3832, sept: 3807, oct: 3693, nov: 3129, dec: 2496, jan: 2447 },
+            { desc: 'FWG SW PUMP 1 (GG 5)', sn: 'SH193071-036', total: 2322, monthly: 0, last: 1133, july: 745, aug: 673, sept: 663, oct: 576, nov: 576, dec: 517, jan: 376 }
         ],
         sparkPlugData: {},
         pccData: {},
@@ -154,11 +99,11 @@
             }
         },
         syncGtsHours() {
-            // Synchronize the GTS specific total hours into the global engineHoursData object
             for(let i=1; i&lt;=12; i++) {
-                let found = this.runningHoursList.find(item =&gt; item.id === 'gts' + i);
+                let found = this.runningHoursList.find(item =&gt; item.desc.includes('NO.' + i + ' '));
                 if(found) {
                     this.engineHoursData[i].total = parseInt(found.total) || 0;
+                    this.engineHoursData[i].monthly = parseInt(found.monthly) || 0;
                 }
             }
         },
@@ -193,57 +138,108 @@
             'Lube Oil Transfer System',
             'Steam Traps &amp; EGB Drain Lines'
         ]
-    }" x-init="initData()">
+    }" x-init="initData()">```html
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KPS8 OSMAN BEY PMS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#002B49",
+              "primary-container": "#003461",
+              "surface": "#001a2c",
+              "surface-container": "#00243d",
+              "surface-container-low": "#001f35",
+              "on-background": "#e2e8f0",
+              "on-surface": "#f8fafc",
+              "on-surface-variant": "#94a3b8",
+              "outline": "#475569",
+              "error": "#ff5252"
+            },
+            fontFamily: {
+              "sans": ["Inter", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-sidebar { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(0, 43, 73, 0.8); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .premium-gradient { background: linear-gradient(135deg, #002B49 0%, #004b7a 100%); }
+        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-white/10 outline-none text-[10px] border-none p-1 transition-colors text-white; }
+        [x-cloak] { display: none !important; }
+        .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
+        .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
+        .historical-cell { @apply bg-emerald-900/20 text-emerald-400 text-center border-r border-slate-800/50 min-w-[60px]; }
+        .header-historical { @apply bg-emerald-900/40 text-emerald-300 font-bold text-[9px] uppercase tracking-tighter; }
+    </style>
 <!-- LOGIN OVERLAY -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-primary" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001422]" x-show="!isLoggedIn" x-transition:leave="transition ease-in duration-500 transform" x-transition:leave-end="opacity-0 scale-105" x-transition:leave-start="opacity-100 scale-100">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
-<div class="w-full max-w-md p-8 bg-white rounded-xl shadow-2xl relative z-10 mx-4 border-t-8 border-sky-500">
-<div class="text-center mb-8">
-<div class="inline-flex h-16 w-16 premium-gradient rounded-xl items-center justify-center text-white shadow-xl mb-4">
-<span class="material-symbols-outlined text-4xl">directions_boat</span>
+<div class="w-full max-w-md p-10 bg-white rounded-lg shadow-2xl relative z-10 mx-4 border-t-8 border-sky-600">
+<div class="text-center mb-10">
+<div class="inline-flex h-20 w-20 bg-primary rounded-lg items-center justify-center text-white shadow-2xl mb-6">
+<span class="material-symbols-outlined text-5xl">directions_boat</span>
 </div>
-<h1 class="text-2xl font-black text-sky-900 tracking-tighter uppercase">KPS8 OSMAN BEY</h1>
-<p class="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase mt-1">Planned Maintenance System</p>
+<h1 class="text-3xl font-black text-primary tracking-tighter uppercase mb-1">KPS8 OSMAN BEY</h1>
+<p class="text-[11px] font-bold text-slate-400 tracking-[0.25em] uppercase">Planned Maintenance System</p>
 </div>
 <form @submit.prevent="handleLogin()" class="space-y-6">
 <div>
-<label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Username</label>
+<label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">System ID</label>
 <div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">person</span>
-<input class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all text-sm font-semibold" placeholder="Enter system ID" required="" type="text" x-model="loginData.username"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">person</span>
+<input class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm font-semibold" placeholder="KPS8" required="" type="text" x-model="loginData.username"/>
 </div>
 </div>
 <div>
-<label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5 ml-1">Password</label>
+<label class="block text-[11px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Password</label>
 <div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">lock</span>
-<input class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all text-sm font-semibold" placeholder="••••••••" required="" type="password" x-model="loginData.password"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock</span>
+<input class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all text-sm font-semibold" placeholder="••••••••" required="" type="password" x-model="loginData.password"/>
 </div>
 </div>
-<div class="h-4">
-<p class="text-[10px] text-error font-bold text-center uppercase" x-show="loginError" x-transition="">Invalid credentials. Access Denied.</p>
+<div class="h-6">
+<p class="text-[11px] text-error font-bold text-center uppercase" x-show="loginError" x-transition="">Invalid credentials. Access Denied.</p>
 </div>
-<button class="w-full premium-gradient text-white font-black py-4 rounded-lg shadow-lg hover:shadow-sky-500/20 active:scale-[0.98] transition-all uppercase tracking-widest text-xs" type="submit">
+<button class="w-full bg-primary text-white font-black py-5 rounded-lg shadow-xl hover:bg-[#003d66] active:scale-[0.98] transition-all uppercase tracking-widest text-xs" type="submit">
                 Authorize Access
             </button>
 </form>
-<div class="mt-8 pt-6 border-t border-slate-100 text-center">
-<p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight">Technical Marine Support System v2.4.0</p>
+<div class="mt-10 pt-8 border-t border-slate-100 text-center">
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Technical Marine Support System v2.4.0</p>
 </div>
 </div>
 </div>
 <!-- SIDEBAR -->
-<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-50 overflow-y-auto bg-slate-100 border-r border-slate-200 glass-sidebar transition-transform duration-300 lg:translate-x-0">
+<aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed left-0 top-0 h-screen w-64 flex flex-col p-4 z-50 overflow-y-auto border-r border-slate-800 glass-sidebar transition-transform duration-300 lg:translate-x-0">
 <div class="mb-8 px-2 flex items-center justify-between">
 <div class="flex items-center gap-3">
-<div class="h-10 w-10 premium-gradient rounded-lg flex items-center justify-center text-white shadow-lg">
+<div class="h-10 w-10 bg-sky-600 rounded flex items-center justify-center text-white shadow-lg">
 <span class="material-symbols-outlined">directions_boat</span>
 </div>
 <div>
-<h1 class="font-bold text-sky-900 text-sm tracking-tight uppercase leading-tight">KPS8<br/>OSMAN BEY</h1>
+<h1 class="font-black text-white text-sm tracking-tight uppercase leading-tight">KPS8<br/>OSMAN BEY</h1>
 </div>
 </div>
-<button @click="sidebarOpen = false" class="lg:hidden text-slate-500">
+<button @click="sidebarOpen = false" class="lg:hidden text-slate-400">
 <span class="material-symbols-outlined">close</span>
 </button>
 </div>
@@ -266,231 +262,212 @@
             {id: 'shutdowns', icon: 'report_problem', label: 'Shutdowns'},
             {id: 'reports', icon: 'description', label: 'Reports'}
         ]">
-<button :class="currentView === item.id ? 'active' : 'text-slate-600'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 hover:translate-x-1">
+<button :class="currentView === item.id ? 'active' : 'text-slate-400'" @click="currentView = item.id; if(window.innerWidth &lt; 1024) sidebarOpen = false" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded transition-all duration-200 hover:translate-x-1">
 <span class="material-symbols-outlined text-[20px]" x-text="item.icon"></span>
-<span class="text-xs font-medium uppercase tracking-wider" x-text="item.label"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest" x-text="item.label"></span>
 </button>
 </template>
 </nav>
-<div class="mt-6 border-t border-slate-200 pt-6">
-<button class="w-full premium-gradient text-white text-[10px] font-bold py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-md uppercase">
+<div class="mt-6 border-t border-slate-800 pt-6">
+<button class="w-full bg-sky-600 text-white text-[10px] font-black py-3 rounded flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg uppercase tracking-widest">
 <span class="material-symbols-outlined text-sm">add</span>
-            Add Maintenance Log
+            New Entry
         </button>
 </div>
 </aside>
 <main class="lg:ml-64 min-h-screen h-screen flex flex-col overflow-hidden relative">
 <!-- HEADER -->
-<header class="bg-slate-50 sticky top-0 z-40 flex justify-between items-center w-full px-4 lg:px-8 py-3 border-b border-slate-200 shrink-0">
+<header class="bg-surface sticky top-0 z-40 flex justify-between items-center w-full px-4 lg:px-8 py-4 border-b border-slate-800 shrink-0">
 <div class="flex items-center gap-4">
-<button @click="sidebarOpen = true" class="lg:hidden p-2 text-slate-500">
+<button @click="sidebarOpen = true" class="lg:hidden p-2 text-slate-400">
 <span class="material-symbols-outlined">menu</span>
 </button>
-<span class="text-sm lg:text-lg font-black tracking-tighter text-sky-900 uppercase">KPS8 OSMAN BEY PMS</span>
-<div class="hidden md:flex bg-white/50 border border-slate-200 rounded-md px-3 py-1.5 items-center gap-2 w-72">
-<span class="material-symbols-outlined text-outline text-lg">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-outline" placeholder="Search telemetry..." type="text"/>
+<span class="text-sm lg:text-xl font-black tracking-tighter text-white uppercase">Fleet Precision PMS</span>
+<div class="hidden md:flex bg-slate-900 border border-slate-800 rounded px-3 py-1.5 items-center gap-2 w-80">
+<span class="material-symbols-outlined text-slate-500 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs w-full placeholder-slate-600 text-white" placeholder="Search equipment ID..." type="text"/>
 </div>
 </div>
 <div class="flex items-center gap-4">
-<button @click="notificationsOpen = !notificationsOpen" class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors relative">
+<button @click="notificationsOpen = !notificationsOpen" class="p-2 text-slate-400 hover:text-white transition-colors relative">
 <span class="material-symbols-outlined">notifications</span>
-<span class="absolute top-1.5 right-1.5 h-2 w-2 bg-error rounded-full ring-2 ring-white"></span>
+<span class="absolute top-1.5 right-1.5 h-2 w-2 bg-error rounded-full ring-2 ring-surface"></span>
 </button>
-<button class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+<button class="p-2 text-slate-400 hover:text-white transition-colors">
 <span class="material-symbols-outlined">settings</span>
 </button>
-<button @click="isLoggedIn = false" class="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors lg:hidden">
+<button @click="isLoggedIn = false" class="p-2 text-slate-400 hover:text-white transition-colors">
 <span class="material-symbols-outlined">logout</span>
 </button>
 </div>
 </header>
 <div class="flex-1 overflow-y-auto no-scrollbar p-4 lg:p-8 bg-surface">
-<!-- DASHBOARD -->
-<div class="space-y-10" x-cloak="" x-show="currentView === 'dashboard'">
-<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-<div class="xl:col-span-8 bg-surface-container-low rounded-xl p-8 border border-slate-100 shadow-sm">
-<div class="flex justify-between items-start">
-<div>
-<h2 class="text-2xl font-bold text-primary mb-1">Fleet Operational Status</h2>
-<p class="text-sm text-on-surface-variant">Vessel active at 12.4 knots. Central Data Pool active for 2026 logs.</p>
-</div>
-<div class="flex flex-col sm:flex-row gap-2">
-<button @click="downloadExcel()" class="bg-white border border-slate-200 text-primary px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 shadow-sm hover:bg-slate-50 transition-colors">
-<span class="material-symbols-outlined text-sm">download</span>
-                        Download Reports (Excel)
-                    </button>
-<div class="flex gap-2">
-<span class="bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Online</span>
-<span class="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider">Normal</span>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
-<div class="space-y-1">
-<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Active Engines</p>
-<p class="text-4xl font-black text-primary">11/12</p>
-<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-sky-600 w-[91.6%]"></div>
-</div>
-</div>
-<div class="space-y-1">
-<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Avg. Efficiency</p>
-<p class="text-4xl font-black text-sky-700">94.2<span class="text-lg font-bold">%</span></p>
-<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-sky-600 w-[94.2%]"></div>
-</div>
-</div>
-<div class="space-y-1">
-<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest">Gas Consumption</p>
-<p class="text-4xl font-black text-emerald-700">3,485<span class="text-lg font-bold">m³</span></p>
-<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mt-2">
-<div class="h-full bg-emerald-600 w-[82%]"></div>
-</div>
-</div>
-</div>
-</div>
-<div class="xl:col-span-4 premium-gradient rounded-xl p-8 text-white flex flex-col shadow-lg">
-<div class="flex items-center justify-between mb-8">
-<h3 class="text-lg font-black tracking-tighter uppercase">GAS SPEC.</h3>
-<span class="material-symbols-outlined text-sky-400">propane</span>
-</div>
-<div class="space-y-6">
-<div class="flex justify-between items-center border-b border-white/10 pb-4">
-<span class="text-sm font-medium text-sky-200">Inlet Pressure</span>
-<span class="text-xl font-black">4.2 bar</span>
-</div>
-<div class="flex justify-between items-center border-b border-white/10 pb-4">
-<span class="text-sm font-medium text-sky-200">Density</span>
-<span class="text-xl font-black">0.71 kg/m³</span>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-sm font-medium text-sky-200">Methane Number</span>
-<span class="text-xl font-black">81.4 MN</span>
-</div>
-</div>
-</div>
-</div>
-<div class="space-y-4">
-<h2 class="text-xl font-bold text-primary">GTS Engine Running Status (From Master Log)</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
-<template x-for="i in 12">
-<div :class="i === 4 ? 'border-red-300 bg-red-50 ring-1 ring-red-100' : 'border-slate-200 bg-white'" class="p-4 rounded-xl border shadow-sm transition-all hover:shadow-md group">
-<div class="flex justify-between items-center mb-3">
-<p :class="i === 4 ? 'text-error' : 'text-slate-500'" class="text-[10px] font-black uppercase tracking-widest" x-text="'GTS ' + i"></p>
-<button @click="currentView = 'spark-plug'; selectedGts = i" class="text-primary hover:text-sky-600 transition-colors">
-<span class="material-symbols-outlined text-lg">arrow_forward_ios</span>
-</button>
-</div>
-<div class="space-y-2">
-<div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
-<label class="text-[9px] font-bold text-slate-400 uppercase">Total Running Hours</label>
-<span class="text-sm font-black text-primary" x-text="engineHoursData[i].total"></span>
-</div>
-<div class="flex justify-between items-center border-b border-slate-100 pb-1.5">
-<label class="text-[9px] font-bold text-slate-400 uppercase">Weekly Hours</label>
-<span class="text-xs font-bold text-sky-700" x-text="engineHoursData[i].weekly"></span>
-</div>
-<div class="flex justify-between items-center">
-<label class="text-[9px] font-bold text-slate-400 uppercase">Monthly Hours</label>
-<span class="text-xs font-bold text-emerald-700" x-text="engineHoursData[i].monthly"></span>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-</div>
-<!-- RUNNING HOURS MASTER ENTRY -->
+<!-- RUNNING HOURS MASTER ENTRY (ACTIVE BY REQUEST) -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Master Equipment Running Hours Log</h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Data Entry for Monthly Performance Analysis</p>
+<h2 class="text-3xl font-black text-white tracking-tight uppercase">Master Equipment Running Hours Log</h2>
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">Data Engine: Mariner Core OS | Central Performance Analysis</p>
 </div>
-<button @click="syncGtsHours()" class="bg-primary text-white px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest shadow hover:opacity-90 flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">sync</span>
-            Synchronize Maintenance Calculations
-        </button>
+<div class="flex gap-3">
+<button @click="syncGtsHours()" class="bg-primary border border-sky-800/50 text-sky-400 px-5 py-2.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-sky-900/50 flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base">sync</span>
+                Sync Maintenance
+            </button>
+<button @click="downloadExcel()" class="bg-emerald-600 text-white px-5 py-2.5 rounded text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-emerald-700 flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base">description</span>
+                Export Excel
+            </button>
 </div>
-<div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+</div>
+<div class="bg-surface-container rounded-lg shadow-2xl border border-slate-800 overflow-hidden">
 <div class="overflow-x-auto no-scrollbar">
 <template x-for="item in runningHoursList">
-</template><table class="w-full text-[11px] border-collapse">
-<thead class="bg-slate-100 border-b border-slate-200 font-black">
-<tr class="text-center uppercase text-primary">
-<th class="p-4 border-r text-left w-64">Ekipman Tanımı / Equipment Description</th>
-<th class="p-4 border-r">Serial Number</th>
-<th class="p-4 border-r bg-sky-50">Total RHRS (Editable)</th>
-<th class="p-4">RH This Month</th>
+</template><table class="w-full text-[11px] border-collapse min-w-[1400px]">
+<thead class="bg-slate-900 border-b border-slate-800 font-black">
+<tr class="text-center uppercase text-slate-400 h-16">
+<th class="p-4 border-r border-slate-800 text-left sticky left-0 z-20 bg-slate-900 w-80">Ekipman Tanımı / Equipment Description</th>
+<th class="p-4 border-r border-slate-800 w-40">Serial Number</th>
+<th class="p-4 border-r border-slate-800 bg-sky-950/40 text-sky-400 w-40">TOTAL RHRS.<br/><span class="text-[9px] opacity-60">(Current)</span></th>
+<th class="p-4 border-r border-slate-800 bg-sky-900/40 text-sky-300 w-32">R.H. THIS MONTH</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. LAST MONTH<br/><span class="text-[8px]">(OCTOBER)</span></th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JULY</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT AUGUST</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT JUNE</th>
+<th class="p-4 border-r border-slate-800 header-historical">R.H. AT MAY</th>
+<th class="p-4 border-r border-slate-800 header-historical">MAY</th>
+<th class="p-4 border-r border-slate-800 header-historical">APRIL</th>
+<th class="p-4 border-r border-slate-800 header-historical">MARCH</th>
+<th class="p-4 border-r border-slate-800 header-historical">FEBRUARY</th>
+<th class="p-4 header-historical">JANUARY</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50 transition-colors">
-<td class="p-3 border-r font-bold text-primary" x-text="item.desc"></td>
-<td class="p-3 border-r text-center text-slate-500 font-medium" x-text="item.sn"></td>
-<td class="p-1 border-r bg-sky-50/30">
-<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[12px] font-black text-primary focus:bg-white outline-none" type="number" x-model="item.total"/>
+<tbody class="divide-y divide-slate-800">
+<tr class="hover:bg-slate-800/50 transition-colors group">
+<td class="p-4 border-r border-slate-800 font-bold text-slate-200 sticky left-0 z-10 bg-slate-900/90" x-text="item.desc"></td>
+<td class="p-4 border-r border-slate-800 text-center text-slate-500 font-mono tracking-tighter" x-text="item.sn"></td>
+<td class="p-1 border-r border-slate-800 bg-sky-950/20">
+<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-400 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.total"/>
 </td>
-<td class="p-3 text-center font-bold text-emerald-600" x-text="item.monthly"></td>
+<td class="p-1 border-r border-slate-800 bg-sky-900/20">
+<input @input="syncGtsHours()" class="w-full text-center bg-transparent border-none text-[13px] font-black text-sky-300 focus:bg-white/10 outline-none rounded h-10" type="number" x-model="item.monthly"/>
+</td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.last || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.aug || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.july || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.nov || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.dec || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.jan || '-'"></td>
+<td class="p-4 border-r border-slate-800 historical-cell" x-text="item.jan || '-'"></td>
+<td class="p-4 historical-cell" x-text="item.jan || '-'"></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
+<!-- DASHBOARD -->
+<div class="space-y-10" x-cloak="" x-show="currentView === 'dashboard'">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+<div class="xl:col-span-8 bg-surface-container-low rounded-lg p-10 border border-slate-800 shadow-xl">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-3xl font-black text-white mb-2 uppercase tracking-tighter">Fleet Operational Status</h2>
+<p class="text-sm text-slate-400 font-medium">Vessel active at 12.4 knots. Master Telemetry active for 2026 logs.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-3">
+<div class="flex gap-2">
+<span class="bg-emerald-600/20 text-emerald-400 border border-emerald-600/30 px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest">System Online</span>
+<span class="bg-sky-600/20 text-sky-400 border border-sky-600/30 px-4 py-1.5 rounded text-[10px] font-black uppercase tracking-widest">Normal Load</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-10 mt-12">
+<div class="space-y-2">
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Active Engines</p>
+<p class="text-5xl font-black text-white">11/12</p>
+<div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden mt-3">
+<div class="h-full bg-sky-500 w-[91.6%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Avg. Efficiency</p>
+<p class="text-5xl font-black text-sky-400">94.2<span class="text-xl font-bold text-slate-600">%</span></p>
+<div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden mt-3">
+<div class="h-full bg-sky-400 w-[94.2%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-[0.2em]">Gas Consumption</p>
+<p class="text-5xl font-black text-emerald-500">3,485<span class="text-xl font-bold text-slate-600">m³</span></p>
+<div class="h-2 w-full bg-slate-800 rounded-full overflow-hidden mt-3">
+<div class="h-full bg-emerald-500 w-[82%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="xl:col-span-4 bg-slate-900 rounded-lg p-10 text-white flex flex-col shadow-2xl border border-slate-800">
+<div class="flex items-center justify-between mb-10">
+<h3 class="text-xl font-black tracking-tighter uppercase text-sky-400">GAS PARAMETERS</h3>
+<span class="material-symbols-outlined text-sky-400 text-3xl">propane</span>
+</div>
+<div class="space-y-8">
+<div class="flex justify-between items-center border-b border-slate-800 pb-5">
+<span class="text-sm font-bold uppercase tracking-widest text-slate-500">Inlet Pressure</span>
+<span class="text-2xl font-black text-white">4.2 <span class="text-sm text-slate-600">bar</span></span>
+</div>
+<div class="flex justify-between items-center border-b border-slate-800 pb-5">
+<span class="text-sm font-bold uppercase tracking-widest text-slate-500">Density</span>
+<span class="text-2xl font-black text-white">0.71 <span class="text-sm text-slate-600">kg/m³</span></span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm font-bold uppercase tracking-widest text-slate-500">Methane Num</span>
+<span class="text-2xl font-black text-sky-400">81.4 <span class="text-sm text-slate-600">MN</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- SPARK PLUG -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'spark-plug'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Spark Plug Life Cycle Management - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                        Current Engine Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
+<h2 class="text-3xl font-black text-white tracking-tight uppercase" x-text="'Spark Plug Lifecycle - GTS ' + selectedGts"></h2>
+<p class="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+                        Engine Master Time: <span class="text-sky-400 font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
                     </p>
 </div>
-<div class="flex gap-2 bg-slate-100 p-1 rounded-full">
+<div class="flex gap-2 bg-slate-900 p-1 rounded border border-slate-800">
 <template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-primary text-white shadow-md' : 'text-slate-500 hover:bg-white'" @click="selectedGts = i" class="w-7 h-7 rounded-full text-[9px] font-black flex items-center justify-center transition-all" x-text="i"></button>
+<button :class="selectedGts === i ? 'bg-sky-600 text-white shadow-xl scale-110' : 'text-slate-500 hover:text-slate-200'" @click="selectedGts = i" class="w-8 h-8 rounded text-[10px] font-black flex items-center justify-center transition-all" x-text="i"></button>
 </template>
 </div>
 </div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Spark plug logic... similar structure to original but dark theme -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
 <template x-for="bank in ['A', 'B']">
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-<div class="flex items-center justify-between mb-6 pb-2 border-b border-slate-100">
-<h3 class="text-xs font-black text-primary uppercase tracking-widest" x-text="'CYLINDER BANK ' + bank"></h3>
-</div>
+<div class="bg-surface-container p-8 rounded-lg border border-slate-800 shadow-xl">
+<h3 class="text-sm font-black text-sky-400 uppercase tracking-[0.2em] mb-8 border-b border-slate-800 pb-4" x-text="'CYLINDER BANK ' + bank"></h3>
 <div class="space-y-4">
 <template x-for="cyl in 9">
-<div class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-4 rounded-lg border border-slate-100 bg-slate-50/30 transition-all">
-<div class="sm:col-span-1 flex flex-col justify-center border-r border-slate-200 pr-2">
-<span class="text-[11px] font-black text-primary leading-none" x-text="'CYL ' + cyl + bank"></span>
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-4 p-5 rounded-lg border border-slate-800 bg-slate-900/40 items-center">
+<div class="sm:col-span-1 border-r border-slate-800 pr-3 text-center">
+<span class="text-sm font-black text-white" x-text="cyl + bank"></span>
 </div>
-<div class="sm:col-span-5 grid grid-cols-2 gap-2">
+<div class="sm:col-span-11 grid grid-cols-2 sm:grid-cols-3 gap-4">
 <div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Last Repl. Date</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-semibold focus:ring-1 focus:ring-sky-500 outline-none bg-white" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
-</div>
-<div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Hrs @ Repl.</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-black text-primary focus:ring-1 focus:ring-sky-500 outline-none bg-white" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
-</div>
-</div>
-<div class="sm:col-span-4 grid grid-cols-2 gap-2">
-<div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Prev. Repl. Date</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-medium bg-white border-slate-200" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].prevDate"/>
+<label class="block text-[8px] font-black text-slate-500 uppercase mb-2">Last Service</label>
+<input class="w-full text-[10px] bg-slate-800 border border-slate-700 rounded px-2 py-2 font-bold text-white outline-none focus:border-sky-500" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
 </div>
 <div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Hrs @ Prev.</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-2 py-1 font-bold text-slate-600 bg-white" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].prevHours"/>
+<label class="block text-[8px] font-black text-slate-500 uppercase mb-2">Hrs @ Change</label>
+<input class="w-full text-[11px] bg-slate-800 border border-slate-700 rounded px-2 py-2 font-black text-sky-400 outline-none focus:border-sky-500" type="number" x-model.number="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
 </div>
-</div>
-<div class="sm:col-span-2 text-center bg-white rounded border border-slate-200 flex flex-col justify-center py-1">
-<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight mb-0.5">Plug Life</label>
-<div class="flex items-baseline justify-center gap-0.5">
-<span class="text-xs font-black text-primary" x-text="sparkPlugData[selectedGts][bank][cyl].lastHours - sparkPlugData[selectedGts][bank][cyl].prevHours"></span>
-<span class="text-[7px] font-bold text-slate-400 uppercase">hrs</span>
+<div class="text-right">
+<label class="block text-[8px] font-black text-slate-500 uppercase mb-2">Interval</label>
+<p class="text-xl font-black text-emerald-500" x-text="sparkPlugData[selectedGts][bank][cyl].lastHours - sparkPlugData[selectedGts][bank][cyl].prevHours"></p>
 </div>
 </div>
 </div>
@@ -502,44 +479,25 @@
 </div>
 <!-- PCC VALVE -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'pcc'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
-<div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'PCC Running Hours Follow - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                Engine Total Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
-            </p>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
+<h2 class="text-3xl font-black text-white tracking-tight uppercase" x-text="'PCC Valve Monitoring - GTS ' + selectedGts"></h2>
 </div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
 <template x-for="bank in ['A', 'B']">
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-<h3 class="text-xs font-black text-primary uppercase tracking-widest mb-4 border-b pb-2" x-text="'PCC SERVICE BANK ' + bank"></h3>
+<div class="bg-surface-container p-8 rounded-lg border border-slate-800 shadow-xl">
+<h3 class="text-sm font-black text-sky-400 uppercase tracking-[0.2em] mb-8 border-b border-slate-800 pb-4" x-text="'PCC MAINTENANCE BANK ' + bank"></h3>
 <div class="space-y-4">
 <template x-for="cyl in 9">
-<div class="grid grid-cols-1 sm:grid-cols-12 gap-3 p-4 rounded-lg border border-slate-100 bg-slate-50/30 transition-all items-center">
-<div class="sm:col-span-1 border-r border-slate-200 pr-2">
-<span class="text-[11px] font-black text-primary" x-text="cyl + bank"></span>
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-4 p-5 rounded-lg border border-slate-800 bg-slate-900/40 items-center">
+<div class="sm:col-span-1 border-r border-slate-800 pr-3 text-center">
+<span class="text-sm font-black text-white" x-text="cyl + bank"></span>
 </div>
-<div class="sm:col-span-8 grid grid-cols-3 gap-2">
-<div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Last Svc Date</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-semibold focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
+<div class="sm:col-span-8 grid grid-cols-2 gap-4">
+<input class="bg-slate-800 border-none rounded p-2 text-xs text-white" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
+<input class="bg-slate-800 border-none rounded p-2 text-xs font-black text-sky-400" type="number" x-model.number="pccData[selectedGts][bank][cyl].lastServiceHours"/>
 </div>
-<div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Eng. Hrs @ Svc</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-black text-primary focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="number" x-model.number="pccData[selectedGts][bank][cyl].lastServiceHours"/>
-</div>
-<div>
-<label class="block text-[7px] font-bold text-slate-400 uppercase mb-1">Prev. Svc Hrs</label>
-<input class="w-full text-[10px] border border-slate-200 rounded px-1.5 py-1 font-medium text-slate-500 focus:ring-1 focus:ring-sky-500 bg-white outline-none" type="number" x-model.number="pccData[selectedGts][bank][cyl].prevServiceHours"/>
-</div>
-</div>
-<div class="sm:col-span-3 text-center bg-white rounded border border-slate-200 flex flex-col justify-center py-1">
-<label class="block text-[7px] font-black text-slate-400 uppercase leading-tight mb-0.5">Svc Life</label>
-<div class="flex items-baseline justify-center gap-0.5">
-<span :class="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours &gt; 2000 ? 'text-error' : 'text-primary'" class="text-xs font-black" x-text="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours"></span>
-<span class="text-[7px] font-bold text-slate-400 uppercase">hrs ago</span>
-</div>
+<div class="sm:col-span-3 text-center">
+<span :class="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours &gt; 2000 ? 'text-red-500' : 'text-emerald-500'" class="text-xs font-black" x-text="engineHoursData[selectedGts].total - pccData[selectedGts][bank][cyl].lastServiceHours + ' hrs ago'"></span>
 </div>
 </div>
 </template>
@@ -550,102 +508,51 @@
 </div>
 <!-- VALVE MEASUREMENT -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'valve'">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-4">
-<div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="'Valve Clearance Advanced PMS - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                Current Hours: <span class="text-primary font-black" x-text="engineHoursData[selectedGts].total"></span> hrs
-            </p>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-sky-500 pl-6">
+<h2 class="text-3xl font-black text-white tracking-tight uppercase" x-text="'Valve Clearance Matrix - GTS ' + selectedGts"></h2>
 </div>
-<button class="bg-primary text-white px-4 py-2 rounded text-[10px] font-black uppercase tracking-widest shadow hover:opacity-90">Generate Clearance Report</button>
-</div>
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="bg-surface-container rounded-lg shadow-2xl border border-slate-800 overflow-hidden">
 <div class="overflow-x-auto no-scrollbar">
 <template x-for="bank in ['A', 'B']">
 <template x-for="cyl in 9">
-</template></template><table class="w-full text-[10px] border-collapse">
-<thead class="bg-slate-100 border-b border-slate-200 font-black">
-<tr class="text-center uppercase text-primary">
-<th class="p-3 border-r bg-slate-200 text-left sticky left-0 z-10 w-24">Cylinder</th>
-<th class="p-3 border-r">Last Meas Date</th>
-<th class="p-3 border-r">Hrs @ Meas</th>
-<th class="p-2 border-r bg-sky-50">Intake A</th>
-<th class="p-2 border-r bg-sky-50">Intake B</th>
-<th class="p-2 border-r bg-red-50">Exhaust C</th>
-<th class="p-2 border-r bg-red-50">Exhaust D</th>
-<th class="p-3 border-r bg-slate-50">Next 500h</th>
-<th class="p-3 bg-slate-50">Next 1000h</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50 transition-colors text-center">
-<td class="p-3 border-r bg-slate-50 font-black text-primary sticky left-0 text-left" x-text="'CYL ' + cyl + bank"></td>
-<td class="p-1 border-r">
-<input class="w-full text-[9px] bg-transparent border-none text-center outline-none focus:bg-white" type="date" x-model="valveData[selectedGts][bank][cyl].lastMeasDate"/>
-</td>
-<td class="p-1 border-r">
-<input class="w-full text-[10px] font-black text-primary bg-transparent border-none text-center outline-none focus:bg-white" type="number" x-model.number="valveData[selectedGts][bank][cyl].lastMeasHours"/>
-</td>
-<td class="p-0 border-r bg-sky-50/20">
-<input class="grid-cell-input font-bold text-sky-700" type="text" x-model="valveData[selectedGts][bank][cyl].A"/>
-</td>
-<td class="p-0 border-r bg-sky-50/20">
-<input class="grid-cell-input font-bold text-sky-700" type="text" x-model="valveData[selectedGts][bank][cyl].B"/>
-</td>
-<td class="p-0 border-r bg-red-50/20">
-<input class="grid-cell-input font-bold text-red-700" type="text" x-model="valveData[selectedGts][bank][cyl].C"/>
-</td>
-<td class="p-0 border-r bg-red-50/20">
-<input class="grid-cell-input font-bold text-red-700" type="text" x-model="valveData[selectedGts][bank][cyl].D"/>
-</td>
-<td class="p-2 border-r bg-slate-50">
-<div class="flex flex-col">
-<span class="font-black text-primary" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 500"></span>
-<span :class="((valveData[selectedGts][bank][cyl].lastMeasHours + 500) - engineHoursData[selectedGts].total) &lt; 50 ? 'text-error' : 'text-slate-400'" class="text-[8px] font-bold" x-text="'Rem: ' + ((valveData[selectedGts][bank][cyl].lastMeasHours + 500) - engineHoursData[selectedGts].total) + 'h'"></span>
-</div>
-</td>
-<td class="p-2 bg-slate-50">
-<div class="flex flex-col">
-<span class="font-black text-primary" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 1000"></span>
-<span class="text-[8px] text-slate-400 font-bold" x-text="'Rem: ' + ((valveData[selectedGts][bank][cyl].lastMeasHours + 1000) - engineHoursData[selectedGts].total) + 'h'"></span>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- STARTING AIR COMPRESSORS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'starting-air'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Starting Air Compressors (30 Bar)</h2>
-<div class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-<div class="p-4 bg-primary text-white text-xs font-black uppercase tracking-widest flex justify-between items-center">
-<span>Maintenance Log (4 Units)</span>
-</div>
-<div class="overflow-x-auto no-scrollbar">
-<template x-for="task in startingAirTasks">
-</template><template x-for="u in 4">
-</template><table class="w-full text-[11px] border-collapse">
-<thead class="bg-slate-50 text-slate-500 uppercase font-black border-b border-slate-200 text-center">
+</template></template><table class="w-full text-[11px] border-collapse min-w-[1000px]">
+<thead class="bg-slate-900 border-b border-slate-800 font-black h-16 text-slate-400">
 <tr>
-<th class="p-4 text-left border-r sticky left-0 bg-slate-50">Maintenance Task</th>
-<th class="p-4 border-r">Interval (Hrs)</th>
-<th class="p-4 border-r bg-sky-50 text-primary">Unit 1.1</th>
-<th class="p-4 border-r bg-sky-50 text-primary">Unit 1.2</th>
-<th class="p-4 border-r bg-sky-50 text-primary">Unit 2.1</th>
-<th class="p-4 bg-sky-50 text-primary">Unit 2.2</th>
+<th class="p-4 border-r border-slate-800 text-left sticky left-0 bg-slate-900">Cylinder</th>
+<th class="p-4 border-r border-slate-800">Last Meas Date</th>
+<th class="p-4 border-r border-slate-800">Hrs @ Meas</th>
+<th class="p-4 border-r border-slate-800 bg-sky-900/20 text-sky-400">Intake A</th>
+<th class="p-4 border-r border-slate-800 bg-sky-900/20 text-sky-400">Intake B</th>
+<th class="p-4 border-r border-slate-800 bg-red-900/20 text-red-400">Exhaust C</th>
+<th class="p-4 border-r border-slate-800 bg-red-900/20 text-red-400">Exhaust D</th>
+<th class="p-4 text-emerald-400">Next Service</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<tr class="hover:bg-slate-50/50">
-<td class="p-3 border-r bg-slate-50 font-black text-primary sticky left-0" x-text="task.name"></td>
-<td class="p-3 border-r text-center font-bold text-slate-400" x-text="task.interval"></td>
-<td class="p-2 border-r bg-white text-center">
-<div class="flex flex-col items-center">
-<input class="w-full text-center text-[10px] font-black text-primary border-none p-0 outline-none" type="text" value="429"/>
-<div class="h-px bg-slate-100 w-full my-1"></div>
-<input class="w-full text-center text-[10px] text-slate-400 font-medium border-none p-0 outline-none" type="text" value="831"/>
+<tbody class="divide-y divide-slate-800">
+<tr class="hover:bg-slate-800/50 transition-colors h-14">
+<td class="p-4 border-r border-slate-800 font-black text-white sticky left-0 bg-slate-900/90" x-text="'CYL ' + cyl + bank"></td>
+<td class="p-2 border-r border-slate-800">
+<input class="w-full bg-transparent border-none text-[10px] text-slate-300 text-center" type="date" x-model="valveData[selectedGts][bank][cyl].lastMeasDate"/>
+</td>
+<td class="p-2 border-r border-slate-800">
+<input class="w-full bg-transparent border-none text-[12px] font-black text-sky-400 text-center" type="number" x-model.number="valveData[selectedGts][bank][cyl].lastMeasHours"/>
+</td>
+<td class="p-2 border-r border-slate-800 bg-sky-900/10">
+<input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].A"/>
+</td>
+<td class="p-2 border-r border-slate-800 bg-sky-900/10">
+<input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].B"/>
+</td>
+<td class="p-2 border-r border-slate-800 bg-red-900/10">
+<input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].C"/>
+</td>
+<td class="p-2 border-r border-slate-800 bg-red-900/10">
+<input class="grid-cell-input" type="text" x-model="valveData[selectedGts][bank][cyl].D"/>
+</td>
+<td class="p-4 text-center">
+<div class="flex flex-col">
+<span class="text-[12px] font-black text-emerald-500" x-text="valveData[selectedGts][bank][cyl].lastMeasHours + 500"></span>
+<span class="text-[9px] text-slate-500 font-bold" x-text="'Remain: ' + ((valveData[selectedGts][bank][cyl].lastMeasHours + 500) - engineHoursData[selectedGts].total) + 'h'"></span>
 </div>
 </td>
 </tr>
@@ -654,87 +561,5 @@
 </div>
 </div>
 </div>
-<!-- SERVICE AIR COMPRESSORS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'service-air'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Service Air Compressors (7 Bar)</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<template x-for="i in 2">
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="p-4 bg-slate-800 text-white text-xs font-black uppercase tracking-widest" x-text="'Service Air Unit ' + i"></div>
-<div class="p-6 space-y-4">
-<div class="flex justify-between items-center border-b border-slate-100 pb-2">
-<span class="text-xs font-bold uppercase text-slate-400">Total Running Hours</span>
-<input :value="12450 + (i*100)" class="border border-slate-200 rounded p-1 text-xs w-24 text-right font-black" type="number"/>
 </div>
-<div class="flex justify-between items-center">
-<span class="text-xs font-bold uppercase text-slate-400">Last Service Date</span>
-<input class="border border-slate-200 rounded p-1 text-xs w-32 font-bold" type="date" value="2026-10-15"/>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- CONTROL AIR COMPRESSORS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'control-air'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Control Air &amp; Instrument Units</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<template x-for="i in 2">
-<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="p-4 bg-slate-600 text-white text-xs font-black uppercase tracking-widest" x-text="'Control Air Unit ' + i"></div>
-<div class="p-6 space-y-4">
-<div class="flex justify-between items-center border-b border-slate-100 pb-2">
-<span class="text-xs font-bold uppercase text-slate-400">Operational Hours</span>
-<input class="border border-slate-200 rounded p-1 text-xs w-24 text-right font-black" type="number" value="342"/>
-</div>
-<div class="flex justify-between items-center">
-<span class="text-xs font-bold uppercase text-slate-400">Dryer Status</span>
-<span class="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded uppercase">Active</span>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- DENOX COMPRESSORS -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'denox'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Denox Compressors (12 Units)</h2>
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-<template x-for="i in 12">
-<div class="bg-white p-5 rounded-xl border border-slate-100 shadow-sm transition-all hover:shadow-md">
-<p class="text-[9px] font-black text-slate-400 uppercase mb-2" x-text="'Denox Unit ' + i"></p>
-<div class="flex flex-col gap-3">
-<div class="flex justify-between items-center">
-<span class="text-[10px] font-bold text-primary">HRS:</span>
-<input :value="4500 + i*15" class="w-16 border-none bg-slate-50 rounded p-1 text-[10px] font-black text-right" type="number"/>
-</div>
-<div class="w-full bg-slate-100 h-1 rounded-full overflow-hidden">
-<div :style="'width: ' + (70 + (i % 20)) + '%'" class="bg-sky-500 h-full rounded-full"></div>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- FWG -->
-<div class="space-y-8" x-cloak="" x-show="currentView === 'fwg'">
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase border-l-4 border-sky-500 pl-4">Fresh Water Generators (FWG)</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-<template x-for="i in 4">
-<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-<div class="flex justify-between items-center mb-4">
-<p class="text-[10px] font-black text-primary uppercase" x-text="'FWG UNIT ' + i"></p>
-<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-</div>
-<div class="space-y-3">
-<div class="flex justify-between text-[11px]">
-<span class="text-slate-400 uppercase font-bold">Daily Output</span>
-<span class="text-primary font-black">24.5 m³</span>
-</div>
-<div class="flex justify-between text-[11px]">
-<span class="text-slate-400 uppercase font-bold">Salinity</span>
-<span class="text-emerald-600 font-black">0.4 ppm</span>
-</div>
-<div class="pt-2 border-t border-slate-100">
-<p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Last Acid Clean</p>
-</div></div></div></template></div></div></div></main></body></html>
+</main>```</body></html>
