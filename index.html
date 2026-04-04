@@ -1,97 +1,4 @@
-<html class="light" lang="en"><head></head><body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
-        isLoggedIn: false,
-        loginData: { username: '', password: '' },
-        loginError: false,
-        handleLogin() {
-            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-                this.isLoggedIn = true;
-                this.loginError = false;
-                this.currentView = 'dashboard';
-            } else {
-                this.loginError = true;
-                this.loginData.password = '';
-            }
-        },
-        currentView: 'dashboard', 
-        sidebarOpen: true, 
-        selectedGts: 1,
-        selectedLogDate: '2026-03-24',
-        engineHoursData: {},
-        runningHoursList: [],
-        sparkPlugData: {},
-        pccData: {},
-        valveData: {},
-        initData() {
-            const initialEquip = [
-                { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170, 0, 0, 0, 0] },
-                { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165, 0, 0, 0, 0] },
-                { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168, 0, 0, 0, 0] },
-                { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38, 0, 0, 0, 0] },
-                { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162, 0, 0, 0, 0] },
-                { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169, 0, 0, 0, 0] },
-                { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168, 0, 0, 0, 0] },
-                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170, 0, 0, 0, 0] },
-                { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171, 0, 0, 0, 0] },
-                { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169, 0, 0, 0, 0] },
-                { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172, 0, 0, 0, 0] },
-                { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170, 0, 0, 0, 0] },
-                { isHeader: true, label: 'COMPRESSORS' },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [14, 12, 15, 14, 0, 0, 0, 0] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 11, 9, 10, 0, 0, 0, 0] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, last: 1578, weeks: [16, 14, 15, 16, 0, 0, 0, 0] },
-                { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 18, 16, 17, 0, 0, 0, 0] },
-                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 30, 32, 31, 0, 0, 0, 0] },
-                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, last: 7907, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
-                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
-                { desc: 'NOX CONTROL AIR COMPRESSOR NO:1', sn: 'TRD132998', total: 1786, last: 1786, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
-                { isHeader: true, label: 'SEA WATER PUMPS' },
-                { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, last: 2687, weeks: [13, 14, 12, 13, 0, 0, 0, 0] },
-                { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, last: 2446, weeks: [12, 11, 13, 12, 0, 0, 0, 0] },
-                { desc: 'SEA WATER PUMP 3', sn: '458226-07-06', total: 2477, last: 2490, weeks: [13, 12, 14, 13, 0, 0, 0, 0] },
-                { desc: 'SEA WATER PUMP 4', sn: '458226-07-12', total: 3636, last: 3649, weeks: [13, 12, 14, 13, 0, 0, 0, 0] },
-                { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 10833, last: 10978, weeks: [145, 140, 148, 145, 0, 0, 0, 0] },
-                { isHeader: true, label: 'AUXILIARY EQUIPMENT' },
-                { desc: 'AUX.MACH.COOLER SW PUMP 1', sn: '458226-08-01', total: 12651, last: 12651, weeks: [0, 0, 0, 0, 0, 0, 0, 0] },
-                { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, weeks: [168, 165, 170, 168, 0, 0, 0, 0] }
-            ];
-
-            // Build expanded 300 rows as requested
-            this.runningHoursList = [...initialEquip];
-            const currentItemCount = this.runningHoursList.filter(i =&gt; !i.isHeader).length;
-            const remaining = 300 - currentItemCount;
-            for(let i=0; i&lt;remaining; i++) {
-                this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(12).fill(0) });
-            }
-
-            for(let gts=1; gts&lt;=12; gts++) {
-                this.engineHoursData[gts] = { total: 0, weekly: 0, monthly: 0 };
-                this.sparkPlugData[gts] = { A: {}, B: {} };
-                this.pccData[gts] = { A: {}, B: {} };
-                this.valveData[gts] = { A: {}, B: {} };
-                ['A', 'B'].forEach(bank =&gt; {
-                    for(let cyl=1; cyl&lt;=9; cyl++) {
-                        this.sparkPlugData[gts][bank][cyl] = { lastDate: '2026-03-15', lastHours: 44000, prevDate: '2025-08-20', prevHours: 42000 };
-                        this.pccData[gts][bank][cyl] = { lastServiceDate: '2026-01-10', lastServiceHours: 43000, prevServiceHours: 40000 };
-                        this.valveData[gts][bank][cyl] = { lastMeasDate: '2026-02-05', lastMeasHours: 44500, A: 0.45, B: 0.45, C: 0.90, D: 0.90 };
-                    }
-                });
-            }
-            this.syncGtsHours();
-        },
-        syncGtsHours() {
-            for(let i=1; i&lt;=12; i++) {
-                let found = this.runningHoursList.find(item =&gt; item.desc &amp;&amp; item.desc.includes('NO.' + i + ' '));
-                if(found) {
-                    this.engineHoursData[i].total = parseInt(found.total) || 0;
-                    this.engineHoursData[i].weekly = parseInt(found.weeks[0]) || 0;
-                }
-            }
-        },
-        downloadExcel() {
-            alert('Aggregating Central Data Pool... Exporting KPS8_Weekly_RHRS_Report.xlsx');
-        }
-    }" x-init="initData()">```html
-
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>KPS8 OSMAN BEY PMS - Mariner Core OS</title>
@@ -138,12 +45,134 @@
         [x-cloak] { display: none !important; }
         .nav-item.active { @apply bg-white/10 text-white font-bold shadow-lg border-l-4 border-sky-400; }
         .nav-item.active .material-symbols-outlined { @apply text-sky-400; }
-        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[65px] text-[10px] font-mono p-0; }
-        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[65px]; }
+        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
+        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
         .running-hours-table input { @apply bg-transparent border-none text-center focus:ring-0 w-full text-[10px]; }
         .sticky-col { @apply sticky left-0 bg-white z-10 border-r border-slate-200; }
         .sticky-header { @apply sticky top-0 z-30 bg-slate-50; }
     </style>
+</head>
+<body class="bg-surface text-on-background font-body selection:bg-primary-container selection:text-primary overflow-hidden" x-data="{ 
+        isLoggedIn: false,
+        loginData: { username: '', password: '' },
+        loginError: false,
+        handleLogin() {
+            if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
+                this.isLoggedIn = true;
+                this.loginError = false;
+                this.currentView = 'dashboard';
+            } else {
+                this.loginError = true;
+                this.loginData.password = '';
+            }
+        },
+        currentView: 'dashboard', 
+        sidebarOpen: true, 
+        selectedGts: 1,
+        selectedLogDate: new Date().toISOString().split('T')[0],
+        engineHoursData: {},
+        runningHoursList: [],
+        sparkPlugData: {},
+        pccData: {},
+        valveData: {},
+        weeksCount: 52,
+        initData() {
+            const rawData = [
+                { isHeader: true, label: 'MAIN ENGINES (GTS)' },
+                { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170] },
+                { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165] },
+                { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168] },
+                { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38] },
+                { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162] },
+                { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169] },
+                { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168] },
+                { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170] },
+                { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171] },
+                { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169] },
+                { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172] },
+                { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170] },
+                { isHeader: true, label: 'COMPRESSORS' },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [14, 12, 15, 14] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 11, 9, 10] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/18', total: 1562, last: 1578, weeks: [16, 14, 15, 16] },
+                { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 18, 16, 17] },
+                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 30, 32, 31] },
+                { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 7907, last: 7907, weeks: [0, 0, 0, 0] },
+                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0, 0, 0] },
+                { desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2133-22421214', total: 1393, last: 1393, weeks: [0, 0, 0, 0] },
+                { isHeader: true, label: 'SEA WATER PUMPS' },
+                { desc: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, last: 2687, weeks: [13, 14, 12, 13] },
+                { desc: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2434, last: 2446, weeks: [12, 11, 13, 12] },
+                { desc: 'SEA WATER PUMP 3', sn: '458226-07-06', total: 2477, last: 2490, weeks: [13, 12, 14, 13] },
+                { desc: 'SEA WATER PUMP 4', sn: '458226-07-12', total: 3636, last: 3649, weeks: [13, 12, 14, 13] },
+                { desc: 'SEA WATER PUMP 5', sn: '458226-07-13', total: 3208, last: 3222, weeks: [14, 14, 14, 14] },
+                { desc: 'SEA WATER PUMP 16', sn: '458226-07-16', total: 10833, last: 10978, weeks: [145, 140, 148, 145] },
+                { isHeader: true, label: 'AUXILIARY EQUIPMENT' },
+                { desc: 'AUX.MACH.COOLER SW PUMP 1', sn: '458226-08-01', total: 12651, last: 12651, weeks: [0, 0, 0, 0] },
+                { desc: 'AUX.MACH.COOLER SW PUMP 2', sn: '458226-08-02', total: 19442, last: 19610, weeks: [168, 165, 170, 168] },
+                { desc: 'FW SW PUMP 1 (SG 6)', sn: 'SH593075-055', total: 2322, last: 2322, weeks: [0, 0, 0, 0] },
+                { desc: 'FW SW PUMP 2 (SG 6)', sn: 'SH593075-047', total: 2295, last: 2295, weeks: [0, 0, 0, 0] },
+                { desc: 'FW SW PUMP 3 (4SGB)', sn: 'SH593075-033', total: 12722, last: 12887, weeks: [165, 165, 165, 165] },
+                { desc: 'FW SW PUMP 4 (4SGB)', sn: 'SH593075-031', total: 11753, last: 11843, weeks: [90, 90, 90, 90] },
+                { isHeader: true, label: 'PREHEATING PUMPS' },
+                { desc: 'SG HT PREHEATING PUMP 1', sn: '449595', total: 20732, last: 20883, weeks: [151, 150, 152, 151] },
+                { desc: 'SG HT PREHEATING PUMP 2', sn: '449600', total: 20218, last: 20361, weeks: [143, 142, 144, 143] },
+                { desc: 'SG HT PREHEATING PUMP 3', sn: '449596', total: 17827, last: 17977, weeks: [150, 149, 151, 150] },
+                { isHeader: true, label: 'LUBE OIL SYSTEMS' },
+                { desc: 'SG PRELUB. PUMP 1', sn: '512257', total: 542, last: 543, weeks: [1, 1, 1, 1] },
+                { desc: 'SG PRELUB. PUMP 2', sn: '512258', total: 600, last: 607, weeks: [7, 7, 7, 7] },
+                { desc: 'SG PRELUB. PUMP 3', sn: '512256', total: 701, last: 702, weeks: [1, 1, 1, 1] }
+            ];
+
+            // Normalize weeks array for existing data
+            rawData.forEach(item =&gt; {
+                if(!item.isHeader) {
+                    const currentWeeks = item.weeks || [];
+                    item.weeks = Array(this.weeksCount).fill(0).map((_, i) =&gt; currentWeeks[i] || 0);
+                }
+            });
+
+            this.runningHoursList = [...rawData];
+            
+            // Expand to 500 rows
+            while(this.runningHoursList.length &lt; 500) {
+                 this.runningHoursList.push({ 
+                     desc: '', 
+                     sn: '', 
+                     total: 0, 
+                     last: 0, 
+                     weeks: Array(this.weeksCount).fill(0) 
+                 });
+            }
+
+            for(let gts=1; gts&lt;=12; gts++) {
+                this.engineHoursData[gts] = { total: 0, weekly: 0 };
+                this.sparkPlugData[gts] = { A: {}, B: {} };
+                this.pccData[gts] = { A: {}, B: {} };
+                this.valveData[gts] = { A: {}, B: {} };
+                ['A', 'B'].forEach(bank =&gt; {
+                    for(let cyl=1; cyl&lt;=9; cyl++) {
+                        this.sparkPlugData[gts][bank][cyl] = { lastDate: '2026-03-15', lastHours: 44000, prevDate: '2025-08-20', prevHours: 42000 };
+                        this.pccData[gts][bank][cyl] = { lastServiceDate: '2026-01-10', lastServiceHours: 43000 };
+                        this.valveData[gts][bank][cyl] = { lastMeasDate: '2026-02-05', lastMeasHours: 44500, A: 0.45, B: 0.45, C: 0.90, D: 0.90 };
+                    }
+                });
+            }
+            this.syncGtsHours();
+        },
+        syncGtsHours() {
+            for(let i=1; i&lt;=12; i++) {
+                let found = this.runningHoursList.find(item =&gt; item.desc &amp;&amp; item.desc.includes('NO.' + i + ' '));
+                if(found) {
+                    this.engineHoursData[i].total = parseInt(found.total) || 0;
+                    this.engineHoursData[i].weekly = parseInt(found.weeks[0]) || 0;
+                }
+            }
+        },
+        downloadExcel() {
+            alert('Exporting Fleet_Data_Pool_KPS8.xlsx');
+        }
+    }" x-init="initData()">
 <!-- LOGIN OVERLAY -->
 <div class="fixed inset-0 z-[100] flex items-center justify-center bg-[#001f3f]" x-show="!isLoggedIn">
 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
@@ -237,8 +266,8 @@
 </div>
 </header>
 <div class="flex-1 overflow-y-auto no-scrollbar p-4 lg:p-8">
-<!-- DASHBOARD SECTION (Shared across all views as summary) -->
-<div class="mb-8 bg-white rounded-lg p-6 border border-slate-200 shadow-sm" x-show="currentView === 'dashboard' || currentView === 'running-hours'">
+<!-- SUMMARY WIDGETS -->
+<div class="mb-8 bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 <div class="space-y-1">
 <h2 class="text-xl font-black text-primary uppercase tracking-tight">Vessel Telemetry</h2>
@@ -285,13 +314,13 @@
 </div>
 </template>
 </div>
-<!-- RUNNING HOURS TAB (EXPANDED TO 300 ROWS) -->
+<!-- RUNNING HOURS TAB -->
 <div class="space-y-6" x-cloak="" x-show="currentView === 'running-hours'">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (300 Units)</h2>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase">Equipment Running Hours Log (500 Units)</h2>
 <div class="flex items-center gap-2 mt-2">
-<label class="text-[10px] font-bold text-slate-500 uppercase">Tarih Seçici:</label>
+<label class="text-[10px] font-bold text-slate-500 uppercase">Log Date:</label>
 <input class="text-[10px] font-bold text-primary border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
 </div>
 </div>
@@ -306,30 +335,30 @@
 </div>
 <div class="bg-white rounded shadow-xl border border-slate-200 overflow-hidden relative">
 <div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-350px)]">
-<template x-for="w in 12">
-</template><template x-for="(item, index) in runningHoursList">
+<template x-for="w in weeksCount">
+</template><template :key="index" x-for="(item, index) in runningHoursList">
 <template x-if="item.isHeader">
 </template></template><template x-if="!item.isHeader">
-</template><template x-for="(week, wIdx) in [0,1,2,3,4,5,6,7,8,9,10,11]">
-</template><table class="w-full text-[10px] border-collapse min-w-[2200px] running-hours-table">
+</template><template x-for="(week, wIdx) in item.weeks">
+</template><table class="w-full text-[10px] border-collapse min-w-[5000px] running-hours-table">
 <thead class="sticky top-0 z-40 bg-slate-50 shadow-sm">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
-<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[320px]">Equipment Description</th>
-<th class="sticky left-[320px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[140px]">Serial No</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[100px]">Total Hours</th>
-<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[100px]">Last Hours</th>
-<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + (w-1)"></th>
+<th class="sticky left-0 bg-slate-50 z-50 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
+<th class="sticky left-[350px] bg-slate-50 z-50 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
+<th class="px-2 text-center border-r border-slate-200 bg-sky-50 text-primary w-[120px]">Total Hours</th>
+<th class="px-2 text-center border-r border-slate-200 bg-sky-100 text-primary w-[120px]">Last Hours</th>
+<th class="px-2 text-center border-r border-slate-200 header-historical" x-text="'Week ' + w"></th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
 <tr class="bg-slate-100/80">
-<td class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" colspan="16" x-text="item.label"></td>
+<td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-20 bg-slate-100/80 border-r border-slate-200" x-text="item.label"></td>
 </tr>
 <tr class="hover:bg-sky-50/30 transition-colors group">
 <td class="sticky left-0 z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
 <input class="px-4 py-3 text-left font-bold text-primary placeholder:text-slate-200 focus:bg-white" placeholder="Enter Equipment Name..." type="text" x-model="item.desc"/>
 </td>
-<td class="sticky left-[320px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
+<td class="sticky left-[350px] z-20 bg-white group-hover:bg-sky-50/50 p-0 border-r border-slate-200">
 <input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white" placeholder="S/N..." type="text" x-model="item.sn"/>
 </td>
 <td class="p-0 border-r border-slate-200 bg-sky-50/30">
@@ -459,13 +488,13 @@
 </div>
 </div>
 </div>
-<!-- OTHER SECTIONS -->
+<!-- PLACEHOLDER VIEWS -->
 <template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
 <div class="space-y-6" x-cloak="" x-show="currentView === viewId">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-l-4 border-primary pl-6">
 <div>
-<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="viewId.replace('-', ' ') + ' Dashboard'"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Maritime Authority Registered Data Pool</p>
+<h2 class="text-2xl font-black text-primary tracking-tight uppercase" x-text="viewId.replace('-', ' ') + ' Control'"></h2>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Maritime Authority Compliant Data Pool</p>
 </div>
 </div>
 <div class="bg-white rounded p-20 flex flex-col items-center justify-center text-center border border-slate-200 border-dashed">
@@ -476,4 +505,4 @@
 </template>
 </div>
 </main>
-```</body></html>
+</body></html>
