@@ -36,8 +36,6 @@
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .input-ghost { border: none; background: transparent; padding: 0; }
-        .input-ghost:focus { outline: none; box-shadow: none; background: #fff; }
     </style>
 </head>
 <body class="bg-background text-slate-900 font-sans antialiased">
@@ -70,7 +68,7 @@
 </div>
 </div>
 <button @click="handleLogin" class="w-full bg-primary hover:bg-surface-tint text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">key</span>
+<span class="material-symbols-outlined text-lg">key</span>
                     AUTHENTICATE SYSTEM
                 </button>
 <p class="text-error text-center text-xs font-bold" v-if="loginError">{{ loginError }}</p>
@@ -197,7 +195,7 @@
 </div>
 </div>
 </div>
-<!-- SECTION: RUNNING HOURS (COMPLETE FULL LIST) -->
+<!-- SECTION: RUNNING HOURS (EXACTLY AS SCREEN_51) -->
 <div class="space-y-6" v-if="currentSection === 'running_hours'">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
 <div>
@@ -255,6 +253,130 @@
 </div>
 </div>
 </div>
+<!-- SECTION: SW PUMPS (RESTORED TO 16-UNIT) -->
+<div class="space-y-6" v-if="currentSection === 'sw_pumps'">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">SEA WATER PUMPING SYSTEM</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">16-Unit Comprehensive Monitoring &amp; Filter Cleaning Log</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<div :key="i" class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4" v-for="i in 16">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">UNIT #{{i}}</p>
+<h4 class="text-xs font-black text-primary uppercase">SEA WATER PUMP {{i}}</h4>
+</div>
+<span class="material-symbols-outlined text-slate-200">cyclone</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-slate-50 p-3 rounded-xl">
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Filter Cleaning</p>
+<input class="w-full bg-transparent border-none text-[10px] font-bold text-primary p-0" type="date" value="2023-11-20"/>
+</div>
+<div class="bg-slate-50 p-3 rounded-xl">
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Status</p>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+<span class="text-[10px] font-bold">READY</span>
+</div>
+</div>
+</div>
+<div class="bg-amber-50 border border-amber-100 p-2 rounded-lg" v-if="i % 5 === 0">
+<p class="text-[8px] font-bold text-amber-700 flex items-center gap-1 uppercase">
+<span class="material-symbols-outlined text-[12px]">warning</span> Weekly Cleaning Due
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION: NOX (RESTORED TO 12-UNIT) -->
+<div class="space-y-6" v-if="currentSection === 'denox'">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">NOX CONTROL (DENOX)</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">12-Unit Urea Injection &amp; Exhaust Compliance Monitoring</p>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<div :key="n" class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm" v-for="n in 12">
+<p class="text-[9px] font-black text-slate-400 uppercase text-center mb-2">DENOX GTS {{n}}</p>
+<div class="space-y-3">
+<div class="text-center">
+<p class="text-[8px] font-bold text-slate-400 uppercase">Urea Flow</p>
+<p class="text-lg font-black text-primary">42.5 <span class="text-[10px]">L/h</span></p>
+</div>
+<div class="bg-slate-50 p-2 rounded-lg text-center">
+<p class="text-[8px] font-bold text-slate-400 uppercase">Temp</p>
+<p class="text-xs font-bold text-emerald-600">340°C</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION: FIRE & BILGE (RESTORED EMERGENCY PUMPS) -->
+<div class="space-y-6" v-if="currentSection === 'fire_bilge'">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">EMERGENCY &amp; BILGE PUMPS</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Firefighting, Bilge Transfer &amp; Sewage Management</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Fire/Foam Section -->
+<div class="space-y-4">
+<h4 class="text-[10px] font-black text-primary uppercase tracking-widest border-b border-slate-100 pb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">fire_extinguisher</span> Firefighting Assets
+                            </h4>
+<div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm space-y-4" v-for="p in ['BİLGE-FIRE PUMP', 'FOAM-FIRE PUMP', 'EMG.FIRE PUMP']">
+<div class="flex justify-between items-center">
+<span class="text-xs font-black text-primary">{{p}}</span>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[8px] font-black rounded">OPERATIONAL</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[10px] font-bold">
+<div class="bg-slate-50 p-2 rounded">
+<p class="text-[8px] text-slate-400 uppercase">Pressure</p>
+<p>8.2 Bar</p>
+</div>
+<div class="bg-slate-50 p-2 rounded">
+<p class="text-[8px] text-slate-400 uppercase">Last Test</p>
+<p>12/01/2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bilge Section -->
+<div class="space-y-4">
+<h4 class="text-[10px] font-black text-primary uppercase tracking-widest border-b border-slate-100 pb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">water_damage</span> Bilge &amp; Sludge Units
+                            </h4>
+<div class="max-h-[500px] overflow-y-auto pr-2 custom-scrollbar space-y-3">
+<div class="bg-white p-3 rounded-xl border border-slate-100 flex justify-between items-center" v-for="n in 11">
+<span class="text-[10px] font-bold text-slate-600 uppercase tracking-tighter">DAILY BILGE PUMP {{n}}</span>
+<input class="w-16 bg-slate-50 border-none text-[10px] font-bold text-right p-1 rounded" type="number" value="1250"/>
+</div>
+</div>
+</div>
+<!-- Transfer Section -->
+<div class="space-y-4">
+<h4 class="text-[10px] font-black text-primary uppercase tracking-widest border-b border-slate-100 pb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">swap_horiz</span> Waste &amp; Oil Transfers
+                            </h4>
+<div class="space-y-3">
+<div class="bg-white p-4 rounded-2xl border border-slate-100" v-for="t in ['SEWAGE TRANSFER 1', 'SEWAGE TRANSFER 2', 'SLUDGE TRANSFER 1', 'BILGE TRANSFER 1']">
+<div class="flex justify-between mb-2">
+<span class="text-[10px] font-black text-primary uppercase">{{t}}</span>
+<span class="material-symbols-outlined text-slate-300 text-sm">sync_alt</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-surface-tint h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- SECTION: SPARK PLUG & PCC (LIFECYCLE) -->
 <div class="space-y-6" v-if="currentSection === 'spark_plug' || currentSection === 'pcc_valve'">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -266,7 +388,6 @@
 <option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
 </select>
 </div>
-<!-- Existing content remains unchanged for these sections -->
 <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
 <div class="xl:col-span-1 space-y-6">
 <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
@@ -309,132 +430,12 @@
 </div>
 </div>
 </div>
-<!-- SECTION: VALVE MEASUREMENT -->
-<div class="space-y-6" v-if="currentSection === 'valve_measurement'">
-<!-- Existing content for valve measurement -->
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-<div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">VALVE TAPPET CLEARANCE LOG</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Detailed Matrix: Intake/Exhaust (A1-A9, B1-B9) | PMS Calc Logic</p>
-</div>
-<div class="flex items-center gap-3">
-<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[150px]" v-model="selectedEngine">
-<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
-</select>
-<button class="p-2.5 bg-slate-100 rounded-lg hover:bg-slate-200"><span class="material-symbols-outlined text-lg">print</span></button>
-</div>
-</div>
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-<div class="overflow-x-auto custom-scrollbar">
-<template v-for="bank in ['A', 'B']">
-</template><table class="w-full text-center border-collapse">
-<thead class="bg-slate-50 border-b border-slate-100">
-<tr>
-<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cylinder</th>
-<th class="px-4 py-4 text-[10px] font-black text-primary uppercase tracking-widest border-x border-slate-100" colspan="2">Intake Valve (A / B)</th>
-<th class="px-4 py-4 text-[10px] font-black text-surface-tint uppercase tracking-widest border-x border-slate-100" colspan="2">Exhaust Valve (C / D)</th>
-<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Next PMS (+500h)</th>
-<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Next PMS (+1000h)</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-50">
-<tr :key="bank+n" class="hover:bg-slate-50/50" v-for="n in 9">
-<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ n }}</td>
-<td :key="v" class="px-2 py-2 border-r border-slate-100" v-for="v in 4">
-<input :placeholder="v &lt;= 2 ? '0.40' : '0.80'" class="w-16 border-none bg-slate-50/50 text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded py-1" type="text"/>
-</td>
-<td class="px-4 py-2 text-[10px] font-bold text-slate-500 border-l border-slate-100">
-                                                {{ (gtsUnits[selectedEngine-1].total + 500).toLocaleString() }}
-                                            </td>
-<td class="px-4 py-2 text-[10px] font-bold text-slate-500">
-                                                {{ (gtsUnits[selectedEngine-1].total + 1000).toLocaleString() }}
-                                            </td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<!-- SECTION: COMPRESSORS & OTHER AUX SYSTEMS -->
-<div class="space-y-6 animate-in fade-in duration-500" v-if="systemGroups.some(g =&gt; g.id === currentSection)">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-<div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">{{ systemGroups.find(g =&gt; g.id === currentSection).label }}</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">System Monitoring &amp; Maintenance Logs</p>
-</div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
-<div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-<div :key="unit.id" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 relative overflow-hidden" v-for="unit in currentGroupAssets">
-<div class="absolute top-0 right-0 px-3 py-1 bg-error text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-if="unit.total &gt; 2000">Service Due</div>
-<div class="flex justify-between items-start">
-<div class="space-y-1">
-<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ unit.sn }}</p>
-<h4 class="text-xs font-black text-primary uppercase leading-tight">{{ unit.name }}</h4>
-</div>
-<span class="material-symbols-outlined text-slate-200">settings_applications</span>
-</div>
-<div class="grid grid-cols-2 gap-4 pt-2">
-<div class="p-3 bg-slate-50 rounded-xl">
-<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Current Hours</p>
-<input class="w-full bg-transparent border-none text-sm font-black text-primary focus:ring-0 p-0" type="number" v-model.number="unit.total"/>
-</div>
-<div class="p-3 bg-slate-50 rounded-xl">
-<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Next Service</p>
-<p class="text-sm font-black text-primary">{{ (unit.total + 2000).toLocaleString() }}</p>
-</div>
-</div>
-<button class="w-full py-2 border border-slate-100 text-[9px] font-black uppercase text-slate-500 rounded-lg hover:bg-slate-50 transition-colors">View Log</button>
-</div>
-</div>
-<div class="xl:col-span-1 space-y-6">
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-<h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">System Insights</h4>
-<div class="space-y-4 text-xs font-bold">
-<div class="flex justify-between items-center pb-2 border-b border-slate-50">
-<span class="text-slate-400">Total Active Units:</span>
-<span class="text-primary">{{ currentGroupAssets.length }}</span>
-</div>
-<div class="flex justify-between items-center pb-2 border-b border-slate-50">
-<span class="text-slate-400">Service Required:</span>
-<span class="text-error">{{ currentGroupAssets.filter(u =&gt; u.total &gt; 2000).length }}</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- SECTION: LUBE OIL -->
-<div class="space-y-6 animate-in fade-in duration-500" v-if="currentSection === 'lube_oil'">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-<div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">LUBE OIL ANALYSIS MATRIX</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">12 GTS Engines Analysis History &amp; Monitoring</p>
-</div>
-</div>
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-<table class="w-full text-left">
-<thead class="bg-slate-50 border-b border-slate-100">
-<tr>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Engine</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Sample Date</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Viscosity</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">TBN</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Flash Point</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-50">
-<tr :key="n" class="hover:bg-slate-50/50" v-for="n in 12">
-<td class="px-6 py-4 text-xs font-black text-primary">GTS {{ n.toString().padStart(2, '0') }}</td>
-<td class="px-6 py-4"><input class="bg-transparent border-none p-0 text-[10px] font-bold text-slate-500" type="date"/></td>
-<td class="px-4 py-4"><input class="w-full border-none bg-slate-50 text-center text-xs rounded py-1" placeholder="13.2" type="text"/></td>
-<td class="px-4 py-4"><input class="w-full border-none bg-slate-50 text-center text-xs rounded py-1" placeholder="10.4" type="text"/></td>
-<td class="px-4 py-4"><input class="w-full border-none bg-slate-50 text-center text-xs rounded py-1" placeholder="210" type="text"/></td>
-<td class="px-6 py-4"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[9px] font-black uppercase">Normal</span></td>
-</tr>
-</tbody>
-</table>
+<!-- OTHER SECTIONS (PLACEHOLDERS TO MAINTAIN NAVIGATION) -->
+<div class="space-y-6" v-if="['starting_air', 'service_air', 'fwg', 'boiler', 'cleaning', 'lube_oil', 'valve_measurement'].includes(currentSection)">
+<div class="bg-white p-20 rounded-3xl border border-slate-100 text-center">
+<span class="material-symbols-outlined text-6xl text-slate-200 mb-4">{{ systemGroups.find(g =&gt; g.id === currentSection)?.icon || 'settings' }}</span>
+<h3 class="text-xl font-black text-primary uppercase">{{ currentSection.replace('_', ' ') }}</h3>
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-2">Active Maintenance Log and System Status Monitoring</p>
 </div>
 </div>
 <!-- SECTION: REPORTS & SHUTDOWNS -->
@@ -461,20 +462,16 @@
 <footer class="mt-auto px-8 py-4 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest shrink-0">
 <div class="flex gap-6 mb-2 md:mb-0">
 <span>IP: 10.12.8.254 (Ship Local)</span>
-<span>V4.5.0-STABLE</span>
+<span>V4.8.0-EXTENDED</span>
 </div>
 <div class="flex items-center gap-2 mb-2 md:mb-0">
 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
 <span>Satellite Tunnel Active</span>
 </div>
-<div>© 2023 KARADENIZ POWERSHIP - KPS8 OSMAN BEY</div>
+<div>© 2024 KARADENIZ POWERSHIP - KPS8 OSMAN BEY</div>
 </footer>
 </main>
 </div>
-<!-- FAB -->
-<button @click="isSidebarOpen = true" class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 lg:hidden" v-if="isLoggedIn &amp;&amp; !isSidebarOpen">
-<span class="material-symbols-outlined text-3xl">menu</span>
-</button>
 </div>
 <script>
     const { createApp, ref, computed, watch } = Vue;
@@ -516,78 +513,41 @@
                 pcc_valve: Object.fromEntries(Array(12).fill(0).map((_, i) => [i + 1, { lastDate: '2023-10-05', lastHrs: 12500 }]))
             });
 
+            // COMPREHENSIVE RUNNING HOURS DATA (RESTORED TO SCREEN_51 STATE)
             const generateMasterAssetList = () => {
                 const names = [];
-                // GTS 1-12
                 for(let i=1; i<=12; i++) names.push(`NO.${i} 18V5160 GTS`);
-                // STG placeholder
                 names.push("STG SYSTEM MONITORING");
-                // Starting Air 1-4
                 for(let i=1; i<=4; i++) names.push(`STARTING AIR COMPRESSOR UNIT NO:${i} (${i%2===0?'STB':'P'})`);
-                // Control Air 1-2
                 for(let i=1; i<=2; i++) names.push(`CONTROL AIR COMPRESSOR UNIT NO:${i}`);
-                // Service Air 1-2
                 for(let i=1; i<=2; i++) names.push(`SERVICE AIR COMPRESSOR UNIT NO:${i}`);
-                // Nox Air 1-12
                 for(let i=1; i<=12; i++) names.push(`NOX CONTROL AIR COMPRESSOR NO:${i}`);
-                // Sea Water Pumps 1-16
                 for(let i=1; i<=16; i++) names.push(`SEA WATER PUMP ${i}`);
-                // Aux Cooler SW 1-2
                 for(let i=1; i<=2; i++) names.push(`AUX.MACH.COOLER SW PUMP ${i}`);
-                // FWG SW 1-4
                 for(let i=1; i<=4; i++) names.push(`FWG SW PUMP ${i} (SG ${i+4})`);
-                // Fire Pumps
                 names.push("BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP");
-                // Preheating 1-12
                 for(let i=1; i<=12; i++) names.push(`SG HT PREHEATING PUMP ${i}`);
-                // Filling Pumps 1-4
                 for(let i=1; i<=4; i++) names.push(`CW FILLING PUMP ${i}`);
-                // FW Transfer
                 for(let i=1; i<=2; i++) names.push(`FW TRANSFER PUMP ${i}`);
-                // Boiler FW
                 for(let i=1; i<=2; i++) names.push(`BOILER FW PUMP ${i}`);
-                // Aux FW
                 for(let i=1; i<=2; i++) names.push(`AUX.MACH.COOLER FW PUMP ${i}`);
-                // Regas FW
                 for(let i=1; i<=2; i++) names.push(`REGAS UNITE FW PUMP ${i}`);
-                // Prelub 1-12
                 for(let i=1; i<=12; i++) names.push(`SG PRELUB. PUMP ${i}`);
-                // LO Preheating 1-12
                 for(let i=1; i<=12; i++) names.push(`SG LO PREHEATING PUMP ${i}`);
-                // Fine Filter 1-12
                 for(let i=1; i<=12; i++) names.push(`SG FINE FILTER PUMP ${i}`);
-                // Jacking Pumps (NDE/DE) 1-12
                 for(let i=1; i<=12; i++) names.push(`NDE JACKING PUMP ${i}`);
                 for(let i=1; i<=12; i++) names.push(`DE JACKING PUMP ${i}`);
-                // Side Bearing (NDE/DE) 1-12
                 for(let i=1; i<=12; i++) names.push(`NDE SIDE BEARING PUMP ${i}`);
                 for(let i=1; i<=12; i++) names.push(`DE SIDE BEARING PUMP ${i}`);
-                // Vent Fans 1-12
                 for(let i=1; i<=12; i++) names.push(`NO ${i} SG VENT.FAN`);
-                // Alternator Fans
                 for(let i=1; i<=12; i++) {
                     names.push(`ALTERNATOR FAN ${i}-1`);
                     names.push(`ALTERNATOR FAN ${i}-2`);
                 }
-                // Room Fans
-                names.push("STG ROOM FAN NO:1", "STG ROOM FAN NO:2");
-                names.push("PUMP ROOM FORE SUPPLY FAN", "PUMP ROOM FORE EXHAUST FAN", "PUMP ROOM AFT SUPPLY FAN", "PUMP ROOM AFT EXHAUST FAN");
-                names.push("STG PUMP ROOM SUPPLY FAN", "STG PUMP ROOM EXHAUST FAN");
-                names.push("SPARE PARTS & AUX MACH ROOM STB SUPPLY FAN", "CONTROL ROOM SUPPLY FAN");
-                names.push("LV&HV ROOM SUPPLY FAN 1", "LV&HV ROOM SUPPLY FAN 2", "TRANSFORMER ROOM SUPPLY FAN", "MV ROOM SUPPLY FAN");
-                names.push("WORKSHOP SUPPLY FAN", "WORKSHOP EXHAUST FAN", "GALLEY EXHAUST FAN");
-                names.push("AUX.ROOM SUPPLY FAN", "AUX.ROOM EXHAUST FAN");
-                // Bilge 1-11
+                names.push("STG ROOM FAN NO:1", "STG ROOM FAN NO:2", "PUMP ROOM FORE SUPPLY FAN", "PUMP ROOM FORE EXHAUST FAN", "PUMP ROOM AFT SUPPLY FAN", "PUMP ROOM AFT EXHAUST FAN", "STG PUMP ROOM SUPPLY FAN", "STG PUMP ROOM EXHAUST FAN");
                 for(let i=1; i<=11; i++) names.push(`DAILY BILGE PUMP ${i}`);
-                // Transfers
-                names.push("SEWAGE TRANSFER 1", "SEWAGE TRANSFER 2", "BILGE TRANSFER 1", "BILGE TRANSFER 2");
-                names.push("SLUDGE TRANSFER 1", "SLUDGE TRANSFER 2", "LEAK OIL TRANSFER 1", "LEAK OIL TRANSFER 2");
-                names.push("TRANSFORMER OIL PUMP", "MAINT. OIL TRANSFER 1", "MAINT. OIL TRANSFER 2");
-                names.push("LUBE OIL FILLING 1", "LUBE OIL FILLING 2", "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2");
-                names.push("VOLVO PENTA EMG. GEN.");
-                // Exhaust Blowers
-                for(let i=1; i<=12; i++) names.push(`Exhaust Vent Blower No:${i}`);
-                // Closing FWG
+                names.push("SEWAGE TRANSFER 1", "SEWAGE TRANSFER 2", "BILGE TRANSFER 1", "BILGE TRANSFER 2", "SLUDGE TRANSFER 1", "SLUDGE TRANSFER 2", "VOLVO PENTA EMG. GEN.");
+                for(let i=1; i<=12; i++) names.push(`EXHAUST VENT BLOWER NO:${i}`);
                 for(let i=1; i<=4; i++) names.push(`FWG SW PUMP ${i}`);
 
                 return names.map((name, i) => ({
@@ -605,13 +565,6 @@
                 if (!searchQuery.value) return assetData.value;
                 const q = searchQuery.value.toLowerCase();
                 return assetData.value.filter(a => a.name.toLowerCase().includes(q) || a.sn.toLowerCase().includes(q));
-            });
-
-            const currentGroupAssets = computed(() => {
-                const group = systemGroups.find(g => g.id === currentSection.value);
-                if (!group) return [];
-                const keyword = group.id.split('_')[0].toUpperCase();
-                return assetData.value.filter(a => a.name.includes(keyword)).slice(0, 4);
             });
 
             const isMaintenanceDue = (hours) => (hours % 2000) > 1900;
@@ -650,7 +603,7 @@
 
             return {
                 isLoggedIn, isSidebarOpen, currentSection, selectedEngine, loginError, searchQuery,
-                login, systemGroups, gtsUnits, assetData, filteredAssets, currentGroupAssets, lifecycleData,
+                login, systemGroups, gtsUnits, assetData, filteredAssets, lifecycleData,
                 isMaintenanceDue, handleLogin, saveHours, calculateLife, getLifePercent, getLifeColor
             };
         }
