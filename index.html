@@ -3,637 +3,497 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY PMS | Marine Maintenance System</title>
+<title>KPS8 OSMAN BEY PMS | Industrial Asset Management</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "secondary": "#48626e",
-                        "on-secondary-fixed-variant": "#304a55",
-                        "tertiary-fixed": "#ffdbca",
-                        "tertiary-fixed-dim": "#ffb690",
-                        "on-tertiary-fixed": "#341100",
-                        "tertiary-container": "#592300",
-                        "surface-bright": "#f4faff",
-                        "outline": "#737780",
-                        "on-surface": "#111d23",
-                        "inverse-surface": "#263238",
-                        "error": "#ba1a1a",
-                        "secondary-fixed": "#cbe7f5",
-                        "on-secondary-container": "#4e6874",
-                        "on-primary-container": "#6b9edf",
-                        "outline-variant": "#c3c6d1",
-                        "background": "#f4faff",
-                        "surface-container-high": "#ddeaf2",
-                        "secondary-fixed-dim": "#afcbd8",
-                        "on-primary": "#ffffff",
-                        "on-error": "#ffffff",
-                        "inverse-on-surface": "#e6f3fb",
-                        "secondary-container": "#cbe7f5",
-                        "primary-fixed": "#d3e4ff",
-                        "on-tertiary-container": "#d8885c",
+                    colors: {
+                        primary: "#001f3d",
+                        secondary: "#48626e",
                         "surface-tint": "#27609d",
-                        "surface-container-highest": "#d7e4ec",
-                        "primary-fixed-dim": "#a3c9ff",
-                        "on-background": "#111d23",
-                        "primary-container": "#003461",
-                        "on-primary-fixed": "#001c38",
-                        "on-surface-variant": "#43474f",
-                        "error-container": "#ffdad6",
-                        "primary": "#001f3d",
-                        "on-tertiary": "#ffffff",
-                        "on-error-container": "#93000a",
-                        "surface-variant": "#d7e4ec",
-                        "on-tertiary-fixed-variant": "#723610",
-                        "surface-container-lowest": "#ffffff",
-                        "on-primary-fixed-variant": "#004882",
-                        "surface-dim": "#cfdce4",
-                        "inverse-primary": "#a3c9ff",
-                        "surface": "#f4faff",
-                        "on-secondary-fixed": "#021f29",
-                        "surface-container": "#e3f0f8",
-                        "tertiary": "#381300",
-                        "on-secondary": "#ffffff",
-                        "surface-container-low": "#e9f6fd"
+                        background: "#f4faff",
+                        error: "#ba1a1a",
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "fontFamily": {
-                        "headline": ["Inter"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
                     }
-                },
-            },
+                }
+            }
         }
     </script>
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f4faff; }
-        ::-webkit-scrollbar-thumb { background: #c3c6d1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #737780; }
-        
-        .sidebar-glass {
-            background: rgba(244, 250, 255, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-
-        .industrial-input {
-            background: #d7e4ec;
-            border: none;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        .industrial-input:focus {
-            background: #ffffff;
-            border-bottom-color: #27609d;
-            outline: none;
-            box-shadow: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .nav-link.active {
-            background-color: white;
-            color: #1e3a8a; /* blue-900 */
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            font-weight: 700;
-        }
-        
-        #main-app { display: none; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        [v-cloak] { display: none; }
+        .sidebar-glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        input[type="number"]::-webkit-inner-spin-button { display: none; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim">
-<!-- LOGIN SCREEN OVERLAY -->
-<div class="fixed inset-0 z-[100] bg-surface flex items-center justify-center p-6" id="login-screen">
-<div class="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden border border-outline-variant/10">
-<div class="p-8 space-y-6">
-<div class="text-center space-y-2">
-<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-container text-on-primary mb-4">
-<span class="material-symbols-outlined text-4xl">directions_boat</span>
-</div>
-<h1 class="text-2xl font-black tracking-tighter text-primary">KPS8 OSMAN BEY PMS</h1>
-<p class="text-secondary text-sm">Industrial Asset Management System</p>
-</div>
-<form class="space-y-4" id="login-form">
-<div>
-<label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Username</label>
-<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" id="username" placeholder="Enter username" type="text" value="KPS8"/>
+<body class="bg-background text-slate-900 font-sans antialiased">
+<div id="app" v-cloak="">
+<!-- LOGIN SCREEN -->
+<div class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6" v-if="!isLoggedIn">
+<div class="w-full max-w-md space-y-8">
+<div class="text-center space-y-4">
+<div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary text-white shadow-xl">
+<span class="material-symbols-outlined text-5xl">directions_boat</span>
 </div>
 <div>
-<label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Password</label>
-<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" id="password" placeholder="Enter password" type="password" value="umut"/>
-</div>
-<div class="hidden text-error text-xs font-bold text-center" id="login-error">Invalid credentials.</div>
-<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-lg font-bold shadow-lg active:scale-95 transition-transform" type="submit">
-                    ACCESS SYSTEM
-                </button>
-</form>
-<div class="text-center">
-<a class="text-xs text-on-primary-fixed-variant hover:underline" href="#">Forgot access credentials? Contact Fleet Manager</a>
+<h1 class="text-3xl font-black tracking-tighter text-primary">KPS8 OSMAN BEY</h1>
+<p class="text-secondary font-medium tracking-widest uppercase text-xs">Plant Maintenance System</p>
 </div>
 </div>
-<div class="h-1.5 w-full bg-gradient-to-r from-primary via-primary-container to-surface-tint"></div>
+<div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-2xl space-y-6">
+<div class="space-y-4">
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Ship Identification</label>
+<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" placeholder="IMO Number or ID" type="text" v-model="login.shipId"/>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Username</label>
+<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" type="text" v-model="login.username"/>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Access Password</label>
+<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" type="password" v-model="login.password"/>
 </div>
 </div>
-<div class="flex min-h-screen" id="main-app">
-<!-- SIDENAVBAR -->
-<aside class="sidebar-glass h-screen w-64 fixed left-0 top-0 flex flex-col p-4 border-r border-slate-200/50 z-50">
-<div class="px-2 mb-8">
-<h2 class="text-lg font-black text-blue-900 tracking-tighter">KPS8 OSMAN BEY</h2>
-<p class="text-[10px] uppercase font-bold text-outline tracking-[0.1em]">Engine Management System</p>
+<button @click="handleLogin" class="w-full bg-primary hover:bg-surface-tint text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">key</span>
+                        AUTHENTICATE SYSTEM
+                    </button>
+<p class="text-error text-center text-xs font-bold" v-if="loginError">{{ loginError }}</p>
 </div>
-<nav class="flex-1 overflow-y-auto space-y-1 pr-2">
-<a class="nav-link active flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="dashboard" href="#">
-<span class="material-symbols-outlined text-xl">dashboard</span>
-<span class="text-sm">Dashboard</span>
-</a>
-<div class="pt-4 pb-2">
-<span class="px-3 text-[10px] font-black text-outline uppercase tracking-widest">Maintenance Groups</span>
+<p class="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">Confidential Shipboard Document System</p>
 </div>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="spark-plug" href="#">
-<span class="material-symbols-outlined text-xl">electrical_services</span>
-<span class="text-sm">Spark Plug</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="pcc-valve" href="#">
-<span class="material-symbols-outlined text-xl">settings_input_component</span>
-<span class="text-sm">PCC Valve</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="valve-measurement" href="#">
-<span class="material-symbols-outlined text-xl">straighten</span>
-<span class="text-sm">Valve Measurement</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="starting-air" href="#">
-<span class="material-symbols-outlined text-xl">air</span>
-<span class="text-sm">Starting Air</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="service-air" href="#">
-<span class="material-symbols-outlined text-xl">compress</span>
-<span class="text-sm">Service Air</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="control-air" href="#">
-<span class="material-symbols-outlined text-xl">valve</span>
-<span class="text-sm">Control Air</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="denox" href="#">
-<span class="material-symbols-outlined text-xl">eco</span>
-<span class="text-sm">Denox</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="fwg" href="#">
-<span class="material-symbols-outlined text-xl">water_drop</span>
-<span class="text-sm">FWG</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="sw-pumps" href="#">
-<span class="material-symbols-outlined text-xl">cyclone</span>
-<span class="text-sm">SW Pumps</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="lube-oil" href="#">
-<span class="material-symbols-outlined text-xl">oil_barrel</span>
-<span class="text-sm">Lube Oil</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="cleaning" href="#">
-<span class="material-symbols-outlined text-xl">cleaning_services</span>
-<span class="text-sm">Cleaning</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="boiler" href="#">
-<span class="material-symbols-outlined text-xl">rebase_edit</span>
-<span class="text-sm">Boiler</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="shutdowns" href="#">
-<span class="material-symbols-outlined text-xl text-error">report_problem</span>
-<span class="text-sm">Shutdowns</span>
-</a>
-<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="reports" href="#">
-<span class="material-symbols-outlined text-xl">analytics</span>
-<span class="text-sm">Reports</span>
-</a>
+</div>
+<!-- MAIN APP -->
+<div class="flex min-h-screen" v-else="">
+<!-- SIDEBAR -->
+<aside :class="{'translate-x-0': isSidebarOpen, '-translate-x-full': !isSidebarOpen}" class="fixed inset-y-0 left-0 z-50 w-64 sidebar-glass border-r border-slate-200 transition-transform lg:translate-x-0 lg:static lg:block">
+<div class="flex flex-col h-full p-4">
+<div class="px-2 py-4 mb-6 border-b border-slate-100">
+<h2 class="text-xl font-black text-primary tracking-tighter">KPS8 OSMAN BEY</h2>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Engine Mgmt</span>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
+<button :class="currentSection === 'dashboard' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'dashboard'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                            Dashboard
+                        </button>
+<div class="pt-6 pb-2 px-4">
+<span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Core Maintenance</span>
+</div>
+<template :key="item.id" v-for="item in menuItems">
+<button :class="currentSection === item.id ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = item.id" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
+<span class="material-symbols-outlined text-lg">{{ item.icon }}</span>
+                                {{ item.label }}
+                            </button>
+</template>
 </nav>
-<div class="mt-auto p-4 bg-surface-container-high rounded-xl flex items-center gap-3">
-<img alt="Profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChFej_SSCWfKhR_XQcN4ZvSSH-PwvRT5PyjlSLQgUWzCcqLZRpjBKGTQGducwMsNlNLoyuvbonHvVfgNB6mmuMZC83bbxYwrauz2JkQIrDh42eQLzWW2EzD4jShzrVWjSDqq8xD3KVwOSYj7Yr2zQAWwEFmu1uPigYL7h2TGx4WA2RZ6n-L04NYj3JLuhxX0cxUM11icaKNZ0TfgpFb1rHePXUAln42XbUAzYOaf0OXWQv4lDdQKC053HS8Z8z4nNNP2cqZNHt0-M"/>
+<div class="mt-auto p-4 bg-slate-50 rounded-2xl flex items-center gap-3 border border-slate-100">
+<div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-primary font-black border-2 border-white shadow-sm">U</div>
 <div class="flex-1 min-w-0">
-<p class="text-xs font-bold text-primary truncate">Chief Eng. Umut</p>
-<p class="text-[10px] text-secondary">Logged in: 08:34</p>
+<p class="text-xs font-black text-primary truncate">Chief Umut</p>
+<p class="text-[10px] font-bold text-slate-400">Ship Online</p>
+</div>
+<button @click="isLoggedIn = false" class="text-slate-400 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
 </div>
 </div>
 </aside>
 <!-- MAIN CONTENT -->
-<main class="flex-1 ml-64 min-h-screen flex flex-col">
-<!-- TOPNAVBAR -->
-<header class="w-full top-0 sticky z-40 bg-slate-50 border-b border-slate-200/50 flex justify-between items-center px-8 py-4">
+<main class="flex-1 min-w-0 flex flex-col">
+<!-- TOP NAV -->
+<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40">
 <div class="flex items-center gap-4">
-<h1 class="text-xl font-bold tracking-tighter text-blue-900">Vessel Status: <span class="text-surface-tint">AT SEA</span></h1>
-<div class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-[10px] font-black uppercase tracking-wider">
-                    Main Gas Spec: 98%
-                </div>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative">
-<input class="w-64 bg-slate-200/50 border-none rounded-full px-10 py-2 text-sm focus:ring-2 focus:ring-primary-fixed" placeholder="Search components..." type="text"/>
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-</div>
-<div class="flex items-center gap-4 text-slate-500">
-<button class="relative hover:text-primary transition-colors">
-<span class="material-symbols-outlined">notifications</span>
-<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
+<button @click="isSidebarOpen = !isSidebarOpen" class="lg:hidden text-slate-600">
+<span class="material-symbols-outlined">menu</span>
 </button>
-<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<div class="flex items-center gap-3">
+<span class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-widest">AT SEA</span>
+<div class="hidden sm:flex items-center gap-2 text-xs font-bold text-slate-500">
+<span class="text-slate-300">|</span>
+<span class="uppercase tracking-widest">Gas Spec:</span>
+<span class="text-surface-tint">98% (94.2 CH4)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block">
+<input class="w-64 bg-slate-100 border-none rounded-full px-10 py-2 text-xs focus:ring-2 focus:ring-primary" placeholder="Quick Search Component..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+</div>
+<div class="flex items-center gap-3 text-slate-400">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
 <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
-<button class="hover:text-error transition-colors" id="logout-btn"><span class="material-symbols-outlined">logout</span></button>
 </div>
 </div>
 </header>
 <!-- CANVAS -->
-<div class="p-8 space-y-8" id="content-area">
-<!-- DASHBOARD SECTION (Default) -->
-<section class="space-y-8" id="dashboard-section">
-<!-- 12-ENGINE DASHBOARD SUMMARY -->
-<div class="grid grid-cols-12 gap-6">
-<div class="col-span-12 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-6">
+<div class="p-4 lg:p-8 space-y-8 overflow-y-auto max-h-[calc(100vh-4rem)] custom-scrollbar">
+<!-- SECTION: DASHBOARD -->
+<div class="space-y-8 animate-in fade-in duration-500" v-if="currentSection === 'dashboard'">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+<div class="xl:col-span-12 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div>
+<h3 class="text-lg font-black text-primary uppercase tracking-tighter">GAS TURBINE ENGINES (GTS) FLEET STATUS</h3>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real-time Running Hours &amp; Maintenance State</p>
+</div>
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sync</span> Sync Ship Data
+                                    </button>
+</div>
+<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
+<div :class="n === 3 ? 'border-error bg-red-50/50' : 'border-emerald-500 bg-slate-50'" :key="n" class="p-3 rounded-xl border-b-4 text-center transition-transform hover:scale-105 cursor-pointer" v-for="n in 12">
+<p class="text-[8px] font-black text-slate-400 uppercase">GTS {{ n.toString().padStart(2, '0') }}</p>
+<p class="text-sm font-black text-primary mt-1">{{ (Math.random() * 5000 + 10000).toFixed(0).toLocaleString() }}</p>
+<p class="text-[7px] font-bold text-slate-400 mt-1 uppercase">{{ n === 3 ? 'Stopped' : 'Running' }}</p>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">oil_barrel</span>
+<h4 class="text-xs font-black text-primary uppercase tracking-widest">Lube Oil Levels</h4>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest">
+<span class="text-slate-400">Daily Service Tank</span>
+<span class="text-primary">4,250 / 6,000 L</span>
+</div>
+<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 70%"></div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">analytics</span>
+<h4 class="text-xs font-black text-primary uppercase tracking-widest">Critical Alert Log</h4>
+</div>
+<button class="text-[9px] font-black text-surface-tint uppercase hover:underline">Clear History</button>
+</div>
+<div class="space-y-3">
+<div :key="i" class="flex items-center gap-4 p-3 bg-slate-50 rounded-xl border border-slate-100" v-for="i in 3">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+<div class="flex-1">
+<p class="text-[10px] font-black text-primary">GTS 03 - HIGH DIFFERENTIAL PRESSURE FILTERS</p>
+<p class="text-[8px] text-slate-400 uppercase font-bold">Logged: 2023-11-20 04:12 UTC</p>
+</div>
+<button class="px-3 py-1 bg-white border border-slate-200 text-[9px] font-black uppercase rounded-lg hover:bg-slate-100">Ack</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION: RUNNING HOURS -->
+<div class="space-y-6" v-if="currentSection === 'running_hours'">
 <div class="flex justify-between items-end">
 <div>
-<h3 class="text-lg font-bold text-primary uppercase tracking-tighter">Gas Terminal Engines (GTS) - Fleet Status</h3>
-<p class="text-xs text-secondary font-medium uppercase tracking-widest">Global Running Hours &amp; Reliability Matrix</p>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">EQUIPMENT MAINTENANCE MATRIX</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Master Inventory - 214 Logged Assets</p>
 </div>
-<button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">sync</span> SYNC DATA
-                            </button>
-</div>
-<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
-<!-- 12 Engine Blocks -->
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 01</p>
-<p class="text-lg font-bold text-primary">12,450</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 02</p>
-<p class="text-lg font-bold text-primary">11,280</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-error">
-<p class="text-[9px] font-black text-outline uppercase">GTS 03</p>
-<p class="text-lg font-bold text-primary">13,912</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 04</p>
-<p class="text-lg font-bold text-primary">10,550</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-yellow-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 05</p>
-<p class="text-lg font-bold text-primary">8,240</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 06</p>
-<p class="text-lg font-bold text-primary">14,102</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 07</p>
-<p class="text-lg font-bold text-primary">9,418</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 08</p>
-<p class="text-lg font-bold text-primary">11,437</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 09</p>
-<p class="text-lg font-bold text-primary">13,542</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 10</p>
-<p class="text-lg font-bold text-primary">7,352</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 11</p>
-<p class="text-lg font-bold text-primary">11,623</p>
-</div>
-<div class="p-3 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
-<p class="text-[9px] font-black text-outline uppercase">GTS 12</p>
-<p class="text-lg font-bold text-primary">4,928</p>
-</div>
-</div>
-</div>
-</div>
-<!-- RUNNING HOURS HIGH DENSITY TABLE SECTION -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-slate-200/30">
-<div class="px-6 py-4 bg-slate-100 flex justify-between items-center border-b border-slate-200">
-<h2 class="text-sm font-black text-primary uppercase tracking-[0.15em]">Detailed Maintenance Registry - Fleet Inventory</h2>
 <div class="flex gap-2">
-<button class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded border border-outline-variant/30 hover:bg-slate-50 transition-colors uppercase">Previous Month</button>
-<button class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-primary-container transition-colors uppercase">Save Changes</button>
+<button class="px-4 py-2 bg-white border border-slate-200 text-xs font-bold rounded-lg uppercase">Import XL</button>
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg uppercase">Save Batch</button>
 </div>
 </div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse min-w-[1200px]">
-<thead class="bg-surface-container-low sticky top-0 z-10">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left">
+<thead class="bg-slate-50 border-b border-slate-100">
 <tr>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest border-r border-slate-200 w-1/4">Equipment Description</th>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest border-r border-slate-200 w-48">Serial Number</th>
-<th class="px-4 py-3 text-[10px] font-black text-primary uppercase tracking-widest border-r border-slate-200 w-32">Total RHRS</th>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 1</th>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 2</th>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 3</th>
-<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center">Week 4</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Serial</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Total HRS</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W1</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W2</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W3</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W4</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-slate-100">
-<!-- Engine Rows 1-12 -->
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.1 18V51/60G GTS</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145116</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2575</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-</tr>
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.2 18V51/60G GTS</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145117</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2450</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="160"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="162"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="158"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="155"/></td>
-</tr>
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.3 18V51/60G GTS</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145118</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2289</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="0"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="12"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-error font-bold text-xs uppercase">MTNC</td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="0"/></td>
-</tr>
-<!-- Add other equipment -->
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">STARTING AIR COMPRESSOR UNIT NO.1 (P)</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">73/20</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">1246</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="14"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="15"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="12"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="14"/></td>
-</tr>
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">SEA WATER PUMP 1</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">458226-07-01</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2674</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
-</tr>
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NOX CONTROL AIR COMPRESSOR NO.1</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">TRD132994</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">7907</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="48"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="45"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="50"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="42"/></td>
-</tr>
-<tr class="hover:bg-slate-50/50">
-<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">SG PRE-LUB PUMP 1</td>
-<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">512255</td>
-<td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">542</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
-<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
-<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
+<tbody class="divide-y divide-slate-50">
+<tr :key="asset.id" class="hover:bg-slate-50/50 transition-colors" v-for="asset in paginatedAssets">
+<td class="px-6 py-4 text-xs font-black text-primary uppercase">{{ asset.name }}</td>
+<td class="px-6 py-4 text-[10px] font-bold text-slate-400">{{ asset.sn }}</td>
+<td class="px-6 py-4 text-center">
+<span class="text-xs font-black text-surface-tint">{{ asset.total }}</span>
+</td>
+<td :key="w" class="px-2 py-4" v-for="w in 4">
+<input class="w-16 mx-auto bg-slate-50 border-none text-center text-xs font-bold py-1.5 rounded-lg focus:ring-1 focus:ring-primary" placeholder="0" type="number"/>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="px-6 py-4 bg-slate-50 border-t border-slate-200 text-[10px] text-secondary flex justify-between">
-<span>Showing core fleet assets from Maintenance Matrix</span>
-<span class="font-bold">LAST DATA SYNC: 2023-11-20 08:32:01</span>
+</div>
+<div class="flex justify-between items-center px-4">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Viewing assets 1-15 of 214</span>
+<div class="flex gap-1">
+<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">1</button>
+<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">2</button>
+<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">...</button>
+<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">14</button>
 </div>
 </div>
-<!-- SUB-SECTION: SPARK PLUG TRACKING -->
-<div class="bg-surface-container-lowest rounded-xl shadow-sm p-6 space-y-6">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-3xl">electrical_services</span>
-<h2 class="text-lg font-black text-primary uppercase tracking-tighter">Spark Plug Lifecycle Management</h2>
 </div>
-<select class="bg-surface-container-high border-none rounded-lg text-xs font-bold py-2 px-4 pr-8 focus:ring-primary">
-<option>GTS 01 (1145116)</option>
-<option>GTS 02 (1145117)</option>
-<option>GTS 03 (1145118)</option>
+<!-- SECTION: SPARK PLUG -->
+<div class="space-y-6" v-if="currentSection === 'spark_plug'">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">SPARK PLUG LIFECYCLE MONITOR</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Cylinder Performance Matrix - Target: 4,000 hrs</p>
+</div>
+<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
+<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }} (11451{{15+n}})</option>
 </select>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<!-- Bank A -->
-<div class="space-y-4">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<div :key="bank" class="space-y-4" v-for="bank in ['A', 'B']">
 <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-<h4 class="text-xs font-black text-primary tracking-widest uppercase">BANK A - CYLINDERS</h4>
-<span class="text-[10px] font-bold text-secondary">Target Life: 4000 hrs</span>
+<h4 class="text-sm font-black text-primary tracking-widest uppercase">BANK {{ bank }} - CYLINDERS</h4>
+<span class="text-[10px] font-bold text-slate-400">CYL 1-9</span>
 </div>
-<div class="grid grid-cols-3 gap-3">
-<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl A1</p>
-<p class="text-sm font-black text-primary">3,120 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[78%]"></div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+<div :class="cyl === 3 &amp;&amp; bank === 'A' ? 'border-error bg-red-50/30' : 'border-emerald-500 bg-white'" :key="cyl" class="p-4 rounded-2xl border-l-4 shadow-sm" v-for="cyl in 9">
+<div class="flex justify-between items-start">
+<p class="text-[9px] font-black text-slate-400 uppercase">{{ bank }}{{ cyl }}</p>
+<span class="material-symbols-outlined text-xs text-slate-300">info</span>
 </div>
-</div>
-<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl A2</p>
-<p class="text-sm font-black text-primary">3,120 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[78%]"></div>
-</div>
-</div>
-<div class="bg-surface p-3 rounded-lg border-l-4 border-error">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl A3</p>
-<p class="text-sm font-black text-primary">4,015 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-error h-full w-full"></div>
+<p class="text-sm font-black text-primary mt-1">{{ (cyl === 3 &amp;&amp; bank === 'A' ? '4,015' : '3,120') }} hrs</p>
+<div class="w-full bg-slate-100 h-1.5 mt-3 rounded-full overflow-hidden">
+<div :class="cyl === 3 &amp;&amp; bank === 'A' ? 'bg-error w-full' : 'bg-emerald-500 w-[78%]'" class="h-full"></div>
 </div>
 </div>
 </div>
 </div>
-<!-- Bank B -->
+</div>
+</div>
+<!-- SECTION: VALVE MEASUREMENT -->
+<div class="space-y-6" v-if="currentSection === 'valve_measurement'">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">VALVE TAPPET CLEARANCE LOG</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Inlet/Exhaust Measurement Matrix (GTS {{ selectedEngine.toString().padStart(2, '0') }})</p>
+</div>
+<button class="p-2 bg-slate-100 rounded-lg hover:bg-slate-200"><span class="material-symbols-outlined">print</span></button>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<template v-for="bank in ['A', 'B']">
+</template><table class="w-full text-center border-collapse">
+<thead class="bg-slate-50 border-b border-slate-100">
+<tr>
+<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cyl</th>
+<th class="px-4 py-4 text-[10px] font-black text-primary uppercase tracking-widest border-x border-slate-100" colspan="2">Inlet Valve (A-B)</th>
+<th class="px-4 py-4 text-[10px] font-black text-surface-tint uppercase tracking-widest border-x border-slate-100" colspan="2">Exhaust Valve (C-D)</th>
+<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Observation</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr :key="bank + cyl" class="hover:bg-slate-50/50" v-for="cyl in 9">
+<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ cyl }}</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
+</td>
+<td class="px-4 py-2">
+<input class="w-full border-none bg-transparent text-[10px] focus:ring-0 italic" placeholder="Add remark..." type="text"/>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- SECTION: COMPRESSORS -->
+<div class="space-y-6" v-if="currentSection === 'starting_air' || currentSection === 'service_air' || currentSection === 'control_air'">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">compress</span>
+<div>
+<h3 class="text-lg font-black text-primary uppercase tracking-tighter">{{ currentSection.replace('_', ' ') }} Units</h3>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Compressed Air Infrastructure</p>
+</div>
+</div>
 <div class="space-y-4">
-<div class="flex items-center justify-between border-b border-slate-200 pb-2">
-<h4 class="text-xs font-black text-primary tracking-widest uppercase">BANK B - CYLINDERS</h4>
-<span class="text-[10px] font-bold text-secondary">Target Life: 4000 hrs</span>
+<div :key="n" class="p-4 bg-slate-50 rounded-xl border border-slate-100" v-for="n in 2">
+<div class="flex justify-between items-center mb-3">
+<p class="text-xs font-black text-primary uppercase">COMPRESSOR UNIT {{ n }}</p>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[8px] font-bold uppercase tracking-widest">Auto Mode</span>
 </div>
-<div class="grid grid-cols-3 gap-3">
-<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl B1</p>
-<p class="text-sm font-black text-primary">2,140 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[54%]"></div>
+<div class="grid grid-cols-3 gap-4">
+<div>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Pressure</p>
+<p class="text-sm font-black text-primary">28.4 Bar</p>
 </div>
+<div>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Temp</p>
+<p class="text-sm font-black text-primary">42 °C</p>
 </div>
-<div class="bg-surface p-3 rounded-lg border-l-4 border-yellow-500">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl B2</p>
-<p class="text-sm font-black text-primary">3,890 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-yellow-500 h-full w-[97%]"></div>
-</div>
-</div>
-<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
-<p class="text-[9px] font-bold text-secondary uppercase">Cyl B3</p>
-<p class="text-sm font-black text-primary">2,140 hrs</p>
-<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
-<div class="bg-emerald-500 h-full w-[54%]"></div>
+<div>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">RHRS</p>
+<p class="text-sm font-black text-primary">12,451</p>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<!-- LUBE OIL & ANALYSIS -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
-<div class="flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined text-surface-tint">oil_barrel</span>
-<h3 class="text-sm font-black text-primary uppercase">Lube Oil Consumption</h3>
-</div>
+<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+<h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Maintenance Log (Last 30 Days)</h4>
 <div class="space-y-4">
-<div class="flex justify-between items-center text-xs">
-<span class="text-secondary">Current Stock</span>
-<span class="font-bold text-primary">42,500 L</span>
-</div>
-<div class="h-4 bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-gradient-to-r from-blue-900 to-surface-tint w-2/3"></div>
-</div>
-<div class="flex justify-between items-center text-xs">
-<span class="text-secondary">Weekly Avg Top-up</span>
-<span class="font-bold text-primary">450 L / GTS</span>
+<div :key="i" class="flex gap-4" v-for="i in 3">
+<div class="w-1.5 bg-slate-200 rounded-full"></div>
+<div>
+<p class="text-[10px] font-black text-primary uppercase">Oil &amp; Filter Change Completion</p>
+<p class="text-[9px] text-slate-400 font-bold">2023-11-15 | Performed by 2nd Eng.</p>
 </div>
 </div>
 </div>
-<div class="col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-surface-tint">water_drop</span>
-<h3 class="text-sm font-black text-primary uppercase">Recent Water Analysis (FW)</h3>
+<button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 rounded-xl text-[10px] font-black text-slate-400 uppercase hover:bg-slate-50 transition-colors">
+                                    Add New Maintenance Entry
+                                </button>
 </div>
-<button class="text-[10px] font-bold text-surface-tint hover:underline">VIEW FULL LOG</button>
 </div>
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-<div class="bg-slate-50 p-3 rounded-lg text-center">
-<p class="text-[9px] font-black text-secondary">PH LEVEL</p>
-<p class="text-lg font-bold text-emerald-600">8.2</p>
-<p class="text-[8px] uppercase font-bold text-outline">Normal</p>
 </div>
-<div class="bg-slate-50 p-3 rounded-lg text-center">
-<p class="text-[9px] font-black text-secondary">CHLORIDE</p>
-<p class="text-lg font-bold text-primary">12 mg/l</p>
-<p class="text-[8px] uppercase font-bold text-outline">Normal</p>
+<!-- SECTION: REPORTS & SHUTDOWNS -->
+<div class="space-y-8" v-if="currentSection === 'reports' || currentSection === 'shutdowns'">
+<div class="bg-white p-12 rounded-3xl border border-slate-100 shadow-sm text-center space-y-6">
+<div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
+<span class="material-symbols-outlined text-5xl text-slate-300">{{ currentSection === 'reports' ? 'upload_file' : 'warning' }}</span>
 </div>
-<div class="bg-slate-50 p-3 rounded-lg text-center">
-<p class="text-[9px] font-black text-secondary">HARDNESS</p>
-<p class="text-lg font-bold text-primary">0.5 °d</p>
-<p class="text-[8px] uppercase font-bold text-outline">Low</p>
+<div>
+<h3 class="text-2xl font-black text-primary uppercase tracking-tighter">{{ currentSection }} Document Management</h3>
+<p class="text-sm text-slate-400 max-w-md mx-auto">Drag and drop ship records, analysis results, or engine shutdown logs for secure cloud synchronization.</p>
 </div>
-<div class="bg-slate-50 p-3 rounded-lg text-center border border-error-container">
-<p class="text-[9px] font-black text-secondary">IRON</p>
-<p class="text-lg font-bold text-error">0.8 ppm</p>
-<p class="text-[8px] uppercase font-bold text-error">High</p>
+<div class="flex justify-center gap-4">
+<label class="px-8 py-4 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest cursor-pointer hover:bg-surface-tint shadow-lg shadow-primary/20 transition-all">
+                                    Browse Files
+                                    <input class="hidden" type="file"/>
+</label>
+<button class="px-8 py-4 bg-white border border-slate-200 text-primary text-xs font-black rounded-xl uppercase tracking-widest hover:bg-slate-50 transition-colors">Generate PDF</button>
 </div>
 </div>
 </div>
 </div>
-</section>
-<!-- GENERIC SECTION PLACEHOLDER -->
-<section class="hidden min-h-[400px] flex items-center justify-center bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant" id="generic-section">
-<div class="text-center space-y-4">
-<span class="material-symbols-outlined text-6xl text-outline-variant">construction</span>
-<h2 class="text-xl font-bold text-primary uppercase" id="section-title">Section Name</h2>
-<p class="text-secondary text-sm">Detailed maintenance logs and tracking for this component are currently being synchronized.</p>
-</div>
-</section>
-</div>
-<!-- FOOTER SYSTEM INFO -->
-<footer class="mt-auto p-6 bg-surface-container flex flex-col md:flex-row justify-between items-center text-[10px] text-secondary font-medium border-t border-slate-200">
-<div class="flex gap-4 mb-2 md:mb-0">
+<!-- FOOTER -->
+<footer class="mt-auto px-8 py-4 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<div class="flex gap-6 mb-2 md:mb-0">
 <span>IP: 10.12.8.254 (Ship Local)</span>
-<span>SYSTEM VERSION: v4.2.1-STABLE</span>
+<span>V4.2.1-STABLE</span>
 </div>
 <div class="flex items-center gap-2 mb-2 md:mb-0">
 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-<span>SERVER CONNECTED - ENCRYPTED TUNNEL ACTIVE</span>
+<span>Satellite Tunnel Active</span>
 </div>
-<div>
-                © 2023 KARADENIZ POWERSHIP - KPS8 OSMAN BEY PMS
-            </div>
+<div>© 2023 KARADENIZ POWERSHIP - KPS8 OSMAN BEY</div>
 </footer>
 </main>
 </div>
-<!-- FLOATING ACTION BUTTON -->
-<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform z-50">
+<!-- FAB -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50" v-if="isLoggedIn">
 <span class="material-symbols-outlined text-3xl">add</span>
-<div class="absolute right-16 px-4 py-2 bg-primary text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-bold pointer-events-none">
-        LOG NEW ENTRY
-    </div>
 </button>
+</div>
 <script>
-    // Security Login Logic
-    const loginForm = document.getElementById('login-form');
-    const loginScreen = document.getElementById('login-screen');
-    const mainApp = document.getElementById('main-app');
-    const loginError = document.getElementById('login-error');
-    const logoutBtn = document.getElementById('logout-btn');
+        const { createApp, ref, computed } = Vue;
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const user = document.getElementById('username').value;
-        const pass = document.getElementById('password').value;
+        createApp({
+            setup() {
+                const isLoggedIn = ref(false);
+                const isSidebarOpen = ref(false);
+                const currentSection = ref('dashboard');
+                const selectedEngine = ref(1);
+                const loginError = ref('');
 
-        if (user === 'KPS8' && pass === 'umut') {
-            loginScreen.classList.add('hidden');
-            mainApp.style.display = 'flex';
-            loginError.classList.add('hidden');
-        } else {
-            loginError.classList.remove('hidden');
-        }
-    });
+                const login = ref({
+                    shipId: 'KPS8-TR',
+                    username: 'KPS8',
+                    password: 'umut'
+                });
 
-    logoutBtn.addEventListener('click', () => {
-        mainApp.style.display = 'none';
-        loginScreen.classList.remove('hidden');
-    });
+                const menuItems = [
+                    { id: 'running_hours', label: 'Running Hours', icon: 'schedule' },
+                    { id: 'spark_plug', label: 'Spark Plug', icon: 'electrical_services' },
+                    { id: 'pcc_valve', label: 'PCC Valve', icon: 'settings_input_component' },
+                    { id: 'valve_measurement', label: 'Valve Measurement', icon: 'straighten' },
+                    { id: 'starting_air', label: 'Starting Air', icon: 'air' },
+                    { id: 'service_air', label: 'Service Air', icon: 'compress' },
+                    { id: 'control_air', label: 'Control Air', icon: 'valve' },
+                    { id: 'denox', label: 'Denox', icon: 'eco' },
+                    { id: 'fwg', label: 'FWG', icon: 'water_drop' },
+                    { id: 'sw_pumps', label: 'SW Pumps', icon: 'cyclone' },
+                    { id: 'lube_oil', label: 'Lube Oil', icon: 'oil_barrel' },
+                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
+                    { id: 'boiler', label: 'Boiler', icon: 'rebase_edit' },
+                    { id: 'shutdowns', label: 'Shutdowns', icon: 'report_problem' },
+                    { id: 'reports', label: 'Reports', icon: 'analytics' },
+                ];
 
-    // Navigation Section Switching Logic
-    const navLinks = document.querySelectorAll('.nav-link');
-    const dashboardSection = document.getElementById('dashboard-section');
-    const genericSection = document.getElementById('generic-section');
-    const sectionTitle = document.getElementById('section-title');
+                const assetData = [
+                    { id: 1, name: 'NO.1 18V51/60G GTS', sn: '1145116', total: 12450 },
+                    { id: 2, name: 'NO.2 18V51/60G GTS', sn: '1145117', total: 11280 },
+                    { id: 3, name: 'NO.3 18V51/60G GTS', sn: '1145118', total: 13912 },
+                    { id: 4, name: 'STARTING AIR COMP NO.1', sn: '73/20', total: 1246 },
+                    { id: 5, name: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674 },
+                    { id: 6, name: 'NOX CONTROL AIR COMP 1', sn: 'TRD132994', total: 7907 },
+                    { id: 7, name: 'SG PRE-LUB PUMP 1', sn: '512255', total: 542 },
+                    { id: 8, name: 'NO.4 18V51/60G GTS', sn: '1145119', total: 10550 },
+                    { id: 9, name: 'NO.5 18V51/60G GTS', sn: '1145120', total: 8240 },
+                    { id: 10, name: 'NO.6 18V51/60G GTS', sn: '1145121', total: 14102 },
+                    { id: 11, name: 'NO.7 18V51/60G GTS', sn: '1145122', total: 9418 },
+                    { id: 12, name: 'NO.8 18V51/60G GTS', sn: '1145123', total: 11437 },
+                    { id: 13, name: 'NO.9 18V51/60G GTS', sn: '1145124', total: 13542 },
+                    { id: 14, name: 'NO.10 18V51/60G GTS', sn: '1145125', total: 7352 },
+                    { id: 15, name: 'NO.11 18V51/60G GTS', sn: '1145126', total: 11623 },
+                ];
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const section = link.getAttribute('data-section');
-            
-            // UI State Update
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
+                const paginatedAssets = computed(() => assetData);
 
-            // View Switching
-            if (section === 'dashboard') {
-                dashboardSection.classList.remove('hidden');
-                genericSection.classList.add('hidden');
-            } else {
-                dashboardSection.classList.add('hidden');
-                genericSection.classList.remove('hidden');
-                sectionTitle.innerText = link.querySelector('.text-sm').innerText;
+                const handleLogin = () => {
+                    if (login.value.username === 'KPS8' && login.value.password === 'umut') {
+                        isLoggedIn.value = true;
+                        loginError.value = '';
+                    } else {
+                        loginError.value = 'Invalid ship credentials. Access denied.';
+                    }
+                };
+
+                return {
+                    isLoggedIn,
+                    isSidebarOpen,
+                    currentSection,
+                    selectedEngine,
+                    menuItems,
+                    assetData,
+                    paginatedAssets,
+                    login,
+                    loginError,
+                    handleLogin
+                };
             }
-        });
-    });
-</script>
+        }).mount('#app');
+    </script>
 </body></html>
