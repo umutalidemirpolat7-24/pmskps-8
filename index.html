@@ -41,17 +41,17 @@
 <div id="app" v-cloak="">
 <!-- LOGIN SCREEN -->
 <div class="fixed inset-0 z-[100] bg-white flex items-center justify-center p-6" v-if="!isLoggedIn">
-<div class="w-full max-w-md space-y-8">
-<div class="text-center space-y-4">
-<div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary text-white shadow-xl">
+<div class="w-full max-w-md space-y-8 text-center">
+<div class="space-y-4">
+<div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-primary text-white shadow-xl mx-auto">
 <span class="material-symbols-outlined text-5xl">directions_boat</span>
 </div>
 <div>
-<h1 class="text-3xl font-black tracking-tighter text-primary">KPS8 OSMAN BEY</h1>
+<h1 class="text-3xl font-black tracking-tighter text-primary uppercase">KPS8 OSMAN BEY</h1>
 <p class="text-secondary font-medium tracking-widest uppercase text-xs">Plant Maintenance System</p>
 </div>
 </div>
-<div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-2xl space-y-6">
+<div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-2xl space-y-6 text-left">
 <div class="space-y-4">
 <div>
 <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Ship Identification</label>
@@ -68,8 +68,8 @@
 </div>
 <button @click="handleLogin" class="w-full bg-primary hover:bg-surface-tint text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
 <span class="material-symbols-outlined">key</span>
-                AUTHENTICATE SYSTEM
-            </button>
+                    AUTHENTICATE SYSTEM
+                </button>
 <p class="text-error text-center text-xs font-bold" v-if="loginError">{{ loginError }}</p>
 </div>
 <p class="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">Confidential Shipboard Document System</p>
@@ -87,31 +87,31 @@
 <nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
 <button :class="currentSection === 'dashboard' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'dashboard'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">dashboard</span>
-                    Dashboard
-                </button>
+                        Dashboard
+                    </button>
 <div class="pt-6 pb-2 px-4">
 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Main Engine</span>
 </div>
 <button :class="currentSection === 'running_hours' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'running_hours'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">schedule</span>
-                    Running Hours
-                </button>
+                        Running Hours
+                    </button>
 <button :class="currentSection === 'spark_plug' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'spark_plug'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">electrical_services</span>
-                    Spark Plug
-                </button>
+                        Spark Plug
+                    </button>
 <button :class="currentSection === 'pcc_valve' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'pcc_valve'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">settings_input_component</span>
-                    PCC Valve
-                </button>
+                        PCC Valve
+                    </button>
 <button :class="currentSection === 'valve_measurement' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'valve_measurement'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">straighten</span>
-                    Valve Measurement
-                </button>
+                        Valve Measurement
+                    </button>
 <div class="pt-6 pb-2 px-4">
 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">System Modules</span>
 </div>
-<template v-for="group in systemGroups">
+<template :key="group.id" v-for="group in systemGroups">
 <button :class="currentSection === group.id ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = group.id" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">{{ group.icon }}</span>
 <span class="truncate">{{ group.label }}</span>
@@ -122,12 +122,12 @@
 </div>
 <button :class="currentSection === 'reports' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'reports'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">analytics</span>
-                    Reports
-                </button>
+                        Reports
+                    </button>
 <button :class="currentSection === 'shutdowns' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'shutdowns'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">report_problem</span>
-                    Shutdowns
-                </button>
+                        Shutdowns
+                    </button>
 </nav>
 <div class="mt-auto p-4 bg-slate-50 rounded-2xl flex items-center gap-3 border border-slate-100">
 <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-primary font-black border-2 border-white shadow-sm">U</div>
@@ -160,7 +160,7 @@
 </div>
 <div class="flex items-center gap-4">
 <div class="relative hidden md:block">
-<input class="w-64 bg-slate-100 border-none rounded-full px-10 py-2 text-xs focus:ring-2 focus:ring-primary" placeholder="Quick Search Component..." type="text"/>
+<input class="w-64 bg-slate-100 border-none rounded-full px-10 py-2 text-xs focus:ring-2 focus:ring-primary" placeholder="Quick Search Component..." type="text" v-model="searchQuery"/>
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
 </div>
 <div class="flex items-center gap-3 text-slate-400">
@@ -177,12 +177,12 @@
 <div class="xl:col-span-12 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
 <div>
-<h3 class="text-lg font-black text-primary uppercase tracking-tighter">GTS ENGINES RUNNING HOURS</h3>
+<h3 class="text-lg font-black text-primary uppercase tracking-tighter">KPS8 OSMAN BEY PMS - GTS ENGINES</h3>
 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real-time Running Hours &amp; Maintenance State</p>
 </div>
-<button class="bg-primary text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
+<button class="bg-primary text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all hover:bg-surface-tint">
 <span class="material-symbols-outlined text-sm">sync</span> Sync Ship Data
-                            </button>
+                                </button>
 </div>
 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-3">
 <div :class="n === 3 ? 'border-error bg-red-50/50' : 'border-emerald-500 bg-slate-50'" :key="n" class="p-3 rounded-xl border-b-4 text-center transition-transform hover:scale-105" v-for="n in 12">
@@ -244,14 +244,14 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
 <div>
 <h3 class="text-xl font-black text-primary uppercase tracking-tighter">MASTER RUNNING HOURS MATRIX</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Comprehensive Inventory - {{ assetData.length }} Logged Assets</p>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Complete Asset List: NO.1 18V5160 GTS to FWG SW PUMP 4</p>
 </div>
 <div class="flex gap-2 w-full md:w-auto">
 <div class="relative flex-1 md:flex-none">
 <input class="w-full md:w-64 bg-white border-slate-200 rounded-lg pl-9 pr-4 py-2 text-xs font-medium focus:ring-primary shadow-sm" placeholder="Search equipment..." type="text" v-model="searchQuery"/>
 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
 </div>
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg uppercase shadow-lg shadow-primary/10">Save All Changes</button>
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg uppercase shadow-lg shadow-primary/10">Save Changes</button>
 </div>
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
@@ -261,11 +261,11 @@
 <tr>
 <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-1/3">Equipment Name</th>
 <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Serial Number</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 1</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 2</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 3</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 4</th>
-<th class="px-6 py-4 text-[10px] font-black text-primary uppercase tracking-widest text-center bg-slate-100/50">Total Hrs</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W1</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W2</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W3</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W4</th>
+<th class="px-6 py-4 text-[10px] font-black text-primary uppercase tracking-widest text-center bg-slate-100/50">Total</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-50">
@@ -273,19 +273,19 @@
 <td class="px-6 py-3">
 <div class="flex items-center gap-2">
 <input class="w-full border-none bg-transparent text-xs font-black text-primary uppercase focus:ring-0 focus:bg-white p-0" type="text" v-model="asset.name"/>
-<span class="w-2 h-2 rounded-full bg-error" v-if="getMaintenanceStatus(asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical'"></span>
+<span class="w-2 h-2 rounded-full bg-error" v-if="getMaintenanceStatus(asset.total).level === 'critical'"></span>
 </div>
 </td>
 <td class="px-6 py-3">
 <input class="w-full border-none bg-transparent text-[10px] font-bold text-slate-400 focus:ring-0 focus:bg-white p-0" type="text" v-model="asset.sn"/>
 </td>
 <td class="px-4 py-3" v-for="w in 4">
-<input class="w-20 mx-auto bg-slate-50 border-none text-center text-xs font-bold py-1.5 rounded-lg focus:ring-2 focus:ring-primary" type="number" v-model.number="asset.weekly[w-1]"/>
+<input class="w-16 mx-auto bg-slate-50 border-none text-center text-xs font-bold py-1.5 rounded-lg focus:ring-2 focus:ring-primary" type="number" v-model.number="asset.weekly[w-1]"/>
 </td>
 <td class="px-6 py-3 text-center bg-slate-50/30">
 <span :class="getMaintenanceStatus(asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).color" class="text-xs font-black">
-                                            {{ (asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}
-                                        </span>
+                                                {{ (asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}
+                                            </span>
 </td>
 </tr>
 </tbody>
@@ -296,8 +296,59 @@
 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Showing {{ paginatedAssets.length }} of {{ filteredAssets.length }} assets</span>
 <div class="flex gap-1">
 <button :disabled="currentPage === 1" @click="currentPage--" class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50 disabled:opacity-50">Prev</button>
-<span class="px-4 py-1 text-xs font-bold text-primary">Page {{ currentPage }} of {{ Math.ceil(filteredAssets.length / pageSize) }}</span>
+<span class="px-4 py-1 text-xs font-bold text-primary">Page {{ currentPage }} / {{ Math.ceil(filteredAssets.length / pageSize) }}</span>
 <button :disabled="currentPage &gt;= Math.ceil(filteredAssets.length / pageSize)" @click="currentPage++" class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50 disabled:opacity-50">Next</button>
+</div>
+</div>
+</div>
+<!-- SECTION: VALVE MEASUREMENT -->
+<div class="space-y-6" v-if="currentSection === 'valve_measurement'">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">VALVE TAPPET CLEARANCE LOG</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Detailed Matrix: Intake/Exhaust Clearance (A1-A9, B1-B9)</p>
+</div>
+<div class="flex items-center gap-3">
+<label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Engine Select:</label>
+<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[150px]" v-model="selectedEngine">
+<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
+</select>
+<button class="p-2.5 bg-slate-100 rounded-lg hover:bg-slate-200"><span class="material-symbols-outlined text-lg">print</span></button>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<template v-for="bank in ['A', 'B']">
+</template><table class="w-full text-center border-collapse">
+<thead class="bg-slate-50 border-b border-slate-100">
+<tr>
+<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cylinder</th>
+<th class="px-4 py-4 text-[10px] font-black text-primary uppercase tracking-widest border-x border-slate-100" colspan="2">Intake Valve (A / B)</th>
+<th class="px-4 py-4 text-[10px] font-black text-surface-tint uppercase tracking-widest border-x border-slate-100" colspan="2">Exhaust Valve (C / D)</th>
+<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Observation / Remarks</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr :key="bank + n" class="hover:bg-slate-50/50" v-for="n in 9">
+<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ n }}</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" placeholder="0.40" type="text"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" placeholder="0.40" type="text"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" placeholder="0.80" type="text"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" placeholder="0.80" type="text"/>
+</td>
+<td class="px-4 py-2">
+<input class="w-full border-none bg-transparent text-[10px] focus:ring-0 italic" placeholder="Add remark..." type="text"/>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -387,9 +438,9 @@
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 <div class="xl:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div :key="unit.id" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 relative overflow-hidden" v-for="unit in currentGroupAssets">
-<div class="absolute top-0 right-0 px-3 py-1 bg-error text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-if="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical'">
-                                Maintenance Due
-                            </div>
+<div class="absolute top-0 right-0 px-3 py-1 bg-error text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-if="getMaintenanceStatus(unit.total).level === 'critical'">
+                                    Maintenance Due
+                                </div>
 <div class="flex justify-between items-start">
 <div class="space-y-1">
 <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ unit.sn }}</p>
@@ -404,10 +455,10 @@
 </div>
 <div class="p-3 bg-slate-50 rounded-xl">
 <p class="text-[8px] font-black text-slate-400 uppercase mb-1">Next Service</p>
-<p class="text-sm font-black text-primary">{{ getNextService(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}</p>
+<p class="text-sm font-black text-primary">{{ getNextService(unit.total).toLocaleString() }}</p>
 </div>
 </div>
-<!-- Boiler Specific Field -->
+<!-- Custom Logic for Boiler -->
 <div class="pt-2" v-if="currentSection === 'boiler'">
 <label class="block text-[8px] font-black text-slate-400 uppercase mb-1">Kazan Damper Kontrolü</label>
 <input class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 text-[10px] font-bold focus:ring-primary" type="date"/>
@@ -415,10 +466,10 @@
 <div class="space-y-1">
 <div class="flex justify-between text-[8px] font-black uppercase text-slate-400">
 <span>Wear Progress</span>
-<span>{{ getWearPercent(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)) }}%</span>
+<span>{{ getWearPercent(unit.total) }}%</span>
 </div>
 <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-<div :class="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).bg" :style="{ width: getWearPercent(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)) + '%' }" class="h-full transition-all duration-1000"></div>
+<div :class="getMaintenanceStatus(unit.total).bg" :style="{ width: getWearPercent(unit.total) + '%' }" class="h-full transition-all duration-1000"></div>
 </div>
 </div>
 <button class="w-full py-2 border border-slate-100 text-[9px] font-black uppercase text-slate-500 rounded-lg hover:bg-slate-50 transition-colors">View Detailed Log</button>
@@ -427,79 +478,17 @@
 <div class="space-y-6">
 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
 <h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Group Insights</h4>
-<div class="space-y-4">
-<div class="flex justify-between items-center text-xs font-bold">
+<div class="space-y-4 text-xs font-bold">
+<div class="flex justify-between items-center">
 <span class="text-slate-400">Total Units:</span>
 <span class="text-primary">{{ currentGroupAssets.length }}</span>
 </div>
-<div class="flex justify-between items-center text-xs font-bold">
+<div class="flex justify-between items-center">
 <span class="text-slate-400">Maintenance Due:</span>
-<span class="text-error">{{ currentGroupAssets.filter(u =&gt; getMaintenanceStatus(u.total + u.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical').length }}</span>
+<span class="text-error">{{ currentGroupAssets.filter(u =&gt; getMaintenanceStatus(u.total).level === 'critical').length }}</span>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
-<!-- SECTION: VALVE MEASUREMENT -->
-<div class="space-y-6" v-if="currentSection === 'valve_measurement'">
-<div class="flex justify-between items-end">
-<div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">VALVE TAPPET CLEARANCE LOG</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Inlet/Exhaust Measurement Matrix (GTS {{ selectedEngine.toString().padStart(2, '0') }})</p>
-</div>
-<button class="p-2 bg-slate-100 rounded-lg hover:bg-slate-200"><span class="material-symbols-outlined">print</span></button>
-</div>
-<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-<div class="overflow-x-auto custom-scrollbar">
-<table class="w-full text-center border-collapse">
-<thead class="bg-slate-50 border-b border-slate-100">
-<tr>
-<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cyl</th>
-<th class="px-4 py-4 text-[10px] font-black text-primary uppercase tracking-widest border-x border-slate-100" colspan="2">Inlet Valve (A-B)</th>
-<th class="px-4 py-4 text-[10px] font-black text-surface-tint uppercase tracking-widest border-x border-slate-100" colspan="2">Exhaust Valve (C-D)</th>
-<th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Observation</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-50">
-<tr class="hover:bg-slate-50/50" v-for="cyl in 9">
-<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">A{{ cyl }}</td>
-<td class="px-2 py-2 border-r border-slate-100">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
-</td>
-<td class="px-4 py-2">
-<input class="w-full border-none bg-transparent text-[10px] focus:ring-0 italic" placeholder="Add remark..." type="text"/>
-</td>
-</tr>
-<tr class="hover:bg-slate-50/50" v-for="cyl in 9">
-<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">B{{ cyl }}</td>
-<td class="px-2 py-2 border-r border-slate-100">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
-</td>
-<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
-<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
-</td>
-<td class="px-4 py-2">
-<input class="w-full border-none bg-transparent text-[10px] focus:ring-0 italic" placeholder="Add remark..." type="text"/>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
@@ -510,15 +499,15 @@
 <span class="material-symbols-outlined text-5xl text-slate-300">{{ currentSection === 'reports' ? 'upload_file' : 'warning' }}</span>
 </div>
 <div>
-<h3 class="text-2xl font-black text-primary uppercase tracking-tighter">{{ currentSection.toUpperCase() }} Document Management</h3>
-<p class="text-sm text-slate-400 max-w-md mx-auto">Drag and drop ship records, analysis results, or engine shutdown logs for secure cloud synchronization.</p>
+<h3 class="text-2xl font-black text-primary uppercase tracking-tighter">{{ currentSection.toUpperCase() }} Management</h3>
+<p class="text-sm text-slate-400 max-w-md mx-auto">Upload and sync shipboard documents, analysis records, or system shutdown logs.</p>
 </div>
 <div class="flex justify-center gap-4">
-<label class="px-8 py-4 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest cursor-pointer hover:bg-surface-tint shadow-lg shadow-primary/20 transition-all">
-                            Browse Files
-                            <input class="hidden" type="file"/>
+<label class="px-8 py-4 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest cursor-pointer hover:bg-surface-tint shadow-lg transition-all">
+                                Browse Files
+                                <input class="hidden" type="file"/>
 </label>
-<button class="px-8 py-4 bg-white border border-slate-200 text-primary text-xs font-black rounded-xl uppercase tracking-widest hover:bg-slate-50 transition-colors">Generate PDF</button>
+<button class="px-8 py-4 bg-white border border-slate-200 text-primary text-xs font-black rounded-xl uppercase tracking-widest hover:bg-slate-50 transition-colors">Generate Report</button>
 </div>
 </div>
 </div>
@@ -527,7 +516,7 @@
 <footer class="mt-auto px-8 py-4 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
 <div class="flex gap-6 mb-2 md:mb-0">
 <span>IP: 10.12.8.254 (Ship Local)</span>
-<span>V4.2.1-STABLE</span>
+<span>V4.5.0-STABLE</span>
 </div>
 <div class="flex items-center gap-2 mb-2 md:mb-0">
 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
@@ -580,41 +569,54 @@
                 { id: 'sw_pumps', label: 'Sea Water Pumps', icon: 'cyclone', keywords: ['SEA WATER PUMP'] },
                 { id: 'aux_cooling', label: 'Auxiliary Mach. Cooling', icon: 'thermostat', keywords: ['AUX.MACH.COOLER'] },
                 { id: 'fwg', label: 'FWG Systems', icon: 'water_drop', keywords: ['FWG'] },
-                { id: 'fire_bilge', label: 'Fire & Bilge Pumps', icon: 'fire_extinguisher', keywords: ['FIRE PUMP', 'BILGE PUMP'] },
+                { id: 'fire_bilge', label: 'Fire & Bilge Pumps', icon: 'fire_extinguisher', keywords: ['FIRE PUMP', 'BILGE PUMP', 'DAILY BILGE'] },
                 { id: 'preheating', label: 'Preheating Pumps', icon: 'heat_pump', keywords: ['PREHEATING PUMP'] },
                 { id: 'prelub', label: 'Prelub. Pumps', icon: 'oil_barrel', keywords: ['PRELUB. PUMP'] },
                 { id: 'jacking', label: 'Jacking Pumps', icon: 'vertical_align_center', keywords: ['JACKING PUMP'] },
                 { id: 'fans', label: 'Vent. & Alternator Fans', icon: 'mode_fan', keywords: ['VENT.FAN', 'ALTERNATOR FAN', 'ROOM FAN', 'EXHAUST VENT'] },
                 { id: 'boiler', label: 'Boiler System', icon: 'rebase_edit', keywords: ['BOILER'] },
                 { id: 'lube_oil', label: 'Lube Oil System', icon: 'lubrication', keywords: ['LUBE OIL', 'LO PREHEATING', 'LO FILLING'] },
-                { id: 'cleaning', label: 'Cleaning Services', icon: 'cleaning_services', keywords: ['CLEANING'] },
+                { id: 'cleaning', label: 'Cleaning Services', icon: 'cleaning_services', keywords: ['CLEANING', 'DAILY BILGE'] },
             ];
 
-            const generateAssetList = () => {
+            const generateFullAssetList = () => {
                 const specificNames = [
-                    "NO.1 18V5160 GTS", "NO.2 18V5160 GTS", "NO.3 18V5160 GTS", "NO.4 18V5160 GTS", "NO.5 18V5160 GTS", "NO.6 18V5160 GTS", "NO.7 18V5160 GTS", "NO.8 18V5160 GTS", "NO.9 18V5160 GTS", "NO.10 18V5160 GTS", "NO.11 18V5160 GTS", "NO.12 18V5160 GTS",
+                    // GTS ENGINES
+                    ...Array.from({length: 12}, (_, i) => `NO.${i+1} 18V5160 GTS`),
+                    // COMPRESSORS
                     "STARTING AIR COMPRESSOR UNIT NO:1 (P)", "STARTING AIR COMPRESSOR UNIT NO:2 (STB)", "STARTING AIR COMPRESSOR UNIT NO:3 (P)", "STARTING AIR COMPRESSOR UNIT NO:4 (STB)",
                     "CONTROL AIR COMPRESSOR 1", "CONTROL AIR COMPRESSOR 2",
                     "SERVICE AIR COMPRESSOR UNIT NO:1", "SERVICE AIR COMPRESSOR UNIT NO:2",
-                    "NOX CONTROL AIR COMPRESSOR NO:1", "NOX CONTROL AIR COMPRESSOR NO:2", "NOX CONTROL AIR COMPRESSOR NO:3", "NOX CONTROL AIR COMPRESSOR NO:4", "NOX CONTROL AIR COMPRESSOR NO:5", "NOX CONTROL AIR COMPRESSOR NO:6", "NOX CONTROL AIR COMPRESSOR NO:7", "NOX CONTROL AIR COMPRESSOR NO:8", "NOX CONTROL AIR COMPRESSOR NO:9", "NOX CONTROL AIR COMPRESSOR NO:10", "NOX CONTROL AIR COMPRESSOR NO:11", "NOX CONTROL AIR COMPRESSOR NO:12",
-                    "SEA WATER PUMP 1", "SEA WATER PUMP 2", "SEA WATER PUMP 3", "SEA WATER PUMP 4", "SEA WATER PUMP 5", "SEA WATER PUMP 6", "SEA WATER PUMP 7", "SEA WATER PUMP 8", "SEA WATER PUMP 9", "SEA WATER PUMP 10", "SEA WATER PUMP 11", "SEA WATER PUMP 12", "SEA WATER PUMP 13", "SEA WATER PUMP 14", "SEA WATER PUMP 15", "SEA WATER PUMP 16",
+                    // NOX CONTROL (DENOX)
+                    ...Array.from({length: 12}, (_, i) => `NOX CONTROL AIR COMPRESSOR NO:${i+1}`),
+                    // SEA WATER PUMPS
+                    ...Array.from({length: 16}, (_, i) => `SEA WATER PUMP ${i+1}`),
                     "AUX.MACH.COOLER SW PUMP 1", "AUX.MACH.COOLER SW PUMP 2",
-                    "FWG 1", "FWG 2", "FWG 3", "FWG 4",
-                    "BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP",
-                    "SG HT PREHEATING  PUMP 1", "SG HT PREHEATING  PUMP 2", "SG HT PREHEATING  PUMP 3", "SG HT PREHEATING  PUMP 4", "SG HT PREHEATING  PUMP 5", "SG HT PREHEATING  PUMP 6", "SG HT PREHEATING  PUMP 7", "SG HT PREHEATING  PUMP 8", "SG HT PREHEATING  PUMP 9", "SG HT PREHEATING  PUMP 10", "SG HT PREHEATING  PUMP 11", "SG HT PREHEATING  PUMP 12",
-                    "BOILER UNIT 1", "BOILER UNIT 2", "BOILER UNIT 3", "BOILER UNIT 4", "BOILER UNIT 5", "BOILER UNIT 6", "BOILER UNIT 7", "BOILER UNIT 8", "BOILER UNIT 9", "BOILER UNIT 10", "BOILER UNIT 11", "BOILER UNIT 12",
+                    // FWG
+                    "FWG 1", "FWG 2", "FWG 3", "FWG 4", "FWG SW PUMP 1", "FWG SW PUMP 2", "FWG SW PUMP 3", "FWG SW PUMP 4",
+                    // FIRE & BILGE
+                    "BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP", "DAILY BILGE PUMP NO:1", "DAILY BILGE PUMP NO:2",
+                    // PREHEATING
+                    ...Array.from({length: 12}, (_, i) => `SG HT PREHEATING PUMP ${i+1}`),
+                    // BOILERS
+                    ...Array.from({length: 12}, (_, i) => `BOILER UNIT ${i+1}`),
+                    "BOILER FW PUMP 1", "BOILER FW PUMP 2",
+                    // FILLING & TRANSFER
                     "CW FILLING PUMP 1", "CW FILLING PUMP 2", "CW FILLING PUMP 3", "CW FILLING PUMP 4",
                     "FW TRANSFER PUMP 1", "FW TRANSFER PUMP 2",
-                    "BOILER FW PUMP 1", "BOILER FW PUMP 2",
                     "AUX.MACH.COOLER FW PUMP 1", "AUX.MACH.COOLER FW PUMP 2",
                     "REGAS UNITE FW PUMP 1", "REGAS UNITE FW PUMP 2",
-                    "SG PRELUB. PUMP 1", "SG PRELUB. PUMP 2", "SG PRELUB. PUMP 3", "SG PRELUB. PUMP 4", "SG PRELUB. PUMP 5", "SG PRELUB. PUMP 6", "SG PRELUB. PUMP 7", "SG PRELUB. PUMP 8", "SG PRELUB. PUMP 9", "SG PRELUB. PUMP 10", "SG PRELUB. PUMP 11", "SG PRELUB. PUMP 12",
-                    "SG LO PREHEATING PUMP 1", "SG LO PREHEATING PUMP 2", "SG LO PREHEATING PUMP 3", "SG LO PREHEATING PUMP 4", "SG LO PREHEATING PUMP 5", "SG LO PREHEATING PUMP 6", "SG LO PREHEATING PUMP 7", "SG LO PREHEATING PUMP 8", "SG LO PREHEATING PUMP 9", "SG LO PREHEATING PUMP 10", "SG LO PREHEATING PUMP 11", "SG LO PREHEATING PUMP 12",
-                    "NDE JACKING PUMP 1", "NDE JACKING PUMP 2", "NDE JACKING PUMP 3", "NDE JACKING PUMP 4", "NDE JACKING PUMP 5", "NDE JACKING PUMP 6", "NDE JACKING PUMP 7", "NDE JACKING PUMP 8", "NDE JACKING PUMP 9", "NDE JACKING PUMP 10", "NDE JACKING PUMP 11", "NDE JACKING PUMP 12",
-                    "NO 1 SG VENT.FAN", "NO 2 SG VENT.FAN", "NO 3 SG VENT.FAN", "NO 4 SG VENT.FAN", "NO 5 SG VENT.FAN", "NO 6 SG VENT.FAN", "NO 7 SG VENT.FAN", "NO 8 SG VENT.FAN", "NO 9 SG VENT.FAN", "NO 10 SG VENT.FAN", "NO 11 SG VENT.FAN", "NO 12 SG VENT.FAN",
-                    "ALTERNATOR FAN 1-1", "ALTERNATOR FAN 1-2", "ALTERNATOR FAN 2-1", "ALTERNATOR FAN 2-2", "ALTERNATOR FAN 3-1", "ALTERNATOR FAN 3-2", "ALTERNATOR FAN 4-1", "ALTERNATOR FAN 4-2", "ALTERNATOR FAN 5-1", "ALTERNATOR FAN 5-2", "ALTERNATOR FAN 6-1", "ALTERNATOR FAN 6-2", "ALTERNATOR FAN 7-1", "ALTERNATOR FAN 7-2", "ALTERNATOR FAN 8-1", "ALTERNATOR FAN 8-2", "ALTERNATOR FAN 9-1", "ALTERNATOR FAN 9-2", "ALTERNATOR FAN 10-1", "ALTERNATOR FAN 10-2", "ALTERNATOR FAN 11-1", "ALTERNATOR FAN 11-2", "ALTERNATOR FAN 12-1", "ALTERNATOR FAN 12-2",
-                    "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN.",
-                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4", "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8", "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12"
+                    // PRELUB & JACKING
+                    ...Array.from({length: 12}, (_, i) => `SG PRELUB. PUMP ${i+1}`),
+                    ...Array.from({length: 12}, (_, i) => `SG LO PREHEATING PUMP ${i+1}`),
+                    ...Array.from({length: 12}, (_, i) => `NDE JACKING PUMP ${i+1}`),
+                    // FANS
+                    ...Array.from({length: 12}, (_, i) => `NO ${i+1} SG VENT.FAN`),
+                    ...Array.from({length: 12}, (_, i) => `ALTERNATOR FAN ${i+1}-1`),
+                    ...Array.from({length: 12}, (_, i) => `ALTERNATOR FAN ${i+1}-2`),
+                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4", "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8", "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12",
+                    // FUEL SYSTEM
+                    "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN."
                 ];
 
                 return specificNames.map((name, i) => {
@@ -629,14 +631,17 @@
                 });
             };
 
-            const assetData = ref(generateAssetList());
+            const assetData = ref(generateFullAssetList());
 
             const filteredAssets = computed(() => {
-                if (!searchQuery.value) return assetData.value;
-                return assetData.value.filter(a => 
-                    a.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                    a.sn.toLowerCase().includes(searchQuery.value.toLowerCase())
-                );
+                let list = assetData.value;
+                if (searchQuery.value) {
+                    list = list.filter(a => 
+                        a.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                        a.sn.toLowerCase().includes(searchQuery.value.toLowerCase())
+                    );
+                }
+                return list;
             });
 
             const paginatedAssets = computed(() => {
@@ -676,7 +681,7 @@
                     isLoggedIn.value = true;
                     loginError.value = '';
                 } else {
-                    loginError.value = 'Invalid ship credentials. Access denied.';
+                    loginError.value = 'Authentication failed. Check credentials.';
                 }
             };
 
