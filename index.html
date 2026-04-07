@@ -55,15 +55,15 @@
 <div class="space-y-4">
 <div>
 <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Ship Identification</label>
-<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" placeholder="IMO Number or ID" type="text" v-model="login.shipId"/>
+<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" placeholder="KPS8-TR" type="text" v-model="login.shipId"/>
 </div>
 <div>
 <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Username</label>
-<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" type="text" v-model="login.username"/>
+<input class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" placeholder="Enter username" type="text" v-model="login.username"/>
 </div>
 <div>
 <label class="block text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Access Password</label>
-<input autocomplete="new-password" class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" type="password" v-model="login.password"/>
+<input autocomplete="new-password" class="w-full bg-slate-50 border-none rounded-lg px-4 py-3 focus:ring-2 focus:ring-surface-tint" placeholder="Enter password" type="password" v-model="login.password"/>
 </div>
 </div>
 <button @click="handleLogin" class="w-full bg-primary hover:bg-surface-tint text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
@@ -292,6 +292,81 @@
 </div>
 </div>
 </div>
+<!-- SECTION: SPARK PLUG -->
+<div class="space-y-6" v-if="currentSection === 'spark_plug'">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">SPARK PLUG LIFECYCLE MONITOR</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Target Interval: 4,000 hrs</p>
+</div>
+<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
+<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
+</select>
+</div>
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="col-span-1 md:col-span-1 space-y-4">
+<h4 class="text-[10px] font-black text-primary uppercase tracking-widest">Replacement Log</h4>
+<div class="space-y-2">
+<label class="block text-[8px] font-black text-slate-400 uppercase">Last Replacement Date</label>
+<input class="w-full bg-slate-50 border-none rounded-lg text-xs p-2 focus:ring-2 focus:ring-primary" type="date" v-model="sparkPlugLog.lastDate"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[8px] font-black text-slate-400 uppercase">Engine Hours at Replacement</label>
+<input class="w-full bg-slate-50 border-none rounded-lg text-xs p-2 focus:ring-2 focus:ring-primary" type="number" v-model.number="sparkPlugLog.lastHrs"/>
+</div>
+<div class="pt-4 border-t border-slate-100">
+<p class="text-[8px] font-black text-slate-400 uppercase">Calculated Runtime</p>
+<p class="text-2xl font-black text-primary">{{ calculateLife(sparkPlugLog.lastHrs) }} <span class="text-xs">hrs</span></p>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+<div :key="cyl" class="p-3 rounded-xl border border-slate-100 bg-slate-50/50" v-for="cyl in 18">
+<div class="flex justify-between items-center mb-2">
+<p class="text-[8px] font-black text-slate-400 uppercase">CYL {{ cyl }}</p>
+<span class="text-[8px] font-black text-emerald-500 uppercase">Active</span>
+</div>
+<div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
+<div :style="{ width: Math.min((calculateLife(sparkPlugLog.lastHrs)/4000)*100, 100) + '%' }" class="h-full bg-emerald-500"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION: PCC VALVE -->
+<div class="space-y-6" v-if="currentSection === 'pcc_valve'">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">PCC VALVE MONITORING</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Target Interval: 2,500 hrs</p>
+</div>
+<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
+<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
+</select>
+</div>
+<div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="col-span-1 space-y-4">
+<h4 class="text-[10px] font-black text-primary uppercase tracking-widest">Maintenance Control</h4>
+<div class="space-y-2">
+<label class="block text-[8px] font-black text-slate-400 uppercase">Last Cleaning Date</label>
+<input class="w-full bg-slate-50 border-none rounded-lg text-xs p-2 focus:ring-2 focus:ring-primary" type="date" v-model="pccLog.lastDate"/>
+</div>
+<div class="space-y-2">
+<label class="block text-[8px] font-black text-slate-400 uppercase">Engine Hours at Maintenance</label>
+<input class="w-full bg-slate-50 border-none rounded-lg text-xs p-2 focus:ring-2 focus:ring-primary" type="number" v-model.number="pccLog.lastHrs"/>
+</div>
+<div class="pt-4 border-t border-slate-100">
+<p class="text-[8px] font-black text-slate-400 uppercase">Service Life In-Use</p>
+<p class="text-2xl font-black text-primary">{{ calculateLife(pccLog.lastHrs) }} <span class="text-xs">hrs</span></p>
+</div>
+</div>
+<div class="col-span-3 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 text-center" v-for="metric in ['Efficiency', 'Seal Quality', 'Carbon Build-up', 'Spring Tension']">
+<p class="text-[8px] font-black text-slate-400 uppercase mb-2">{{ metric }}</p>
+<p class="text-xl font-black text-primary">94%</p>
+</div>
+</div>
+</div>
+</div>
 <!-- SECTION: SYSTEM GROUPS (DYNAMIC) -->
 <div class="space-y-6 animate-in fade-in duration-500" v-if="systemGroups.some(g =&gt; g.id === currentSection)">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
@@ -299,20 +374,12 @@
 <h3 class="text-xl font-black text-primary uppercase tracking-tighter">{{ systemGroups.find(g =&gt; g.id === currentSection).label }}</h3>
 <p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Active Asset Monitoring &amp; Log</p>
 </div>
-<div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-slate-100 shadow-sm">
-<span class="material-symbols-outlined text-sm text-slate-400">filter_alt</span>
-<span class="text-[10px] font-black text-slate-400 uppercase">Filtered by Group</span>
-</div>
 </div>
 <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 <div class="xl:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div :key="unit.id" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 relative overflow-hidden" v-for="unit in currentGroupAssets">
-<!-- Status Badge -->
 <div class="absolute top-0 right-0 px-3 py-1 bg-error text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-if="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical'">
                                     Maintenance Due
-                                </div>
-<div class="absolute top-0 right-0 px-3 py-1 bg-warning text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-else-if="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'warning'">
-                                    Upcoming
                                 </div>
 <div class="flex justify-between items-start">
 <div class="space-y-1">
@@ -357,84 +424,7 @@
 <span class="text-slate-400">Maintenance Due:</span>
 <span class="text-error">{{ currentGroupAssets.filter(u =&gt; getMaintenanceStatus(u.total + u.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical').length }}</span>
 </div>
-<div class="flex justify-between items-center text-xs font-bold">
-<span class="text-slate-400">Upcoming:</span>
-<span class="text-warning">{{ currentGroupAssets.filter(u =&gt; getMaintenanceStatus(u.total + u.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'warning').length }}</span>
 </div>
-</div>
-</div>
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-<h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Maintenance History</h4>
-<div class="space-y-4">
-<div :key="i" class="flex gap-4" v-for="i in 3">
-<div class="w-1.5 bg-slate-200 rounded-full"></div>
-<div>
-<p class="text-[10px] font-black text-primary uppercase">Service Entry #{{ 4520-i }}</p>
-<p class="text-[9px] text-slate-400 font-bold">2023-11-{{10+i}} | Routine Filter Change</p>
-</div>
-</div>
-</div>
-<button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 rounded-xl text-[10px] font-black text-slate-400 uppercase hover:bg-slate-50 transition-colors">
-                                    Add Manual Entry
-                                </button>
-</div>
-</div>
-</div>
-</div>
-<!-- SECTION: SPARK PLUG -->
-<div class="space-y-6" v-if="currentSection === 'spark_plug'">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-<div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">SPARK PLUG LIFECYCLE MONITOR</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Cylinder Performance Matrix - Target: 4,000 hrs</p>
-</div>
-<select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
-<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
-</select>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-<div :key="bank" class="space-y-4" v-for="bank in ['A', 'B']">
-<div class="flex items-center justify-between border-b border-slate-200 pb-2">
-<h4 class="text-sm font-black text-primary tracking-widest uppercase">BANK {{ bank }} - CYLINDERS</h4>
-<span class="text-[10px] font-bold text-slate-400">CYL 1-9</span>
-</div>
-<div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-<div :class="cyl === 3 &amp;&amp; bank === 'A' ? 'border-error bg-red-50/30' : 'border-emerald-500 bg-white'" :key="cyl" class="p-4 rounded-2xl border-l-4 shadow-sm" v-for="cyl in 9">
-<div class="flex justify-between items-start">
-<p class="text-[9px] font-black text-slate-400 uppercase">{{ bank }}{{ cyl }}</p>
-<span class="material-symbols-outlined text-xs text-slate-300">info</span>
-</div>
-<p class="text-sm font-black text-primary mt-1">{{ (cyl === 3 &amp;&amp; bank === 'A' ? '4,015' : '3,120') }} hrs</p>
-<div class="w-full bg-slate-100 h-1.5 mt-3 rounded-full overflow-hidden">
-<div :class="cyl === 3 &amp;&amp; bank === 'A' ? 'bg-error w-full' : 'bg-emerald-500 w-[78%]'" class="h-full"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- SECTION: PCC VALVE -->
-<div class="space-y-6" v-if="currentSection === 'pcc_valve'">
-<div class="bg-white p-12 rounded-3xl border border-slate-100 shadow-sm text-center space-y-6">
-<div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto">
-<span class="material-symbols-outlined text-5xl text-slate-300">settings_input_component</span>
-</div>
-<div>
-<h3 class="text-2xl font-black text-primary uppercase tracking-tighter">PCC VALVE MONITORING</h3>
-<p class="text-sm text-slate-400 max-w-md mx-auto">Pre-Chamber Check Valve Status and Maintenance Tracking for Engine {{ selectedEngine.toString().padStart(2, '0') }}.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-<div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-<p class="text-[10px] font-black text-slate-400 uppercase">Avg Life</p>
-<p class="text-2xl font-black text-primary">2,450h</p>
-</div>
-<div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-<p class="text-[10px] font-black text-slate-400 uppercase">Clean Status</p>
-<p class="text-2xl font-black text-emerald-500">GOOD</p>
-</div>
-<div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-<p class="text-[10px] font-black text-slate-400 uppercase">Pending</p>
-<p class="text-2xl font-black text-warning">2 Units</p>
 </div>
 </div>
 </div>
@@ -450,7 +440,7 @@
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
 <div class="overflow-x-auto custom-scrollbar">
-<template v-for="cyl in 9">
+<template v-for="bank in ['A', 'B']">
 </template><table class="w-full text-center border-collapse">
 <thead class="bg-slate-50 border-b border-slate-100">
 <tr>
@@ -461,8 +451,7 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-50">
-<tr :key="bank + cyl" class="hover:bg-slate-50/50" v-for="bank in ['A', 'B']">
-</tr><tr class="hover:bg-slate-50/50">
+<tr class="hover:bg-slate-50/50" v-for="cyl in 9">
 <td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ cyl }}</td>
 <td class="px-2 py-2 border-r border-slate-100">
 <input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
@@ -540,11 +529,18 @@
 
             const login = ref({
                 shipId: 'KPS8-TR',
-                username: 'KPS8',
-                password: 'umut'
+                username: '',
+                password: ''
             });
 
-            // Grouped System Modules for Sidebar
+            const sparkPlugLog = ref({ lastDate: '2023-10-15', lastHrs: 12000 });
+            const pccLog = ref({ lastDate: '2023-11-01', lastHrs: 12500 });
+
+            const calculateLife = (lastHrs) => {
+                const currentTotal = 13500; // Mock current engine total
+                return Math.max(0, currentTotal - (lastHrs || 0));
+            };
+
             const systemGroups = [
                 { id: 'starting_air', label: 'Starting Air Compressors', icon: 'air', keywords: ['STARTING AIR'] },
                 { id: 'service_air', label: 'Service Air Compressors', icon: 'compress', keywords: ['SERVICE AIR'] },
@@ -563,7 +559,7 @@
             ];
 
             const generateAssetList = () => {
-                const names = [
+                const baseNames = [
                     "NO.1 18V5160 GTS", "NO.2 18V5160 GTS", "NO.3 18V5160 GTS", "NO.4 18V5160 GTS", "NO.5 18V5160 GTS", 
                     "NO.6 18V5160 GTS", "NO.7 18V5160 GTS", "NO.8 18V5160 GTS", "NO.9 18V5160 GTS", "NO.10 18V5160 GTS", 
                     "NO.11 18V5160 GTS", "NO.12 18V5160 GTS",
@@ -586,8 +582,14 @@
                     "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2"
                 ];
 
-                return names.map((name, i) => {
-                    const baseHrs = name.includes('GTS') ? 12000 : Math.floor(Math.random() * 5000);
+                const fullList = [...baseNames];
+                // Expand to 200+
+                for(let i = fullList.length; i < 215; i++) {
+                    fullList.push(`AUXILIARY EQUIPMENT UNIT NO:${i} (SYS-${i%10})`);
+                }
+
+                return fullList.map((name, i) => {
+                    const baseHrs = name.includes('GTS') ? 12000 : Math.floor(Math.random() * 8000);
                     return {
                         id: `ASSET-${i+1}`,
                         name: name.toUpperCase(),
@@ -614,16 +616,11 @@
                 return filteredAssets.value.slice(start, end);
             });
 
-            // PMS LOGIC: Maintenance Status based on Running Hours
             const getMaintenanceStatus = (hours) => {
-                const interval = 2000; // Standard 2000h service interval for logic demo
+                const interval = 2000;
                 const cyclePos = hours % interval;
-                
-                if (cyclePos > 1950 || cyclePos < 50) {
-                    return { level: 'critical', color: 'text-error', bg: 'bg-error' };
-                } else if (cyclePos > 1800) {
-                    return { level: 'warning', color: 'text-warning', bg: 'bg-warning' };
-                }
+                if (cyclePos > 1950 || cyclePos < 50) return { level: 'critical', color: 'text-error', bg: 'bg-error' };
+                if (cyclePos > 1800) return { level: 'warning', color: 'text-warning', bg: 'bg-warning' };
                 return { level: 'nominal', color: 'text-emerald-500', bg: 'bg-emerald-500' };
             };
 
@@ -678,7 +675,10 @@
                 getMaintenanceStatus,
                 getNextService,
                 getWearPercent,
-                getGtsHours
+                getGtsHours,
+                sparkPlugLog,
+                pccLog,
+                calculateLife
             };
         }
     }).mount('#app');
