@@ -1,494 +1,594 @@
 <!DOCTYPE html>
 
-<html class="h-full bg-slate-50" lang="en"><head>
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>KPS8 OSMAN BEY | PMS</title>
+<title>KPS8 OSMAN BEY PMS | Marine Maintenance System</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
-<script defer="" src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#48626e",
+                        "on-secondary-fixed-variant": "#304a55",
+                        "tertiary-fixed": "#ffdbca",
+                        "tertiary-fixed-dim": "#ffb690",
+                        "on-tertiary-fixed": "#341100",
+                        "tertiary-container": "#592300",
+                        "surface-bright": "#f4faff",
+                        "outline": "#737780",
+                        "on-surface": "#111d23",
+                        "inverse-surface": "#263238",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#cbe7f5",
+                        "on-secondary-container": "#4e6874",
+                        "on-primary-container": "#6b9edf",
+                        "outline-variant": "#c3c6d1",
+                        "background": "#f4faff",
+                        "surface-container-high": "#ddeaf2",
+                        "secondary-fixed-dim": "#afcbd8",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#e6f3fb",
+                        "secondary-container": "#cbe7f5",
+                        "primary-fixed": "#d3e4ff",
+                        "on-tertiary-container": "#d8885c",
+                        "surface-tint": "#27609d",
+                        "surface-container-highest": "#d7e4ec",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-background": "#111d23",
+                        "primary-container": "#003461",
+                        "on-primary-fixed": "#001c38",
+                        "on-surface-variant": "#43474f",
+                        "error-container": "#ffdad6",
+                        "primary": "#001f3d",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#d7e4ec",
+                        "on-tertiary-fixed-variant": "#723610",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#004882",
+                        "surface-dim": "#cfdce4",
+                        "inverse-primary": "#a3c9ff",
+                        "surface": "#f4faff",
+                        "on-secondary-fixed": "#021f29",
+                        "surface-container": "#e3f0f8",
+                        "tertiary": "#381300",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#e9f6fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
 <style>
-        body { font-family: 'Inter', sans-serif; }
-        [x-cloak] { display: none !important; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .historical-cell { @apply bg-emerald-50/20 text-emerald-700 text-center border-r border-slate-200 min-w-[80px] text-[10px] font-mono p-0; }
-        .header-historical { @apply bg-emerald-100/50 text-emerald-800 font-bold text-[9px] uppercase tracking-tighter min-w-[80px]; }
-        .grid-cell-input { @apply w-full h-full bg-transparent text-center focus:bg-sky-50 outline-none text-[10px] border-none p-1 transition-colors; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f4faff; }
+        ::-webkit-scrollbar-thumb { background: #c3c6d1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #737780; }
         
-        /* Sticky Column Styles for Large Table */
-        .sticky-col-1 { position: sticky; left: 0; z-index: 20; background: white; }
-        .sticky-col-2 { position: sticky; left: 350px; z-index: 20; background: white; }
-        .sticky-col-3 { position: sticky; left: 510px; z-index: 20; background: #f0f9ff; } /* sky-50 */
-        .sticky-col-4 { position: sticky; left: 630px; z-index: 20; background: #e0f2fe; } /* sky-100 */
-        
-        thead th.sticky-col-1 { z-index: 50; background: #f8fafc; }
-        thead th.sticky-col-2 { z-index: 50; background: #f8fafc; }
-        thead th.sticky-col-3 { z-index: 50; background: #f0f9ff; }
-        thead th.sticky-col-4 { z-index: 50; background: #e0f2fe; }
+        /* Glassmorphism sidebar */
+        .sidebar-glass {
+            background: rgba(244, 250, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* Industrial Input Style */
+        .industrial-input {
+            background: #d7e4ec;
+            border: none;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .industrial-input:focus {
+            background: #ffffff;
+            border-bottom-color: #27609d;
+            outline: none;
+            box-shadow: none;
+        }
     </style>
 </head>
-<body class="h-full overflow-hidden" x-data="{ 
-    isLoggedIn: false,
-    loginData: { username: '', password: '' },
-    loginError: false,
-    currentView: 'dashboard',
-    sidebarOpen: true,
-    selectedGts: 1,
-    selectedLogDate: new Date().toISOString().split('T')[0],
-    weeksCount: 12,
-    runningHoursList: [],
-    engineHoursData: {},
-    sparkPlugData: {},
-    pccData: {},
-    valveData: {},
-
-    handleLogin() {
-        if(this.loginData.username === 'KPS8' &amp;&amp; this.loginData.password === 'umut') {
-            this.isLoggedIn = true;
-            this.loginError = false;
-        } else {
-            this.loginError = true;
-            this.loginData.password = '';
-        }
-    },
-
-    initData() {
-        const rawData = [
-            { isHeader: true, label: 'MAIN ENGINES (GTS)' },
-            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170] },
-            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165] },
-            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168] },
-            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38] },
-            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162] },
-            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169] },
-            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168] },
-            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170] },
-            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171] },
-            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169] },
-            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172] },
-            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170] },
-            { isHeader: true, label: 'COMPRESSORS' },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [24, 22] },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 12] },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/19', total: 1562, last: 1578, weeks: [16, 18] },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 19] },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 32] },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 2980, last: 3010, weeks: [30, 29] },
-            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0] },
-            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2133-12427514', total: 1217, last: 1217, weeks: [0, 0] },
-            { isHeader: true, label: 'NOX CONTROL AIR COMPRESSORS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NOX CONTROL AIR COMPRESSOR NO:${i+1}`, sn: `TRD13300${i}`, total: 1000 + (i*100), last: 1100 + (i*100), weeks: [170, 172] })),
-            { isHeader: true, label: 'SEA WATER PUMPS' },
-            ...Array.from({length: 16}, (_, i) =&gt; ({ desc: `SEA WATER PUMP ${i+1}`, sn: `458226-07-${(i+1).toString().padStart(2, '0')}`, total: 2674 + (i*200), last: 2687 + (i*200), weeks: [13, 14] })),
-            { isHeader: true, label: 'SG PRE-LUB PUMPS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG PRELUB. PUMP ${i+1}`, sn: `51225${i}`, total: 542 + (i*20), last: 543 + (i*20), weeks: [1, 2] })),
-            { isHeader: true, label: 'SG LO PREHEATING PUMPS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG LO PREHEATING PUMP ${i+1}`, sn: `190510907${i}`, total: 20298 + (i*100), last: 20448 + (i*100), weeks: [150, 160] })),
-            { isHeader: true, label: 'SG FINE FILTER PUMPS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG FINE FILTER PUMP ${i+1}`, sn: `190510372${i}`, total: 2313 + (i*50), last: 2376 + (i*50), weeks: [63, 65] })),
-            { isHeader: true, label: 'JACKING PUMPS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NDE JACKING PUMP ${i+1}`, sn: `NDE-${i+1}`, total: 150, last: 150, weeks: [0, 0] })),
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `DE JACKING PUMP ${i+1}`, sn: `DE-${i+1}`, total: 150, last: 150, weeks: [0, 0] })),
-            { isHeader: true, label: 'SIDE BEARING PUMPS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NDE SIDE BEARING PUMP ${i+1}`, sn: `NDE-SB-${i+1}`, total: 2298, last: 2311, weeks: [13, 15] })),
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `DE SIDE BEARING PUMP ${i+1}`, sn: `DE-SB-${i+1}`, total: 2298, last: 2311, weeks: [13, 15] })),
-            { isHeader: true, label: 'SG VENT FANS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NO ${i+1} SG VENT.FAN`, sn: `F-SG-${i+1}`, total: 2666, last: 2680, weeks: [14, 16] })),
-            { isHeader: true, label: 'ALTERNATOR FANS' },
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `ALTERNATOR FAN ${i+1}-1`, sn: `F-ALT-${i+1}-1`, total: 5108, last: 5206, weeks: [98, 102] })),
-            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `ALTERNATOR FAN ${i+1}-2`, sn: `F-ALT-${i+1}-2`, total: 8480, last: 8480, weeks: [0, 0] })),
-            { isHeader: true, label: 'STG ROOM &amp; PUMP ROOM FANS' },
-            { desc: 'STG ROOM FAN NO:1', sn: 'F-STG-01', total: 223, last: 223, weeks: [0] },
-            { desc: 'STG ROOM FAN NO:2', sn: 'F-STG-02', total: 190, last: 190, weeks: [0] },
-            { desc: 'PUMP ROOM SUPPLY FAN', sn: 'F-PR-SUP', total: 1198, last: 1205, weeks: [7] },
-            { desc: 'PUMP ROOM FORE EXHAUST FAN', sn: 'F-PR-FEX', total: 489, last: 489, weeks: [0] },
-            { desc: 'PUMP ROOM MID EXHAUST FAN', sn: 'F-PR-MEX', total: 1274, last: 1274, weeks: [0] },
-            { desc: 'PUMP ROOM AFT EXHAUST FAN', sn: 'F-PR-AEX', total: 1927, last: 1927, weeks: [0] }
-        ];
-
-        rawData.forEach(item =&gt; {
-            if(!item.isHeader) {
-                const currentWeeks = item.weeks || [];
-                item.weeks = Array(this.weeksCount).fill(0).map((_, i) =&gt; currentWeeks[i] || 0);
-            }
-        });
-
-        this.runningHoursList = [...rawData];
-
-        for(let i=1; i&lt;=12; i++) {
-            this.engineHoursData[i] = { total: 20000 + (i * 1500), weekly: 168 };
-            this.sparkPlugData[i] = { A: {}, B: {} };
-            this.pccData[i] = { A: {}, B: {} };
-            this.valveData[i] = { A: {}, B: {} };
-            ['A', 'B'].forEach(bank =&gt; {
-                for(let cyl=1; cyl&lt;=9; cyl++) {
-                    this.sparkPlugData[i][bank][cyl] = { lastDate: '2024-03-15', lastHours: 44000, prevDate: '2023-08-20', prevHours: 42000 };
-                    this.pccData[i][bank][cyl] = { lastServiceDate: '2024-01-10', lastServiceHours: 43000 };
-                    this.valveData[i][bank][cyl] = { lastMeasDate: '2024-02-05', lastMeasHours: 44500, A: 0.45, B: 0.45, C: 0.90, D: 0.90 };
-                }
-            });
-        }
-    }
-}" x-init="initData()">
-<!-- LOGIN OVERLAY -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900" x-show="!isLoggedIn">
-<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
-<div class="w-full max-w-[450px] bg-white rounded-xl shadow-2xl relative z-10 mx-4 overflow-hidden border border-white/20">
-<div class="h-2 w-full bg-sky-950"></div>
-<div class="p-10">
-<div class="text-center mb-10">
-<div class="bg-sky-950 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
-<span class="material-symbols-outlined text-white">directions_boat</span>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim">
+<!-- LOGIN SCREEN OVERLAY -->
+<!-- Initially Visible. Real implementation would use JS, here we simulate with CSS if needed, but per instructions, we create the full SPA structure -->
+<div class="fixed inset-0 z-[100] bg-surface flex items-center justify-center p-6 hidden" id="login-screen">
+<div class="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden border border-outline-variant/10">
+<div class="p-8 space-y-6">
+<div class="text-center space-y-2">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary-container text-on-primary mb-4">
+<span class="material-symbols-outlined text-4xl">directions_boat</span>
 </div>
-<h1 class="text-2xl font-black text-sky-950 tracking-tight uppercase mb-1">KPS8 OSMAN BEY</h1>
-<p class="text-[10px] font-bold text-slate-400 tracking-[0.2em] uppercase">Planned Maintenance System</p>
+<h1 class="text-2xl font-black tracking-tighter text-primary">KPS8 OSMAN BEY PMS</h1>
+<p class="text-secondary text-sm">Industrial Asset Management System</p>
 </div>
-<form @submit.prevent="handleLogin()" class="space-y-6">
+<form class="space-y-4">
 <div>
-<div class="relative group">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xl group-focus-within:text-sky-600 transition-colors">person</span>
-<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium outline-none focus:ring-2 focus:ring-sky-600/20 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="SYSTEM ID" required="" type="text" x-model="loginData.username"/>
-</div>
+<label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Username</label>
+<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" placeholder="Enter username" type="text" value="KPS8"/>
 </div>
 <div>
-<div class="relative group">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 text-xl group-focus-within:text-sky-600 transition-colors">lock</span>
-<input class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium outline-none focus:ring-2 focus:ring-sky-600/20 focus:border-sky-600 transition-all placeholder:text-slate-300" placeholder="PASSWORD" required="" type="password" x-model="loginData.password"/>
+<label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Password</label>
+<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" placeholder="Enter password" type="password" value="umut"/>
 </div>
-</div>
-<div class="h-4">
-<p class="text-[10px] text-red-600 font-bold text-center uppercase tracking-wider" x-cloak="" x-show="loginError">Access Denied: Invalid Credentials</p>
-</div>
-<button class="w-full bg-sky-950 text-white font-black py-4 rounded-lg shadow-lg hover:bg-sky-900 active:scale-[0.98] transition-all uppercase tracking-widest text-[11px]" type="submit">
-                    Authorize Access
-                </button>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-lg font-bold shadow-lg active:scale-95 transition-transform" type="button">
+                        ACCESS SYSTEM
+                    </button>
 </form>
-<div class="mt-12 text-center">
-<p class="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">Technical Marine Support System v2.4.0</p>
+<div class="text-center">
+<a class="text-xs text-on-primary-fixed-variant hover:underline" href="#">Forgot access credentials? Contact Fleet Manager</a>
 </div>
 </div>
+<div class="h-1.5 w-full bg-gradient-to-r from-primary via-primary-container to-surface-tint"></div>
 </div>
 </div>
-<div class="flex h-full" x-cloak="" x-show="isLoggedIn">
-<!-- Sidebar Navigation -->
-<aside class="w-72 bg-slate-100 border-r border-slate-200 flex flex-col z-50">
-<div class="p-6">
-<div class="flex items-center gap-3 mb-8">
-<div class="bg-sky-950 p-2 rounded-lg">
-<span class="material-symbols-outlined text-white">directions_boat</span>
+<div class="flex min-h-screen">
+<!-- SIDENAVBAR -->
+<aside class="sidebar-glass h-screen w-64 fixed left-0 top-0 flex flex-col p-4 border-r border-slate-200/50 z-50">
+<div class="px-2 mb-8">
+<h2 class="text-lg font-black text-blue-900 tracking-tighter">KPS8 OSMAN BEY</h2>
+<p class="text-[10px] uppercase font-bold text-outline tracking-[0.1em]">Engine Management System</p>
 </div>
-<div>
-<h1 class="text-sky-950 font-black tracking-tighter text-lg leading-none uppercase">KPS8 OSMAN BEY</h1>
-<p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1">OPERATIONAL • PMS v4.2</p>
+<nav class="flex-1 overflow-y-auto space-y-1 pr-2">
+<!-- Dashboard (Default Active) -->
+<a class="flex items-center gap-3 px-3 py-2 bg-white text-blue-900 shadow-sm font-bold rounded-lg group" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<div class="pt-4 pb-2">
+<span class="px-3 text-[10px] font-black text-outline uppercase tracking-widest">Maintenance Groups</span>
 </div>
-</div>
-<nav class="space-y-1">
-<template x-for="item in [
-                    { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
-                    { id: 'running-hours', label: 'Running Hours', icon: 'schedule' },
-                    { id: 'spark-plug', label: 'Spark Plug', icon: 'bolt' },
-                    { id: 'pcc', label: 'PCC (Non Return Valve)', icon: 'settings_input_component' },
-                    { id: 'valve', label: 'Valve Measurement', icon: 'straighten' },
-                    { id: 'starting-air', label: 'Compressors', icon: 'air' },
-                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
-                    { id: 'boiler', label: 'Boiler', icon: 'hvac' },
-                    { id: 'lube-oil', label: 'Lube Oil System', icon: 'oil_barrel' },
-                    { id: 'reports', label: 'Reports', icon: 'description' },
-                    { id: 'shutdowns', label: 'Shutdowns', icon: 'error' }
-                ]">
-<button :class="currentView === item.id ? 'bg-white text-sky-900 shadow-sm rounded-lg font-bold' : 'text-slate-600 hover:bg-slate-200/50'" @click="currentView = item.id" class="w-full flex items-center gap-3 px-4 py-3 text-sm transition-all duration-200">
-<span class="material-symbols-outlined text-[20px]" x-text="item.icon"></span>
-<span class="truncate" x-text="item.label"></span>
-</button>
-</template>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">electrical_services</span>
+<span class="text-sm">Spark Plug</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">settings_input_component</span>
+<span class="text-sm">PCC Valve</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">straighten</span>
+<span class="text-sm">Valve Measurement</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">air</span>
+<span class="text-sm">Starting Air</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">compress</span>
+<span class="text-sm">Service Air</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">valve</span>
+<span class="text-sm">Control Air</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">eco</span>
+<span class="text-sm">Denox</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">water_drop</span>
+<span class="text-sm">FWG</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">cyclone</span>
+<span class="text-sm">SW Pumps</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">oil_barrel</span>
+<span class="text-sm">Lube Oil</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">cleaning_services</span>
+<span class="text-sm">Cleaning</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">rebase_edit</span>
+<span class="text-sm">Boiler</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl text-error">report_problem</span>
+<span class="text-sm">Shutdowns</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<span class="material-symbols-outlined text-xl">analytics</span>
+<span class="text-sm">Reports</span>
+</a>
 </nav>
+<div class="mt-auto p-4 bg-surface-container-high rounded-xl flex items-center gap-3">
+<img alt="Profile" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" data-alt="Portrait of a marine engineer in uniform with a focused expression, soft ship cabin lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChFej_SSCWfKhR_XQcN4ZvSSH-PwvRT5PyjlSLQgUWzCcqLZRpjBKGTQGducwMsNlNLoyuvbonHvVfgNB6mmuMZC83bbxYwrauz2JkQIrDh42eQLzWW2EzD4jShzrVWjSDqq8xD3KVwOSYj7Yr2zQAWwEFmu1uPigYL7h2TGx4WA2RZ6n-L04NYj3JLuhxX0cxUM11icaKNZ0TfgpFb1rHePXUAln42XbUAzYOaf0OXWQv4lDdQKC053HS8Z8z4nNNP2cqZNHt0-M"/>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold text-primary truncate">Chief Eng. Umut</p>
+<p class="text-[10px] text-secondary">Logged in: 08:34</p>
 </div>
-<div class="mt-auto p-6 space-y-4">
-<div class="bg-sky-950 rounded-xl p-4 text-white shadow-lg">
-<p class="text-[10px] uppercase tracking-widest font-bold opacity-60 mb-2">System Status</p>
-<div class="flex items-center justify-between">
-<span class="text-xs font-medium">Network Online</span>
-<div class="h-2 w-2 rounded-full bg-green-400 animate-pulse"></div>
-</div>
-</div>
-<button @click="isLoggedIn = false" class="w-full flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-red-600 transition-colors">
-<span class="material-symbols-outlined">logout</span>
-<span class="text-sm font-medium">Logout System</span>
-</button>
 </div>
 </aside>
-<!-- Main Content Area -->
-<main class="flex-1 flex flex-col h-full bg-slate-50 overflow-hidden relative">
-<!-- Header -->
-<header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8 z-40">
+<!-- MAIN CONTENT -->
+<main class="flex-1 ml-64 min-h-screen flex flex-col">
+<!-- TOPNAVBAR -->
+<header class="w-full top-0 sticky z-40 bg-slate-50 border-b border-slate-200/50 flex justify-between items-center px-8 py-4">
 <div class="flex items-center gap-4">
-<h2 class="text-lg font-bold text-sky-950 uppercase tracking-tight" x-text="currentView.replace('-', ' ')"></h2>
-<div class="h-4 w-px bg-slate-200"></div>
-<p class="text-xs text-slate-500 font-medium">IMO: 9876543 | Engine Deck Level 2</p>
+<h1 class="text-xl font-bold tracking-tighter text-blue-900">Vessel Status: <span class="text-surface-tint">AT SEA</span></h1>
+<div class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed rounded-full text-[10px] font-black uppercase tracking-wider">
+                        Main Gas Spec: 98%
+                    </div>
 </div>
 <div class="flex items-center gap-6">
 <div class="relative">
-<span class="material-symbols-outlined text-slate-400 hover:text-sky-950 cursor-pointer">notifications</span>
-<div class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full border-2 border-white"></div>
+<input class="w-64 bg-slate-200/50 border-none rounded-full px-10 py-2 text-sm focus:ring-2 focus:ring-primary-fixed" placeholder="Search components..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
 </div>
-<button class="bg-sky-950 text-white text-xs font-bold px-4 py-2 rounded-md hover:bg-sky-900 transition-colors uppercase tracking-wider">Sync All Data</button>
+<div class="flex items-center gap-4 text-slate-500">
+<button class="relative hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
+</div>
 </div>
 </header>
-<!-- Scrollable Content -->
-<div class="flex-1 overflow-y-auto p-8 no-scrollbar">
-<!-- Dashboard View -->
-<div class="space-y-8" x-show="currentView === 'dashboard'">
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-<p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-4">Total Operating Time</p>
-<div class="flex items-end justify-between">
+<!-- CANVAS -->
+<div class="p-8 space-y-8">
+<!-- BENTO GRID DASHBOARD SUMMARY -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Engine Status Card (Main) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-6">
+<div class="flex justify-between items-end">
 <div>
-<h3 class="text-4xl font-black text-sky-950 tracking-tighter">1,324,580</h3>
-<p class="text-xs text-slate-500 mt-1 font-medium">Fleet Hours Accumulated</p>
+<h3 class="text-lg font-bold text-primary">Gas Terminal Engines (GTS)</h3>
+<p class="text-xs text-secondary font-medium uppercase tracking-widest">Global Running Hours &amp; Status</p>
 </div>
-<span class="material-symbols-outlined text-sky-950 opacity-20 text-4xl">timer</span>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sync</span> SYNC DATA
+                            </button>
+</div>
+<div class="grid grid-cols-4 md:grid-cols-6 gap-4">
+<!-- Engine Item -->
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 01</p>
+<p class="text-xl font-bold text-primary">12,450</p>
+<p class="text-[9px] text-secondary">Hrs</p>
+</div>
+<!-- Repeat for others -->
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 02</p>
+<p class="text-xl font-bold text-primary">11,280</p>
+<p class="text-[9px] text-secondary">Hrs</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-error">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 03</p>
+<p class="text-xl font-bold text-primary">13,912</p>
+<p class="text-[9px] text-secondary">Hrs</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 04</p>
+<p class="text-xl font-bold text-primary">10,550</p>
+<p class="text-[9px] text-secondary">Hrs</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-yellow-500">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 05</p>
+<p class="text-xl font-bold text-primary">8,240</p>
+<p class="text-[9px] text-secondary">Hrs</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg text-center border-b-4 border-emerald-500">
+<p class="text-[10px] font-black text-outline uppercase tracking-tighter">GTS 06</p>
+<p class="text-xl font-bold text-primary">14,102</p>
+<p class="text-[9px] text-secondary">Hrs</p>
 </div>
 </div>
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
-<div class="absolute top-0 right-0 w-2 h-full bg-red-500"></div>
-<p class="text-[10px] text-red-500 font-bold uppercase tracking-widest mb-4">Critical Alerts</p>
-<div class="flex items-end justify-between">
+</div>
+<!-- Critical Alerts -->
+<div class="col-span-12 lg:col-span-4 bg-primary-container p-6 rounded-xl shadow-lg text-white">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-error-container">warning</span>
+<h3 class="text-lg font-bold">Planned Maintenance</h3>
+</div>
+<div class="space-y-4">
+<div class="bg-primary/40 p-4 rounded-lg flex justify-between items-center">
 <div>
-<h3 class="text-4xl font-black text-red-600 tracking-tighter">24</h3>
-<p class="text-xs text-slate-500 mt-1 font-medium italic">Overdue Tasks Detected</p>
+<p class="text-xs font-bold opacity-80 uppercase">Spark Plug Change</p>
+<p class="text-sm font-medium">GTS 03 - Bank A</p>
 </div>
-<span class="material-symbols-outlined text-red-500 opacity-20 text-4xl">warning</span>
+<span class="bg-error px-2 py-1 rounded text-[10px] font-bold">OVERDUE</span>
 </div>
-</div>
-<div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-<p class="text-[10px] text-sky-600 font-bold uppercase tracking-widest mb-4">Planned Schedule</p>
-<div class="flex items-end justify-between">
+<div class="bg-primary/40 p-4 rounded-lg flex justify-between items-center">
 <div>
-<h3 class="text-4xl font-black text-sky-950 tracking-tighter">42</h3>
-<p class="text-xs text-slate-500 mt-1 font-medium">Upcoming Checks (72h)</p>
+<p class="text-xs font-bold opacity-80 uppercase">FW Filter Cleaning</p>
+<p class="text-sm font-medium">Main FW Pump 02</p>
 </div>
-<span class="material-symbols-outlined text-sky-600 opacity-20 text-4xl">calendar_today</span>
-</div>
-</div>
-</div>
-<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-<template x-for="i in 12">
-<div @click="currentView = 'spark-plug'; selectedGts = i" class="bg-white p-4 rounded-xl border border-slate-200 hover:border-sky-500 transition-all cursor-pointer hover:shadow-md group">
-<div class="flex justify-between items-start mb-1">
-<p class="text-[9px] font-black text-slate-400 uppercase tracking-widest group-hover:text-sky-500">GTS <span x-text="i"></span></p>
-<span class="material-symbols-outlined text-[14px] text-slate-300">bolt</span>
-</div>
-<p class="text-xl font-black text-sky-950" x-text="(engineHoursData[i]?.total || 0).toLocaleString()"></p>
-</div>
-</template>
+<span class="bg-yellow-500 px-2 py-1 rounded text-[10px] font-bold text-black">DUE 48H</span>
 </div>
 </div>
-<!-- Running Hours Tab -->
-<div class="space-y-6" x-show="currentView === 'running-hours'">
-<div class="flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-<div>
-<h2 class="text-2xl font-black text-sky-950 uppercase">Fleet Equipment Log (100+ Units)</h2>
-<div class="flex items-center gap-2 mt-2">
-<label class="text-[10px] font-bold text-slate-500 uppercase">Log Date:</label>
-<input class="text-[10px] font-bold text-sky-900 border-slate-200 rounded px-2 py-1" type="date" x-model="selectedLogDate"/>
 </div>
 </div>
+<!-- RUNNING HOURS HIGH DENSITY TABLE SECTION -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-slate-200/30">
+<div class="px-6 py-4 bg-slate-100 flex justify-between items-center border-b border-slate-200">
+<h2 class="text-sm font-black text-primary uppercase tracking-[0.15em]">Detailed Maintenance Registry - Running Hours</h2>
 <div class="flex gap-2">
-<button class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-lg hover:bg-emerald-700 flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">download</span> Export XLS
-                        </button>
+<button class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded border border-outline-variant/30 hover:bg-slate-50 transition-colors uppercase">Previous Month</button>
+<button class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-primary-container transition-colors uppercase">Export CSV</button>
 </div>
 </div>
-<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-<div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-320px)]">
-<template x-for="w in weeksCount">
-</template><template x-for="(item, index) in runningHoursList">
-</template><template x-if="item.isHeader">
-</template><template x-if="!item.isHeader">
-</template><template x-if="!item.isHeader">
-</template><template x-if="!item.isHeader">
-</template><template x-if="!item.isHeader">
-</template><template x-if="!item.isHeader">
-<template x-for="(wVal, wIdx) in item.weeks">
-</template></template><table class="w-full text-[10px] border-collapse min-w-[2000px]">
-<thead class="sticky top-0 z-40 shadow-sm bg-slate-50">
-<tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
-<th class="sticky-col-1 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
-<th class="sticky-col-2 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
-<th class="sticky-col-3 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Total R.HRS</th>
-<th class="sticky-col-4 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Last Hours</th>
-<th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]" x-text="'Week ' + w"></th>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest border-r border-slate-200">Equipment Description</th>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest border-r border-slate-200 w-32">Serial No.</th>
+<th class="px-4 py-3 text-[10px] font-black text-primary uppercase tracking-widest border-r border-slate-200 w-32">Total RH</th>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 1</th>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 2</th>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center border-r border-slate-200">Week 3</th>
+<th class="px-4 py-3 text-[10px] font-black text-secondary uppercase tracking-widest text-center">Week 4</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr :class="item.isHeader ? 'bg-slate-100/80 sticky top-12 z-30' : 'hover:bg-sky-50 transition-colors group'">
-<!-- Header Row -->
-<td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest bg-slate-100/80 border-b border-slate-200" x-text="item.label"></td>
-<!-- Equipment Row -->
-<td class="sticky-col-1 p-0 border-r border-slate-200">
-<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Equipment Name..." type="text" x-model="item.desc"/>
+<!-- GTS 01 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">GTS 01 Engine Main Unit</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">WRT-992-01</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="12,450"/>
 </td>
-<td class="sticky-col-2 p-0 border-r border-slate-200">
-<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Serial No..." type="text" x-model="item.sn"/>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs font-bold text-blue-600" type="text" value="165"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- GTS 02 -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">GTS 02 Engine Main Unit</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">WRT-992-02</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="11,280"/>
 </td>
-<td class="sticky-col-3 p-0 border-r border-slate-200">
-<input class="py-3 font-black text-sky-900 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.total"/>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="160"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="162"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="158"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- Starting Air Compressor 1 -->
+<tr class="hover:bg-slate-50/50 bg-slate-50/20">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">Starting Air Compressor 01</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">CMP-L3-001</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="4,210"/>
 </td>
-<td class="sticky-col-4 p-0 border-r border-slate-200">
-<input class="py-3 font-bold text-sky-700 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.last"/>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="12"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="14"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="10"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- Sea Water Pump -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">Sea Water Pump No. 1</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">SWP-M-01</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="8,902"/>
 </td>
-<td class="p-0 border-r border-slate-200 historical-cell">
-<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50 bg-transparent" type="number" x-model="item.weeks[wIdx]"/>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- Denox Unit -->
+<tr class="hover:bg-slate-50/50 bg-slate-50/20">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">Denox SCR Unit GTS 01</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">SCR-77-01</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="1,450"/>
 </td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="102"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="115"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="98"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- Boiler -->
+<tr class="hover:bg-slate-50/50">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">Exhaust Gas Boiler 01</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">EGB-KPS-01</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="45,210"/>
+</td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="168"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
+</tr>
+<!-- SG Pre-lub Pump -->
+<tr class="hover:bg-slate-50/50 bg-slate-50/20">
+<td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100">SG Pre-lubrication Pump 01</td>
+<td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">PRE-LUB-01</td>
+<td class="px-4 py-3 border-r border-slate-100">
+<input class="w-full bg-transparent border-none p-0 focus:ring-0 text-sm font-black text-primary text-right pr-2" type="text" value="2,145"/>
+</td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="5"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="5"/></td>
+<td class="px-4 py-3 border-r border-slate-100"><input class="w-full text-center bg-transparent border-none text-xs" type="text" value="6"/></td>
+<td class="px-4 py-3 bg-surface-container-low/30"><input class="w-full text-center bg-transparent border-none text-xs italic" placeholder="..." type="text" value=""/></td>
 </tr>
 </tbody>
 </table>
 </div>
+<div class="px-6 py-4 bg-slate-50 border-t border-slate-200 text-[10px] text-secondary flex justify-between">
+<span>Showing 7 of 142 equipment units</span>
+<span class="font-bold">LAST DATA SYNC: 2023-11-20 08:32:01</span>
 </div>
 </div>
-<!-- Spark Plug Tab -->
-<div class="space-y-6" x-show="currentView === 'spark-plug'">
-<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
-<div>
-<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'Spark Plug Lifecycle - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Master Time: <span class="text-sky-600 font-black" x-text="engineHoursData[selectedGts]?.total"></span> hrs</p>
+<!-- SUB-SECTION: SPARK PLUG TRACKING -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-6 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl">electrical_services</span>
+<h2 class="text-lg font-black text-primary uppercase tracking-tighter">Spark Plug Lifecycle Management</h2>
 </div>
-<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
-<template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
-</template>
+<select class="bg-surface-container-high border-none rounded-lg text-xs font-bold py-2 px-4 pr-8 focus:ring-primary">
+<option>GTS 01 (WRT-992-01)</option>
+<option>GTS 02 (WRT-992-02)</option>
+<option>GTS 03 (WRT-992-03)</option>
+</select>
 </div>
-</div>
-<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
-<template x-for="bank in ['A', 'B']">
-<div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
-<h3 class="text-[11px] font-black text-sky-950 uppercase tracking-[0.2em] mb-6 border-b border-slate-100 pb-4" x-text="'Cylinder Bank ' + bank"></h3>
-<div class="space-y-3">
-<template x-for="cyl in 9">
-<div class="grid grid-cols-12 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 items-center">
-<div class="col-span-1 border-r border-slate-200 pr-3 text-center">
-<span class="text-xs font-black text-sky-900" x-text="cyl + bank"></span>
-</div>
-<div class="col-span-11 grid grid-cols-3 gap-4">
-<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-bold outline-none focus:border-sky-500" type="date" x-model="sparkPlugData[selectedGts][bank][cyl].lastDate"/>
-<input class="w-full text-[10px] bg-white border border-slate-200 rounded px-2 py-1.5 font-black text-sky-600 outline-none focus:border-sky-500" type="number" x-model="sparkPlugData[selectedGts][bank][cyl].lastHours"/>
-<div class="text-right flex items-center justify-end">
-<span class="text-xs font-black text-emerald-600" x-text="sparkPlugData[selectedGts][bank][cyl].lastHours - sparkPlugData[selectedGts][bank][cyl].prevHours"></span>
-<span class="text-[8px] text-slate-400 font-bold ml-1 uppercase">hrs run</span>
-</div>
-</div>
-</div>
-</template>
-</div>
-</div>
-</template>
-</div>
-</div>
-<!-- PCC (Non Return Valve) Tab -->
-<div class="space-y-6" x-show="currentView === 'pcc'">
-<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
-<div>
-<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'PCC Valve Service - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Non-Return Valve Maintenance Schedule</p>
-</div>
-<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
-<template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
-</template>
-</div>
-</div>
-<div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
 <div class="grid grid-cols-2 gap-8">
-<template x-for="bank in ['A', 'B']">
+<!-- Bank A -->
 <div class="space-y-4">
-<h4 class="font-black text-sky-900 text-xs border-b pb-2 uppercase" x-text="'Bank ' + bank"></h4>
-<template x-for="cyl in 9">
-<div class="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-100">
-<span class="text-xs font-bold text-sky-950" x-text="cyl + bank"></span>
-<div class="flex gap-2">
-<input class="text-[10px] px-2 py-1 rounded border border-slate-200" type="date" x-model="pccData[selectedGts][bank][cyl].lastServiceDate"/>
-<input class="text-[10px] px-2 py-1 rounded border border-slate-200 w-24 font-mono" placeholder="Hours" type="number" x-model="pccData[selectedGts][bank][cyl].lastServiceHours"/>
+<div class="flex items-center justify-between border-b border-slate-200 pb-2">
+<h4 class="text-xs font-black text-primary tracking-widest uppercase">BANK A - CYLINDERS</h4>
+<span class="text-[10px] font-bold text-secondary">Target Life: 4000 hrs</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<!-- Cylinders 1-9 -->
+<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl A1</p>
+<p class="text-sm font-black text-primary">3,120 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[78%]"></div>
 </div>
 </div>
-</template>
+<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl A2</p>
+<p class="text-sm font-black text-primary">3,120 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[78%]"></div>
 </div>
-</template>
+</div>
+<div class="bg-surface p-3 rounded-lg border-l-4 border-error">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl A3</p>
+<p class="text-sm font-black text-primary">4,015 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-error h-full w-full"></div>
+</div>
+</div>
+<!-- ... more cylinders ... -->
+</div>
+</div>
+<!-- Bank B -->
+<div class="space-y-4">
+<div class="flex items-center justify-between border-b border-slate-200 pb-2">
+<h4 class="text-xs font-black text-primary tracking-widest uppercase">BANK B - CYLINDERS</h4>
+<span class="text-[10px] font-bold text-secondary">Target Life: 4000 hrs</span>
+</div>
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl B1</p>
+<p class="text-sm font-black text-primary">2,140 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[54%]"></div>
+</div>
+</div>
+<div class="bg-surface p-3 rounded-lg border-l-4 border-yellow-500">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl B2</p>
+<p class="text-sm font-black text-primary">3,890 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-yellow-500 h-full w-[97%]"></div>
+</div>
+</div>
+<div class="bg-surface p-3 rounded-lg border-l-4 border-emerald-500">
+<p class="text-[9px] font-bold text-secondary uppercase">Cyl B3</p>
+<p class="text-sm font-black text-primary">2,140 hrs</p>
+<div class="w-full bg-slate-200 h-1 mt-1 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full w-[54%]"></div>
 </div>
 </div>
 </div>
-<!-- Valve Measurement Tab -->
-<div class="space-y-6" x-show="currentView === 'valve'">
-<div class="flex items-center justify-between border-l-4 border-sky-950 pl-6">
+</div>
+</div>
+</div>
+<!-- LUBE OIL ANALYSIS PREVIEW -->
+<div class="grid grid-cols-3 gap-6">
+<div class="col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-surface-tint">oil_barrel</span>
+<h3 class="text-sm font-black text-primary uppercase">Lube Oil Consumption</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-xs">
+<span class="text-secondary">Current Stock</span>
+<span class="font-bold text-primary">42,500 L</span>
+</div>
+<div class="h-4 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-blue-900 to-surface-tint w-2/3"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-secondary">Weekly Avg Top-up</span>
+<span class="font-bold text-primary">450 L / GTS</span>
+</div>
+</div>
+</div>
+<div class="col-span-2 bg-surface-container-lowest p-6 rounded-xl shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-surface-tint">water_drop</span>
+<h3 class="text-sm font-black text-primary uppercase">Recent Water Analysis (FW)</h3>
+</div>
+<button class="text-[10px] font-bold text-surface-tint hover:underline">VIEW FULL LOG</button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-slate-50 p-3 rounded-lg text-center">
+<p class="text-[9px] font-black text-secondary">PH LEVEL</p>
+<p class="text-lg font-bold text-emerald-600">8.2</p>
+<p class="text-[8px] uppercase font-bold text-outline">Normal</p>
+</div>
+<div class="bg-slate-50 p-3 rounded-lg text-center">
+<p class="text-[9px] font-black text-secondary">CHLORIDE</p>
+<p class="text-lg font-bold text-primary">12 mg/l</p>
+<p class="text-[8px] uppercase font-bold text-outline">Normal</p>
+</div>
+<div class="bg-slate-50 p-3 rounded-lg text-center">
+<p class="text-[9px] font-black text-secondary">HARDNESS</p>
+<p class="text-lg font-bold text-primary">0.5 °d</p>
+<p class="text-[8px] uppercase font-bold text-outline">Low</p>
+</div>
+<div class="bg-slate-50 p-3 rounded-lg text-center border border-error-container">
+<p class="text-[9px] font-black text-secondary">IRON</p>
+<p class="text-lg font-bold text-error">0.8 ppm</p>
+<p class="text-[8px] uppercase font-bold text-error">High</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- FOOTER SYSTEM INFO -->
+<footer class="mt-auto p-6 bg-surface-container flex justify-between items-center text-[10px] text-secondary font-medium border-t border-slate-200">
+<div class="flex gap-4">
+<span>IP: 10.12.8.254 (Ship Local)</span>
+<span>SYSTEM VERSION: v4.2.1-STABLE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+<span>SERVER CONNECTED - ENCRYPTED TUNNEL ACTIVE</span>
+</div>
 <div>
-<h2 class="text-2xl font-black text-sky-950 uppercase" x-text="'Valve Clearance - GTS ' + selectedGts"></h2>
-<p class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">Tolerance Settings: Intake 0.45mm / Exhaust 0.90mm</p>
-</div>
-<div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200 shadow-sm overflow-x-auto max-w-[500px] no-scrollbar">
-<template x-for="i in 12">
-<button :class="selectedGts === i ? 'bg-sky-950 text-white shadow-md' : 'text-slate-400 hover:text-sky-950'" @click="selectedGts = i" class="min-w-[34px] h-8 rounded text-[10px] font-black transition-all" x-text="i"></button>
-</template>
-</div>
-</div>
-<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
-<template x-for="bank in ['A', 'B']">
-<template x-for="cyl in 9">
-</template></template><table class="w-full text-[11px]">
-<thead>
-<tr class="bg-slate-50 text-slate-500 uppercase font-bold text-[9px] h-10 border-b">
-<th class="px-4 text-left">Cyl</th>
-<th class="px-4 text-center">Service Hours</th>
-<th class="px-4 text-center">Intake (A)</th>
-<th class="px-4 text-center">Intake (B)</th>
-<th class="px-4 text-center">Exhaust (C)</th>
-<th class="px-4 text-center">Exhaust (D)</th>
-<th class="px-4 text-center">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y">
-<tr class="hover:bg-sky-50/30 transition-colors h-10">
-<td class="px-4 font-black text-sky-900" x-text="cyl + bank"></td>
-<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-mono" type="number" x-model="valveData[selectedGts][bank][cyl].lastMeasHours"/></td>
-<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].A"/></td>
-<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].B"/></td>
-<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].C"/></td>
-<td class="px-4"><input class="w-full text-center bg-transparent border-none focus:ring-0 font-bold" step="0.01" type="number" x-model="valveData[selectedGts][bank][cyl].D"/></td>
-<td class="px-4 text-center">
-<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[8px] font-black uppercase">Within Specs</span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- Generic Views Placeholder for others -->
-<template x-for="viewId in ['starting-air', 'cleaning', 'boiler', 'lube-oil', 'reports', 'shutdowns']">
-<div class="space-y-6" x-show="currentView === viewId">
-<div class="bg-white p-20 rounded-3xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center text-center opacity-60">
-<span class="material-symbols-outlined text-6xl text-slate-300 mb-4">analytics</span>
-<h3 class="text-xl font-bold text-sky-950 uppercase" x-text="viewId.replace('-', ' ')"></h3>
-<p class="text-sm text-slate-500 font-medium mt-2 max-w-sm">Section content loading from secure database link...</p>
-<div class="mt-8 grid grid-cols-3 gap-4 w-full max-w-lg">
-<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
-<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
-<div class="h-24 bg-slate-50 rounded-xl animate-pulse"></div>
-</div>
-</div>
-</div>
-</template>
-</div>
-<!-- Global Footer -->
-<footer class="h-10 bg-sky-950 flex items-center justify-between px-8 text-[9px] text-white/50 font-black uppercase tracking-widest z-40">
-<div class="flex items-center gap-6">
-<p>Terminal ID: BRIDGE-MAIN-KPS8</p>
-<p class="text-white/20">|</p>
-<p>Active Users: 4 Shift Personnel</p>
-</div>
-<div class="flex items-center gap-4">
-<p>UTC Timestamp: 2024-05-20 14:32:05</p>
-<div class="h-2 w-2 rounded-full bg-green-400/50 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></div>
-</div>
+                    © 2023 KARADENIZ POWERSHIP - KPS8 OSMAN BEY PMS
+                </div>
 </footer>
 </main>
 </div>
+<!-- FLOATING ACTION BUTTON (RELEVANT TO DASHBOARD) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-white rounded-full shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+<div class="absolute right-16 px-4 py-2 bg-primary text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-xs font-bold pointer-events-none">
+            LOG NEW ENTRY
+        </div>
+</button>
 </body></html>
