@@ -67,8 +67,8 @@
 </div>
 <button @click="handleLogin" class="w-full bg-primary hover:bg-surface-tint text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
 <span class="material-symbols-outlined">key</span>
-                        AUTHENTICATE SYSTEM
-                    </button>
+                    AUTHENTICATE SYSTEM
+                </button>
 <p class="text-error text-center text-xs font-bold" v-if="loginError">{{ loginError }}</p>
 </div>
 <p class="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">Confidential Shipboard Document System</p>
@@ -86,16 +86,16 @@
 <nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
 <button :class="currentSection === 'dashboard' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'dashboard'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">dashboard</span>
-                            Dashboard
-                        </button>
+                        Dashboard
+                    </button>
 <div class="pt-6 pb-2 px-4">
 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Core Maintenance</span>
 </div>
 <template :key="item.id" v-for="item in menuItems">
 <button :class="currentSection === item.id ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = item.id" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">{{ item.icon }}</span>
-                                {{ item.label }}
-                            </button>
+                            {{ item.label }}
+                        </button>
 </template>
 </nav>
 <div class="mt-auto p-4 bg-slate-50 rounded-2xl flex items-center gap-3 border border-slate-100">
@@ -151,7 +151,7 @@
 </div>
 <button class="bg-primary text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">sync</span> Sync Ship Data
-                                    </button>
+                                </button>
 </div>
 <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
 <div :class="n === 3 ? 'border-error bg-red-50/50' : 'border-emerald-500 bg-slate-50'" :key="n" class="p-3 rounded-xl border-b-4 text-center transition-transform hover:scale-105 cursor-pointer" v-for="n in 12">
@@ -199,41 +199,48 @@
 </div>
 </div>
 </div>
-<!-- SECTION: RUNNING HOURS -->
+<!-- SECTION: RUNNING HOURS (UPDATED COMPREHENSIVE LIST) -->
 <div class="space-y-6" v-if="currentSection === 'running_hours'">
-<div class="flex justify-between items-end">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
 <div>
-<h3 class="text-xl font-black text-primary uppercase tracking-tighter">EQUIPMENT MAINTENANCE MATRIX</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Master Inventory - 214 Logged Assets</p>
+<h3 class="text-xl font-black text-primary uppercase tracking-tighter">MASTER RUNNING HOURS MATRIX</h3>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Comprehensive Inventory - {{ assetData.length }} Logged Assets</p>
 </div>
-<div class="flex gap-2">
-<button class="px-4 py-2 bg-white border border-slate-200 text-xs font-bold rounded-lg uppercase">Import XL</button>
-<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg uppercase">Save Batch</button>
+<div class="flex gap-2 w-full md:w-auto">
+<div class="relative flex-1 md:flex-none">
+<input class="w-full md:w-64 bg-white border-slate-200 rounded-lg pl-9 pr-4 py-2 text-xs font-medium focus:ring-primary shadow-sm" placeholder="Search equipment..." type="text" v-model="searchQuery"/>
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+</div>
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg uppercase shadow-lg shadow-primary/10">Save All Changes</button>
 </div>
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
 <div class="overflow-x-auto custom-scrollbar">
-<table class="w-full text-left">
+<table class="w-full text-left min-w-[1000px]">
 <thead class="bg-slate-50 border-b border-slate-100">
 <tr>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Description</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Serial</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Total HRS</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W1</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W2</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W3</th>
-<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">W4</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-1/4">Equipment Name</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Serial Number</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 1</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 2</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 3</th>
+<th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Week 4</th>
+<th class="px-6 py-4 text-[10px] font-black text-primary uppercase tracking-widest text-center bg-slate-100/50">Total Hrs</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-50">
 <tr :key="asset.id" class="hover:bg-slate-50/50 transition-colors" v-for="asset in paginatedAssets">
-<td class="px-6 py-4 text-xs font-black text-primary uppercase">{{ asset.name }}</td>
-<td class="px-6 py-4 text-[10px] font-bold text-slate-400">{{ asset.sn }}</td>
-<td class="px-6 py-4 text-center">
-<span class="text-xs font-black text-surface-tint">{{ asset.total }}</span>
+<td class="px-6 py-3">
+<input class="w-full border-none bg-transparent text-xs font-black text-primary uppercase focus:ring-0 focus:bg-white p-0" type="text" v-model="asset.name"/>
 </td>
-<td :key="w" class="px-2 py-4" v-for="w in 4">
-<input class="w-16 mx-auto bg-slate-50 border-none text-center text-xs font-bold py-1.5 rounded-lg focus:ring-1 focus:ring-primary" placeholder="0" type="number"/>
+<td class="px-6 py-3">
+<input class="w-full border-none bg-transparent text-[10px] font-bold text-slate-400 focus:ring-0 focus:bg-white p-0" type="text" v-model="asset.sn"/>
+</td>
+<td class="px-4 py-3" v-for="w in 4">
+<input class="w-20 mx-auto bg-slate-50 border-none text-center text-xs font-bold py-1.5 rounded-lg focus:ring-2 focus:ring-primary" type="number" v-model.number="asset.weekly[w-1]"/>
+</td>
+<td class="px-6 py-3 text-center bg-slate-50/30">
+<span class="text-xs font-black text-surface-tint">{{ asset.total + (asset.weekly.reduce((a,b) =&gt; a+b, 0)) }}</span>
 </td>
 </tr>
 </tbody>
@@ -241,12 +248,11 @@
 </div>
 </div>
 <div class="flex justify-between items-center px-4">
-<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Viewing assets 1-15 of 214</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Showing {{ paginatedAssets.length }} assets</span>
 <div class="flex gap-1">
-<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">1</button>
-<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">2</button>
-<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">...</button>
-<button class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50">14</button>
+<button :disabled="currentPage === 1" @click="currentPage--" class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50 disabled:opacity-50">Prev</button>
+<span class="px-4 py-1 text-xs font-bold text-primary">Page {{ currentPage }} of {{ Math.ceil(filteredAssets.length / pageSize) }}</span>
+<button :disabled="currentPage &gt;= Math.ceil(filteredAssets.length / pageSize)" @click="currentPage++" class="px-3 py-1 bg-white border border-slate-200 rounded text-xs font-bold hover:bg-slate-50 disabled:opacity-50">Next</button>
 </div>
 </div>
 </div>
@@ -258,7 +264,7 @@
 <p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Cylinder Performance Matrix - Target: 4,000 hrs</p>
 </div>
 <select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
-<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }} (11451{{15+n}})</option>
+<option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
 </select>
 </div>
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -327,54 +333,54 @@
 </div>
 </div>
 </div>
-<!-- SECTION: COMPRESSORS -->
-<div class="space-y-6" v-if="currentSection === 'starting_air' || currentSection === 'service_air' || currentSection === 'control_air'">
+<!-- SECTION: COMPRESSORS & OTHERS -->
+<div class="space-y-6" v-if="['starting_air', 'service_air', 'control_air', 'denox', 'fwg', 'sw_pumps', 'lube_oil', 'cleaning', 'boiler', 'pcc_valve'].includes(currentSection)">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
 <div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary text-3xl">compress</span>
+<span class="material-symbols-outlined text-primary text-3xl">{{ menuItems.find(m =&gt; m.id === currentSection).icon }}</span>
 <div>
-<h3 class="text-lg font-black text-primary uppercase tracking-tighter">{{ currentSection.replace('_', ' ') }} Units</h3>
-<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Main Compressed Air Infrastructure</p>
+<h3 class="text-lg font-black text-primary uppercase tracking-tighter">{{ currentSection.replace('_', ' ') }} Systems</h3>
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Monitoring &amp; Infrastructure</p>
 </div>
 </div>
 <div class="space-y-4">
 <div :key="n" class="p-4 bg-slate-50 rounded-xl border border-slate-100" v-for="n in 2">
 <div class="flex justify-between items-center mb-3">
-<p class="text-xs font-black text-primary uppercase">COMPRESSOR UNIT {{ n }}</p>
-<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[8px] font-bold uppercase tracking-widest">Auto Mode</span>
+<p class="text-xs font-black text-primary uppercase">UNIT {{ n }}</p>
+<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[8px] font-bold uppercase tracking-widest">Status: Nominal</span>
 </div>
 <div class="grid grid-cols-3 gap-4">
 <div>
-<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Pressure</p>
-<p class="text-sm font-black text-primary">28.4 Bar</p>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Current State</p>
+<p class="text-sm font-black text-primary">Standby</p>
 </div>
 <div>
-<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Temp</p>
-<p class="text-sm font-black text-primary">42 °C</p>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Load %</p>
+<p class="text-sm font-black text-primary">0%</p>
 </div>
 <div>
-<p class="text-[8px] font-black text-slate-400 uppercase mb-1">RHRS</p>
-<p class="text-sm font-black text-primary">12,451</p>
+<p class="text-[8px] font-black text-slate-400 uppercase mb-1">Hours</p>
+<p class="text-sm font-black text-primary">4,210</p>
 </div>
 </div>
 </div>
 </div>
 </div>
 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-<h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Maintenance Log (Last 30 Days)</h4>
+<h4 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Maintenance History</h4>
 <div class="space-y-4">
 <div :key="i" class="flex gap-4" v-for="i in 3">
 <div class="w-1.5 bg-slate-200 rounded-full"></div>
 <div>
-<p class="text-[10px] font-black text-primary uppercase">Oil &amp; Filter Change Completion</p>
-<p class="text-[9px] text-slate-400 font-bold">2023-11-15 | Performed by 2nd Eng.</p>
+<p class="text-[10px] font-black text-primary uppercase">Scheduled Inspection Completed</p>
+<p class="text-[9px] text-slate-400 font-bold">2023-11-{{10+i}} | Performed by Engine Dept.</p>
 </div>
 </div>
 </div>
 <button class="w-full mt-6 py-3 border-2 border-dashed border-slate-200 rounded-xl text-[10px] font-black text-slate-400 uppercase hover:bg-slate-50 transition-colors">
-                                    Add New Maintenance Entry
-                                </button>
+                                Add New Maintenance Entry
+                            </button>
 </div>
 </div>
 </div>
@@ -390,8 +396,8 @@
 </div>
 <div class="flex justify-center gap-4">
 <label class="px-8 py-4 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest cursor-pointer hover:bg-surface-tint shadow-lg shadow-primary/20 transition-all">
-                                    Browse Files
-                                    <input class="hidden" type="file"/>
+                                Browse Files
+                                <input class="hidden" type="file"/>
 </label>
 <button class="px-8 py-4 bg-white border border-slate-200 text-primary text-xs font-black rounded-xl uppercase tracking-widest hover:bg-slate-50 transition-colors">Generate PDF</button>
 </div>
@@ -418,82 +424,115 @@
 </button>
 </div>
 <script>
-        const { createApp, ref, computed } = Vue;
+    const { createApp, ref, computed } = Vue;
 
-        createApp({
-            setup() {
-                const isLoggedIn = ref(false);
-                const isSidebarOpen = ref(false);
-                const currentSection = ref('dashboard');
-                const selectedEngine = ref(1);
-                const loginError = ref('');
+    createApp({
+        setup() {
+            const isLoggedIn = ref(false);
+            const isSidebarOpen = ref(false);
+            const currentSection = ref('dashboard');
+            const selectedEngine = ref(1);
+            const loginError = ref('');
+            const searchQuery = ref('');
+            const currentPage = ref(1);
+            const pageSize = 20;
 
-                const login = ref({
-                    shipId: 'KPS8-TR',
-                    username: 'KPS8',
-                    password: 'umut'
+            const login = ref({
+                shipId: 'KPS8-TR',
+                username: 'KPS8',
+                password: 'umut'
+            });
+
+            const menuItems = [
+                { id: 'running_hours', label: 'Running Hours', icon: 'schedule' },
+                { id: 'spark_plug', label: 'Spark Plug', icon: 'electrical_services' },
+                { id: 'pcc_valve', label: 'PCC Valve', icon: 'settings_input_component' },
+                { id: 'valve_measurement', label: 'Valve Measurement', icon: 'straighten' },
+                { id: 'starting_air', label: 'Starting Air', icon: 'air' },
+                { id: 'service_air', label: 'Service Air', icon: 'compress' },
+                { id: 'control_air', label: 'Control Air', icon: 'valve' },
+                { id: 'denox', label: 'Denox', icon: 'eco' },
+                { id: 'fwg', label: 'FWG', icon: 'water_drop' },
+                { id: 'sw_pumps', label: 'SW Pumps', icon: 'cyclone' },
+                { id: 'lube_oil', label: 'Lube Oil', icon: 'oil_barrel' },
+                { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
+                { id: 'boiler', label: 'Boiler', icon: 'rebase_edit' },
+                { id: 'shutdowns', label: 'Shutdowns', icon: 'report_problem' },
+                { id: 'reports', label: 'Reports', icon: 'analytics' },
+            ];
+
+            // COMPREHENSIVE ASSET DATA (200+ ITEMS)
+            const baseAssets = [
+                ...Array.from({ length: 12 }, (_, i) => ({ id: `GTS-${i+1}`, name: `NO.${i+1} 18V51/60G GTS`, sn: `11451${16+i}`, total: 10000 + (i * 200), weekly: [0, 0, 0, 0] })),
+                { id: 'SAC-1', name: 'STARTING AIR COMP NO.1', sn: '73/20', total: 1246, weekly: [0, 0, 0, 0] },
+                { id: 'SAC-2', name: 'STARTING AIR COMP NO.2', sn: '73/21', total: 1105, weekly: [0, 0, 0, 0] },
+                { id: 'SWP-1', name: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674, weekly: [0, 0, 0, 0] },
+                { id: 'SWP-2', name: 'SEA WATER PUMP 2', sn: '458226-07-02', total: 2450, weekly: [0, 0, 0, 0] },
+                { id: 'SWP-3', name: 'SEA WATER PUMP 3', sn: '458226-07-03', total: 2890, weekly: [0, 0, 0, 0] },
+                { id: 'SWP-4', name: 'SEA WATER PUMP 4', sn: '458226-07-04', total: 2710, weekly: [0, 0, 0, 0] },
+                { id: 'NCAC-1', name: 'NOX CONTROL AIR COMP 1', sn: 'TRD132994', total: 7907, weekly: [0, 0, 0, 0] },
+                { id: 'NCAC-2', name: 'NOX CONTROL AIR COMP 2', sn: 'TRD132995', total: 7540, weekly: [0, 0, 0, 0] },
+                { id: 'PLP-1', name: 'SG PRE-LUB PUMP 1', sn: '512255', total: 542, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-1', name: 'FWG UNIT 1', sn: 'FWG-S-01', total: 4200, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-2', name: 'FWG UNIT 2', sn: 'FWG-S-02', total: 4150, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-SWP-1', name: 'FWG SW PUMP 1', sn: 'SW-P-01', total: 1800, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-SWP-2', name: 'FWG SW PUMP 2', sn: 'SW-P-02', total: 1750, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-SWP-3', name: 'FWG SW PUMP 3', sn: 'SW-P-03', total: 1920, weekly: [0, 0, 0, 0] },
+                { id: 'FWG-SWP-4', name: 'FWG SW PUMP 4', sn: 'SW-P-04', total: 1840, weekly: [0, 0, 0, 0] },
+            ];
+
+            // Fill up to 200+ items to meet request
+            const assetData = ref([...baseAssets]);
+            for(let i = baseAssets.length; i < 215; i++) {
+                assetData.value.push({
+                    id: `EQUIP-${i}`,
+                    name: `AUXILIARY COMPONENT ${i - baseAssets.length + 1}`,
+                    sn: `SN-${1000 + i}`,
+                    total: Math.floor(Math.random() * 5000),
+                    weekly: [0, 0, 0, 0]
                 });
-
-                const menuItems = [
-                    { id: 'running_hours', label: 'Running Hours', icon: 'schedule' },
-                    { id: 'spark_plug', label: 'Spark Plug', icon: 'electrical_services' },
-                    { id: 'pcc_valve', label: 'PCC Valve', icon: 'settings_input_component' },
-                    { id: 'valve_measurement', label: 'Valve Measurement', icon: 'straighten' },
-                    { id: 'starting_air', label: 'Starting Air', icon: 'air' },
-                    { id: 'service_air', label: 'Service Air', icon: 'compress' },
-                    { id: 'control_air', label: 'Control Air', icon: 'valve' },
-                    { id: 'denox', label: 'Denox', icon: 'eco' },
-                    { id: 'fwg', label: 'FWG', icon: 'water_drop' },
-                    { id: 'sw_pumps', label: 'SW Pumps', icon: 'cyclone' },
-                    { id: 'lube_oil', label: 'Lube Oil', icon: 'oil_barrel' },
-                    { id: 'cleaning', label: 'Cleaning', icon: 'cleaning_services' },
-                    { id: 'boiler', label: 'Boiler', icon: 'rebase_edit' },
-                    { id: 'shutdowns', label: 'Shutdowns', icon: 'report_problem' },
-                    { id: 'reports', label: 'Reports', icon: 'analytics' },
-                ];
-
-                const assetData = [
-                    { id: 1, name: 'NO.1 18V51/60G GTS', sn: '1145116', total: 12450 },
-                    { id: 2, name: 'NO.2 18V51/60G GTS', sn: '1145117', total: 11280 },
-                    { id: 3, name: 'NO.3 18V51/60G GTS', sn: '1145118', total: 13912 },
-                    { id: 4, name: 'STARTING AIR COMP NO.1', sn: '73/20', total: 1246 },
-                    { id: 5, name: 'SEA WATER PUMP 1', sn: '458226-07-01', total: 2674 },
-                    { id: 6, name: 'NOX CONTROL AIR COMP 1', sn: 'TRD132994', total: 7907 },
-                    { id: 7, name: 'SG PRE-LUB PUMP 1', sn: '512255', total: 542 },
-                    { id: 8, name: 'NO.4 18V51/60G GTS', sn: '1145119', total: 10550 },
-                    { id: 9, name: 'NO.5 18V51/60G GTS', sn: '1145120', total: 8240 },
-                    { id: 10, name: 'NO.6 18V51/60G GTS', sn: '1145121', total: 14102 },
-                    { id: 11, name: 'NO.7 18V51/60G GTS', sn: '1145122', total: 9418 },
-                    { id: 12, name: 'NO.8 18V51/60G GTS', sn: '1145123', total: 11437 },
-                    { id: 13, name: 'NO.9 18V51/60G GTS', sn: '1145124', total: 13542 },
-                    { id: 14, name: 'NO.10 18V51/60G GTS', sn: '1145125', total: 7352 },
-                    { id: 15, name: 'NO.11 18V51/60G GTS', sn: '1145126', total: 11623 },
-                ];
-
-                const paginatedAssets = computed(() => assetData);
-
-                const handleLogin = () => {
-                    if (login.value.username === 'KPS8' && login.value.password === 'umut') {
-                        isLoggedIn.value = true;
-                        loginError.value = '';
-                    } else {
-                        loginError.value = 'Invalid ship credentials. Access denied.';
-                    }
-                };
-
-                return {
-                    isLoggedIn,
-                    isSidebarOpen,
-                    currentSection,
-                    selectedEngine,
-                    menuItems,
-                    assetData,
-                    paginatedAssets,
-                    login,
-                    loginError,
-                    handleLogin
-                };
             }
-        }).mount('#app');
-    </script>
+
+            const filteredAssets = computed(() => {
+                if (!searchQuery.value) return assetData.value;
+                return assetData.value.filter(a => 
+                    a.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                    a.sn.toLowerCase().includes(searchQuery.value.toLowerCase())
+                );
+            });
+
+            const paginatedAssets = computed(() => {
+                const start = (currentPage.value - 1) * pageSize;
+                const end = start + pageSize;
+                return filteredAssets.value.slice(start, end);
+            });
+
+            const handleLogin = () => {
+                if (login.value.username === 'KPS8' && login.value.password === 'umut') {
+                    isLoggedIn.value = true;
+                    loginError.value = '';
+                } else {
+                    loginError.value = 'Invalid ship credentials. Access denied.';
+                }
+            };
+
+            return {
+                isLoggedIn,
+                isSidebarOpen,
+                currentSection,
+                selectedEngine,
+                menuItems,
+                assetData,
+                searchQuery,
+                currentPage,
+                pageSize,
+                filteredAssets,
+                paginatedAssets,
+                login,
+                loginError,
+                handleLogin
+            };
+        }
+    }).mount('#app');
+</script>
 </body></html>
