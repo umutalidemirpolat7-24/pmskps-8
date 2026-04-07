@@ -299,8 +299,7 @@
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
 <div class="overflow-x-auto custom-scrollbar">
-<template v-for="bank in ['A', 'B']">
-</template><table class="w-full text-center border-collapse">
+<table class="w-full text-center border-collapse">
 <thead class="bg-slate-50 border-b border-slate-100">
 <tr>
 <th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cyl</th>
@@ -310,7 +309,7 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-50">
-<tr :key="bank + cyl" class="hover:bg-slate-50/50" v-for="cyl in 9">
+<tr :key="bank + cyl" class="hover:bg-slate-50/50" v-for="bank in ['A', 'B']">
 <td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ cyl }}</td>
 <td class="px-2 py-2 border-r border-slate-100">
 <input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
@@ -465,52 +464,82 @@
                 const names = [
                     "NO.1 18V5160 GTS", "NO.2 18V5160 GTS", "NO.3 18V5160 GTS", "NO.4 18V5160 GTS", "NO.5 18V5160 GTS", 
                     "NO.6 18V5160 GTS", "NO.7 18V5160 GTS", "NO.8 18V5160 GTS", "NO.9 18V5160 GTS", "NO.10 18V5160 GTS", 
-                    "NO.11 18V5160 GTS", "NO.12 18V5160 GTS", "STARTING AIR COMP NO.1", "STARTING AIR COMP NO.2", 
-                    "SERVICE AIR COMP NO.1", "SERVICE AIR COMP NO.2", "NOX CONTROL AIR COMP 1", "NOX CONTROL AIR COMP 2", 
-                    "SEA WATER PUMP 1", "SEA WATER PUMP 2", "SEA WATER PUMP 3", "SEA WATER PUMP 4", "SG PRE-LUB PUMP 1", 
-                    "SG PRE-LUB PUMP 2", "FWG UNIT 1", "FWG UNIT 2", "FWG SW PUMP 1", "FWG SW PUMP 2", "FWG SW PUMP 3", "FWG SW PUMP 4",
-                    // Additional specific mechanical components to reach 200+
-                    "HT WATER CIRC PUMP 1", "HT WATER CIRC PUMP 2", "LT WATER CIRC PUMP 1", "LT WATER CIRC PUMP 2",
-                    "LO SEPARATOR 1", "LO SEPARATOR 2", "LO SEPARATOR 3", "LO SEPARATOR 4",
-                    "FO SEPARATOR 1", "FO SEPARATOR 2", "FO SUPPLY PUMP 1", "FO SUPPLY PUMP 2",
-                    "TURBOCHARGER GTS 01", "TURBOCHARGER GTS 02", "TURBOCHARGER GTS 03", "TURBOCHARGER GTS 04",
-                    "CHARGE AIR COOLER 1", "CHARGE AIR COOLER 2", "EGE BOILER 1", "EGE BOILER 2",
-                    "DOMESTIC WATER PUMP 1", "DOMESTIC WATER PUMP 2", "BILGE PUMP 1", "BILGE PUMP 2",
-                    "FIRE PUMP 1", "FIRE PUMP 2", "EMERGENCY FIRE PUMP", "BALLAST PUMP 1",
-                    "VALVE TAPPET SET A1", "VALVE TAPPET SET A2", "VALVE TAPPET SET A3", "VALVE TAPPET SET A4",
-                    "SPARK PLUG ASSY B1", "SPARK PLUG ASSY B2", "SPARK PLUG ASSY B3", "SPARK PLUG ASSY B4",
-                    "PCC VALVE UNIT 1", "PCC VALVE UNIT 2", "PCC VALVE UNIT 3", "PCC VALVE UNIT 4",
-                    "RADIATOR FAN 01", "RADIATOR FAN 02", "RADIATOR FAN 03", "RADIATOR FAN 04",
-                    "EXHAUST GAS DAMPER 1", "EXHAUST GAS DAMPER 2", "SCR SYSTEM UNIT 1", "SCR SYSTEM UNIT 2",
-                    "UREA DOSING PUMP 1", "UREA DOSING PUMP 2", "GAS REGULATING STATION", "GAS COMPRESSOR 1",
-                    "LUBE OIL COOLER 1", "LUBE OIL COOLER 2", "JACKET WATER COOLER 1", "JACKET WATER COOLER 2",
-                    "AIR RECEIVER 1", "AIR RECEIVER 2", "CONTROL AIR DRYER 1", "CONTROL AIR DRYER 2"
+                    "NO.11 18V5160 GTS", "NO.12 18V5160 GTS", "STG…........",
+                    "STARTING AIR COMPRESSOR UNIT NO:1 (P)", "STARTING AIR COMPRESSOR UNIT NO:2 (STB)", 
+                    "STARTING AIR COMPRESSOR UNIT NO:3 (P)", "STARTING AIR COMPRESSOR UNIT NO:4 (STB)",
+                    "CONTROL AIR COMPRESSOR UNIT NO:1", "CONTROL AIR COMPRESSOR UNIT NO:2",
+                    "SERVICE AIR COMPRESSOR UNIT NO:1", "SERVICE AIR COMPRESSOR UNIT NO:2",
+                    "NOX CONTROL AIR COMPRESSOR NO:1", "NOX CONTROL AIR COMPRESSOR NO:2", "NOX CONTROL AIR COMPRESSOR NO:3",
+                    "NOX CONTROL AIR COMPRESSOR NO:4", "NOX CONTROL AIR COMPRESSOR NO:5", "NOX CONTROL AIR COMPRESSOR NO:6",
+                    "NOX CONTROL AIR COMPRESSOR NO:7", "NOX CONTROL AIR COMPRESSOR NO:8", "NOX CONTROL AIR COMPRESSOR NO:9",
+                    "NOX CONTROL AIR COMPRESSOR NO:10", "NOX CONTROL AIR COMPRESSOR NO:11", "NOX CONTROL AIR COMPRESSOR NO:12",
+                    "SEA WATER PUMP 1", "SEA WATER PUMP 2", "SEA WATER PUMP 3", "SEA WATER PUMP 4", "SEA WATER PUMP 5",
+                    "SEA WATER PUMP 6", "SEA WATER PUMP 7", "SEA WATER PUMP 8", "SEA WATER PUMP 9", "SEA WATER PUMP 10",
+                    "SEA WATER PUMP 11", "SEA WATER PUMP 12", "SEA WATER PUMP 13", "SEA WATER PUMP 14", "SEA WATER PUMP 15", "SEA WATER PUMP 16",
+                    "AUX.MACH.COOLER SW PUMP 1", "AUX.MACH.COOLER SW PUMP 2",
+                    "FWG SW PUMP 1 (SG 5)", "FWG SW PUMP 2 (SG 6)", "FWG SW PUMP 3 (SG 7)", "FWG SW PUMP 4 (SG8)",
+                    "BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP",
+                    "SG HT PREHEATING PUMP 1", "SG HT PREHEATING PUMP 2", "SG HT PREHEATING PUMP 3", "SG HT PREHEATING PUMP 4",
+                    "SG HT PREHEATING PUMP 5", "SG HT PREHEATING PUMP 6", "SG HT PREHEATING PUMP 7", "SG HT PREHEATING PUMP 8",
+                    "SG HT PREHEATING PUMP 9", "SG HT PREHEATING PUMP 10", "SG HT PREHEATING PUMP 11", "SG HT PREHEATING PUMP 12",
+                    "CW FILLING PUMP 1", "CW FILLING PUMP 2", "CW FILLING PUMP 3", "CW FILLING PUMP 4",
+                    "FW TRANSFER PUMP 1", "FW TRANSFER PUMP 2", "BOILER FW PUMP 1", "BOILER FW PUMP 2",
+                    "AUX.MACH.COOLER FW PUMP 1", "AUX.MACH.COOLER FW PUMP 2", "REGAS UNITE FW PUMP 1", "REGAS UNITE FW PUMP 2",
+                    "SG PRELUB. PUMP 1", "SG PRELUB. PUMP 2", "SG PRELUB. PUMP 3", "SG PRELUB. PUMP 4", "SG PRELUB. PUMP 5",
+                    "SG PRELUB. PUMP 6", "SG PRELUB. PUMP 7", "SG PRELUB. PUMP 8", "SG PRELUB. PUMP 9", "SG PRELUB. PUMP 10",
+                    "SG PRELUB. PUMP 11", "SG PRELUB. PUMP 12",
+                    "SG LO PREHEATING PUMP 1", "SG LO PREHEATING PUMP 2", "SG LO PREHEATING PUMP 3", "SG LO PREHEATING PUMP 4",
+                    "SG LO PREHEATING PUMP 5", "SG LO PREHEATING PUMP 6", "SG LO PREHEATING PUMP 7", "SG LO PREHEATING PUMP 8",
+                    "SG LO PREHEATING PUMP 9", "SG LO PREHEATING PUMP 10", "SG LO PREHEATING PUMP 11", "SG LO PREHEATING PUMP 12",
+                    "SG FINE FILTER PUMP 1", "SG FINE FILTER PUMP 2", "SG FINE FILTER PUMP 3", "SG FINE FILTER PUMP 4",
+                    "SG FINE FILTER PUMP 5", "SG FINE FILTER PUMP 6", "SG FINE FILTER PUMP 7", "SG FINE FILTER PUMP 8",
+                    "SG FINE FILTER PUMP 9", "SG FINE FILTER PUMP 10", "SG FINE FILTER PUMP 11", "SG FINE FILTER PUMP 12",
+                    "NDE JACKING PUMP 1", "NDE JACKING PUMP 2", "NDE JACKING PUMP 3", "NDE JACKING PUMP 4",
+                    "NDE JACKING PUMP 5", "NDE JACKING PUMP 6", "NDE JACKING PUMP 7", "NDE JACKING PUMP 8",
+                    "NDE JACKING PUMP 9", "NDE JACKING PUMP 10", "NDE JACKING PUMP 11", "NDE JACKING PUMP 12",
+                    "DE JACKING PUMP 1", "DE JACKING PUMP 2", "DE JACKING PUMP 3", "DE JACKING PUMP 4",
+                    "DE JACKING PUMP 5", "DE JACKING PUMP 6", "DE JACKING PUMP 7", "DE JACKING PUMP 8",
+                    "DE JACKING PUMP 9", "DE JACKING PUMP 10", "DE JACKING PUMP 11", "DE JACKING PUMP 12",
+                    "NDE SIDE BEARING PUMP 1", "NDE SIDE BEARING PUMP 2", "NDE SIDE BEARING PUMP 3", "NDE SIDE BEARING PUMP 4",
+                    "NDE SIDE BEARING PUMP 5", "NDE SIDE BEARING PUMP 6", "NDE SIDE BEARING PUMP 7", "NDE SIDE BEARING PUMP 8",
+                    "NDE SIDE BEARING PUMP 9", "NDE SIDE BEARING PUMP 10", "NDE SIDE BEARING PUMP 11", "NDE SIDE BEARING PUMP 12",
+                    "DE SIDE BEARING PUMP 1", "DE SIDE BEARING PUMP 2", "DE SIDE BEARING PUMP 3", "DE SIDE BEARING PUMP 4",
+                    "DE SIDE BEARING PUMP 5", "DE SIDE BEARING PUMP 6", "DE SIDE BEARING PUMP 7", "DE SIDE BEARING PUMP 8",
+                    "DE SIDE BEARING PUMP 9", "DE SIDE BEARING PUMP 10", "DE SIDE BEARING PUMP 11", "DE SIDE BEARING PUMP 12",
+                    "NO 1 SG VENT.FAN", "NO 2 SG VENT.FAN", "NO 3 SG VENT.FAN", "NO 4 SG VENT.FAN", "NO 5 SG VENT.FAN",
+                    "NO 6 SG VENT.FAN", "NO 7 SG VENT.FAN", "NO 8 SG VENT.FAN", "NO 9 SG VENT.FAN", "NO 10 SG VENT.FAN",
+                    "NO 11 SG VENT.FAN", "NO 12 SG VENT.FAN",
+                    "ALTERNATOR FAN 1-1", "ALTERNATOR FAN 1-2", "ALTERNATOR FAN 2-1", "ALTERNATOR FAN 2-2",
+                    "ALTERNATOR FAN 3-1", "ALTERNATOR FAN 3-2", "ALTERNATOR FAN 4-1", "ALTERNATOR FAN 4-2",
+                    "ALTERNATOR FAN 5-1", "ALTERNATOR FAN 5-2", "ALTERNATOR FAN 6-1", "ALTERNATOR FAN 6-2",
+                    "ALTERNATOR FAN 7-1", "ALTERNATOR FAN 7-2", "ALTERNATOR FAN 8-1", "ALTERNATOR FAN 8-2",
+                    "ALTERNATOR FAN 9-1", "ALTERNATOR FAN 9-2", "ALTERNATOR FAN 10-1", "ALTERNATOR FAN 10-2",
+                    "ALTERNATOR FAN 11-1", "ALTERNATOR FAN 11-2", "ALTERNATOR FAN 12-1", "ALTERNATOR FAN 12-2",
+                    "STG ROOM FAN NO:1", "STG ROOM FAN NO:2", "PUMP ROOM FORE SUPPLY FAN", "PUMP ROOM FORE EXHAUST FAN",
+                    "PUMP ROOM AFT SUPPLY FAN", "PUMP ROOM AFT EXHAUST FAN", "STG PUMP ROOM SUPPLY FAN", "STG PUMP ROOM EXHAUST FAN",
+                    "SPARE PARTS & AUX MACH ROOM STB SUPPLY FAN", "CONTROL ROOM SUPPLY FAN", "LV&HV ROOM SUPPLY FAN 1",
+                    "LV&HV ROOM SUPPLY FAN 2", "TRANSFORMER ROOM SUPPLY FAN", "MV ROOM SUPPLY FAN", "WORKSHOP SUPPLY FAN",
+                    "WORKSHOP EXHAUST FAN", "GALLEY EXHAUST FAN", "AUX.ROOM SUPPLY FAN 1", "AUX.ROOM EXHAUST FAN 2",
+                    "DAILY BILGE PUMP 1", "DAILY BILGE PUMP 2", "DAILY BILGE PUMP 3", "DAILY BILGE PUMP 4",
+                    "DAILY BILGE PUMP 5", "DAILY BILGE PUMP 6", "DAILY BILGE PUMP 7", "DAILY BILGE PUMP 8",
+                    "DAILY BILGE PUMP 9", "DAILY BILGE PUMP 10", "DAILY BILGE PUMP 11",
+                    "SEWAGE TRANSFER 1", "SEWAGE TRANSFER 2", "BILGE TRANSFER 1", "BILGE TRANSFER 2", "SLUDGE TRANSFER 1",
+                    "SLUDGE TRANSFER 2", "LEAK OIL TRANSFER 1", "LEAK OIL TRANSFER 2", "TRANSFORMER OIL",
+                    "MAINT. OIL TRANSFER 1", "MAINT. OIL TRANSFER 2", "LUBE OIL FILLING 1", "LUBE OIL FILLING 2",
+                    "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN.",
+                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4",
+                    "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8",
+                    "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12",
+                    "FWG SW PUMP 1", "FWG SW PUMP 2", "FWG SW PUMP 3", "FWG SW PUMP 4"
                 ];
 
-                const finalData = [];
-                // Fill first with specified list
-                names.forEach((name, i) => {
-                    finalData.push({
-                        id: `ASSET-${i+1}`,
-                        name: name.toUpperCase(),
-                        sn: `SN-${11000 + i}`,
-                        total: Math.floor(Math.random() * 25000),
-                        weekly: [0, 0, 0, 0]
-                    });
-                });
-
-                // Fill the rest to reach 215 items with systematic naming
-                for (let i = finalData.length; i < 215; i++) {
-                    const group = Math.floor(i / 10);
-                    finalData.push({
-                        id: `ASSET-${i+1}`,
-                        name: `CRITICAL SUBSYSTEM UNIT ${group}-${i % 10 + 1}`,
-                        sn: `SN-${22000 + i}`,
-                        total: Math.floor(Math.random() * 8000),
-                        weekly: [0, 0, 0, 0]
-                    });
-                }
-                return finalData;
+                return names.map((name, i) => ({
+                    id: `ASSET-${i+1}`,
+                    name: name.toUpperCase(),
+                    sn: `SN-${11000 + i}`,
+                    total: Math.floor(Math.random() * 25000),
+                    weekly: [0, 0, 0, 0]
+                }));
             };
 
             const assetData = ref(generateAssetList());
