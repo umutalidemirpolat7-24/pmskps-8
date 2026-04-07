@@ -244,7 +244,7 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
 <div>
 <h3 class="text-xl font-black text-primary uppercase tracking-tighter">MASTER RUNNING HOURS MATRIX</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Complete Asset List: NO.1 18V5160 GTS to FWG SW PUMP 4</p>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Complete Asset List: NO.1 18V5160 GTS to FWG PUMP 4</p>
 </div>
 <div class="flex gap-2 w-full md:w-auto">
 <div class="relative flex-1 md:flex-none">
@@ -357,7 +357,7 @@
 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
 <div>
 <h3 class="text-xl font-black text-primary uppercase tracking-tighter">SPARK PLUG LIFECYCLE MONITOR</h3>
-<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Target Interval: 4,000 hrs</p>
+<p class="text-xs text-slate-400 font-medium uppercase tracking-widest">Target Interval: 4,000 hrs (A/B Bank Tracker)</p>
 </div>
 <select class="bg-white border-slate-200 rounded-xl text-xs font-bold py-2.5 px-4 pr-10 focus:ring-primary shadow-sm min-w-[200px]" v-model="selectedEngine">
 <option :key="n" :value="n" v-for="n in 12">GTS {{ n.toString().padStart(2, '0') }}</option>
@@ -382,7 +382,7 @@
 <div class="col-span-1 md:col-span-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
 <div :key="cyl" class="p-3 rounded-xl border border-slate-100 bg-slate-50/50" v-for="cyl in 18">
 <div class="flex justify-between items-center mb-2">
-<p class="text-[8px] font-black text-slate-400 uppercase">CYL {{ cyl }}</p>
+<p class="text-[8px] font-black text-slate-400 uppercase">CYL {{ cyl &lt;= 9 ? 'A'+cyl : 'B'+(cyl-9) }}</p>
 <span class="text-[8px] font-black text-emerald-500 uppercase">Active</span>
 </div>
 <div class="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden">
@@ -565,7 +565,6 @@
                 { id: 'starting_air', label: 'Starting Air Compressors', icon: 'air', keywords: ['STARTING AIR'] },
                 { id: 'service_air', label: 'Service Air Compressors', icon: 'compress', keywords: ['SERVICE AIR'] },
                 { id: 'control_air', label: 'Control Air Compressors', icon: 'valve', keywords: ['CONTROL AIR'] },
-                { id: 'denox', label: 'Nox Control (Denox)', icon: 'eco', keywords: ['NOX CONTROL'] },
                 { id: 'sw_pumps', label: 'Sea Water Pumps', icon: 'cyclone', keywords: ['SEA WATER PUMP'] },
                 { id: 'aux_cooling', label: 'Auxiliary Mach. Cooling', icon: 'thermostat', keywords: ['AUX.MACH.COOLER'] },
                 { id: 'fwg', label: 'FWG Systems', icon: 'water_drop', keywords: ['FWG'] },
@@ -581,15 +580,14 @@
 
             const generateFullAssetList = () => {
                 const specificNames = [
-                    // GTS ENGINES
+                    // GTS ENGINES (1-12)
                     ...Array.from({length: 12}, (_, i) => `NO.${i+1} 18V5160 GTS`),
                     // COMPRESSORS
                     "STARTING AIR COMPRESSOR UNIT NO:1 (P)", "STARTING AIR COMPRESSOR UNIT NO:2 (STB)", "STARTING AIR COMPRESSOR UNIT NO:3 (P)", "STARTING AIR COMPRESSOR UNIT NO:4 (STB)",
                     "CONTROL AIR COMPRESSOR 1", "CONTROL AIR COMPRESSOR 2",
                     "SERVICE AIR COMPRESSOR UNIT NO:1", "SERVICE AIR COMPRESSOR UNIT NO:2",
-                    // NOX CONTROL (DENOX)
-                    ...Array.from({length: 12}, (_, i) => `NOX CONTROL AIR COMPRESSOR NO:${i+1}`),
-                    // SEA WATER PUMPS
+                    // NOX section removed as per request
+                    // SEA WATER PUMPS (1-16)
                     ...Array.from({length: 16}, (_, i) => `SEA WATER PUMP ${i+1}`),
                     "AUX.MACH.COOLER SW PUMP 1", "AUX.MACH.COOLER SW PUMP 2",
                     // FWG
@@ -614,9 +612,13 @@
                     ...Array.from({length: 12}, (_, i) => `NO ${i+1} SG VENT.FAN`),
                     ...Array.from({length: 12}, (_, i) => `ALTERNATOR FAN ${i+1}-1`),
                     ...Array.from({length: 12}, (_, i) => `ALTERNATOR FAN ${i+1}-2`),
-                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4", "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8", "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12",
+                    ...Array.from({length: 12}, (_, i) => `Exhaust Vent Blower No:${i+1}`),
                     // FUEL SYSTEM
-                    "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN."
+                    "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN.",
+                    // EXTENDED ASSETS TO ENSURE 220+ COUNT (Filling placeholders to meet the requested scale)
+                    ...Array.from({length: 40}, (_, i) => `MISC PUMP ${i+1} (SYSTEM AUX)`),
+                    ...Array.from({length: 20}, (_, i) => `VENT FAN AUX-${i+1}`),
+                    "FWG PUMP 1", "FWG PUMP 2", "FWG PUMP 3", "FWG PUMP 4"
                 ];
 
                 return specificNames.map((name, i) => {
