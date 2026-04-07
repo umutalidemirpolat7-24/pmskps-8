@@ -275,8 +275,8 @@
 </td>
 <td class="px-6 py-3 text-center bg-slate-50/30">
 <span :class="getMaintenanceStatus(asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).color" class="text-xs font-black">
-                                                {{ (asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}
-                                            </span>
+                                            {{ (asset.total + asset.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}
+                                        </span>
 </td>
 </tr>
 </tbody>
@@ -556,6 +556,7 @@
                 { id: 'fans', label: 'Vent. & Alternator Fans', icon: 'mode_fan', keywords: ['VENT.FAN', 'ALTERNATOR FAN', 'ROOM FAN', 'EXHAUST VENT'] },
                 { id: 'boiler', label: 'Boiler System', icon: 'rebase_edit', keywords: ['BOILER'] },
                 { id: 'lube_oil', label: 'Lube Oil System', icon: 'lubrication', keywords: ['LUBE OIL', 'LO PREHEATING', 'LO FILLING'] },
+                { id: 'cleaning', label: 'Cleaning Services', icon: 'cleaning_services', keywords: ['CLEANING'] },
             ];
 
             const generateAssetList = () => {
@@ -570,7 +571,7 @@
                     "NOX CONTROL AIR COMPRESSOR NO:1", "NOX CONTROL AIR COMPRESSOR NO:2", "NOX CONTROL AIR COMPRESSOR NO:3",
                     "SEA WATER PUMP 1", "SEA WATER PUMP 2", "SEA WATER PUMP 3", "SEA WATER PUMP 4",
                     "AUX.MACH.COOLER SW PUMP 1", "AUX.MACH.COOLER SW PUMP 2",
-                    "FWG SW PUMP 1", "FWG SW PUMP 2",
+                    "FWG SW PUMP 1", "FWG SW PUMP 2", "FWG SW PUMP 3", "FWG SW PUMP 4",
                     "BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP",
                     "SG HT PREHEATING PUMP 1", "SG HT PREHEATING PUMP 2",
                     "SG PRELUB. PUMP 1", "SG PRELUB. PUMP 2",
@@ -585,7 +586,8 @@
                 const fullList = [...baseNames];
                 // Expand to 200+
                 for(let i = fullList.length; i < 215; i++) {
-                    fullList.push(`AUXILIARY EQUIPMENT UNIT NO:${i} (SYS-${i%10})`);
+                    const sysId = Math.floor(i / 10);
+                    fullList.push(`AUXILIARY EQUIPMENT UNIT NO:${i} (SYS-${sysId})`);
                 }
 
                 return fullList.map((name, i) => {
@@ -635,7 +637,8 @@
             };
 
             const getGtsHours = (n) => {
-                const gts = assetData.value.find(a => a.name.includes(`NO.${n} 18V5160 GTS`));
+                const gtsName = `NO.${n} 18V5160 GTS`;
+                const gts = assetData.value.find(a => a.name.includes(gtsName));
                 return gts ? (gts.total + gts.weekly.reduce((a,b) => a+b, 0)).toLocaleString() : '---';
             };
 
