@@ -36,7 +36,7 @@
     sidebarOpen: true,
     selectedGts: 1,
     selectedLogDate: new Date().toISOString().split('T')[0],
-    weeksCount: 52,
+    weeksCount: 12,
     runningHoursList: [],
     engineHoursData: {},
     sparkPlugData: {},
@@ -56,38 +56,57 @@
     initData() {
         const rawData = [
             { isHeader: true, label: 'MAIN ENGINES (GTS)' },
-            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170, 168, 167, 168, 169] },
-            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165, 164, 162, 165, 163] },
-            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168, 166, 165, 164, 166] },
-            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38, 44, 42, 40, 41] },
-            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162, 165, 164, 166, 165] },
-            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169, 168, 167, 169, 168] },
-            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168, 169, 168, 170, 169] },
-            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170, 171, 169, 170, 172] },
-            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171, 170, 171, 169, 170] },
-            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169, 172, 170, 171, 173] },
-            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172, 171, 172, 170, 171] },
-            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170, 168, 169, 167, 168] },
-            { isHeader: true, label: 'COMPRESSORS &amp; AUXILIARY' },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [24, 22, 25, 20, 24, 23, 22, 24] },
-            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (S)', sn: '73/21', total: 1120, last: 1135, weeks: [20, 21, 18, 22, 20, 19, 21, 20] },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 2980, last: 3010, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { isHeader: true, label: 'PUMPS &amp; FANS' },
-            { desc: 'SW PUMP NO:1', sn: 'P-SW-01', total: 4520, last: 4688, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'SW PUMP NO:2', sn: 'P-SW-02', total: 4410, last: 4578, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'HT FW PUMP NO:1', sn: 'P-HT-01', total: 8900, last: 9068, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'LT FW PUMP NO:1', sn: 'P-LT-01', total: 8750, last: 8918, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'EXHAUST FAN NO:1 (ENGINE ROOM)', sn: 'F-EX-01', total: 12400, last: 12568, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'EXHAUST FAN NO:2 (ENGINE ROOM)', sn: 'F-EX-02', total: 12350, last: 12518, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'SUPPLY FAN NO:1 (ENGINE ROOM)', sn: 'F-SUP-01', total: 11200, last: 11368, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'SUPPLY FAN NO:2 (ENGINE ROOM)', sn: 'F-SUP-02', total: 11150, last: 11318, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { isHeader: true, label: 'BOILER SYSTEM' },
-            { desc: 'COMPOSITE BOILER NO:1', sn: 'B-01', total: 5600, last: 5768, weeks: [168, 168, 168, 168, 168, 168, 168, 168] },
-            { desc: 'BOILER FEED PUMP NO:1', sn: 'P-BF-01', total: 3400, last: 3568, weeks: [168, 168, 168, 168, 168, 168, 168, 168] }
+            { desc: 'NO.1 18V5160 GTS', sn: '1145116', total: 2575, last: 2587, weeks: [168, 165, 162, 170] },
+            { desc: 'NO.2 18V5160 GTS', sn: '1145117', total: 2408, last: 2415, weeks: [162, 160, 158, 165] },
+            { desc: 'NO.3 18V5160 GTS', sn: '1145118', total: 2505, last: 2518, weeks: [165, 162, 160, 168] },
+            { desc: 'NO.4 18V5160 GTS', sn: '1145139', total: 3569, last: 3582, weeks: [42, 45, 40, 38] },
+            { desc: 'NO.5 18V5160 GTS', sn: '1145140', total: 4004, last: 4016, weeks: [164, 166, 165, 162] },
+            { desc: 'NO.6 18V5160 GTS', sn: '1145142', total: 4312, last: 4324, weeks: [166, 168, 170, 169] },
+            { desc: 'NO.7 18V5160 GTS', sn: '1145144', total: 15397, last: 15466, weeks: [167, 169, 170, 168] },
+            { desc: 'NO.8 18V5160 GTS', sn: '1145145', total: 12170, last: 12268, weeks: [168, 170, 172, 170] },
+            { desc: 'NO.9 18V5160 GTS', sn: '1145146', total: 9418, last: 9506, weeks: [169, 170, 168, 171] },
+            { desc: 'NO.10 18V5160 GTS', sn: '1145217', total: 5129, last: 5161, weeks: [170, 172, 171, 169] },
+            { desc: 'NO.11 18V5160 GTS', sn: '1145218', total: 3349, last: 3360, weeks: [171, 170, 169, 172] },
+            { desc: 'NO.12 18V5160 GTS', sn: '1145219', total: 4928, last: 5021, weeks: [172, 168, 165, 170] },
+            { isHeader: true, label: 'COMPRESSORS' },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:1 (P)', sn: '73/20', total: 1246, last: 1260, weeks: [24, 22] },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:2 (STB)', sn: '72/20', total: 943, last: 953, weeks: [10, 12] },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:3 (P)', sn: '121/19', total: 1562, last: 1578, weeks: [16, 18] },
+            { desc: 'STARTING AIR COMPRESSOR UNIT NO:4 (STB)', sn: '122/19', total: 2591, last: 2608, weeks: [17, 19] },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:1', sn: '1001949', total: 3073, last: 3104, weeks: [31, 32] },
+            { desc: 'SERVICE AIR COMPRESSOR UNIT NO:2', sn: '1001950', total: 2980, last: 3010, weeks: [30, 29] },
+            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:1', sn: '2931-7509652', total: 1217, last: 1217, weeks: [0, 0] },
+            { desc: 'CONTROL AIR COMPRESSOR UNIT NO:2', sn: '2133-12427514', total: 1217, last: 1217, weeks: [0, 0] },
+            { isHeader: true, label: 'NOX CONTROL AIR COMPRESSORS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NOX CONTROL AIR COMPRESSOR NO:${i+1}`, sn: `TRD13300${i}`, total: 1000 + (i*100), last: 1100 + (i*100), weeks: [170, 172] })),
+            { isHeader: true, label: 'SEA WATER PUMPS' },
+            ...Array.from({length: 16}, (_, i) =&gt; ({ desc: `SEA WATER PUMP ${i+1}`, sn: `458226-07-${(i+1).toString().padStart(2, '0')}`, total: 2674 + (i*200), last: 2687 + (i*200), weeks: [13, 14] })),
+            { isHeader: true, label: 'SG PRE-LUB PUMPS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG PRELUB. PUMP ${i+1}`, sn: `51225${i}`, total: 542 + (i*20), last: 543 + (i*20), weeks: [1, 2] })),
+            { isHeader: true, label: 'SG LO PREHEATING PUMPS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG LO PREHEATING PUMP ${i+1}`, sn: `190510907${i}`, total: 20298 + (i*100), last: 20448 + (i*100), weeks: [150, 160] })),
+            { isHeader: true, label: 'SG FINE FILTER PUMPS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `SG FINE FILTER PUMP ${i+1}`, sn: `190510372${i}`, total: 2313 + (i*50), last: 2376 + (i*50), weeks: [63, 65] })),
+            { isHeader: true, label: 'JACKING PUMPS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NDE JACKING PUMP ${i+1}`, sn: `NDE-${i+1}`, total: 150, last: 150, weeks: [0, 0] })),
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `DE JACKING PUMP ${i+1}`, sn: `DE-${i+1}`, total: 150, last: 150, weeks: [0, 0] })),
+            { isHeader: true, label: 'SIDE BEARING PUMPS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NDE SIDE BEARING PUMP ${i+1}`, sn: `NDE-SB-${i+1}`, total: 2298, last: 2311, weeks: [13, 15] })),
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `DE SIDE BEARING PUMP ${i+1}`, sn: `DE-SB-${i+1}`, total: 2298, last: 2311, weeks: [13, 15] })),
+            { isHeader: true, label: 'SG VENT FANS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `NO ${i+1} SG VENT.FAN`, sn: `F-SG-${i+1}`, total: 2666, last: 2680, weeks: [14, 16] })),
+            { isHeader: true, label: 'ALTERNATOR FANS' },
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `ALTERNATOR FAN ${i+1}-1`, sn: `F-ALT-${i+1}-1`, total: 5108, last: 5206, weeks: [98, 102] })),
+            ...Array.from({length: 12}, (_, i) =&gt; ({ desc: `ALTERNATOR FAN ${i+1}-2`, sn: `F-ALT-${i+1}-2`, total: 8480, last: 8480, weeks: [0, 0] })),
+            { isHeader: true, label: 'STG ROOM &amp; PUMP ROOM FANS' },
+            { desc: 'STG ROOM FAN NO:1', sn: 'F-STG-01', total: 223, last: 223, weeks: [0] },
+            { desc: 'STG ROOM FAN NO:2', sn: 'F-STG-02', total: 190, last: 190, weeks: [0] },
+            { desc: 'PUMP ROOM SUPPLY FAN', sn: 'F-PR-SUP', total: 1198, last: 1205, weeks: [7] },
+            { desc: 'PUMP ROOM FORE EXHAUST FAN', sn: 'F-PR-FEX', total: 489, last: 489, weeks: [0] },
+            { desc: 'PUMP ROOM MID EXHAUST FAN', sn: 'F-PR-MEX', total: 1274, last: 1274, weeks: [0] },
+            { desc: 'PUMP ROOM AFT EXHAUST FAN', sn: 'F-PR-AEX', total: 1927, last: 1927, weeks: [0] }
         ];
 
-        // Process existing data and pad weeks to 52
         rawData.forEach(item =&gt; {
             if(!item.isHeader) {
                 const currentWeeks = item.weeks || [];
@@ -96,13 +115,7 @@
         });
 
         this.runningHoursList = [...rawData];
-        
-        // Fill up to 110 rows to ensure 100+ row requirement
-        while(this.runningHoursList.length &lt; 110) {
-            this.runningHoursList.push({ desc: '', sn: '', total: 0, last: 0, weeks: Array(this.weeksCount).fill(0) });
-        }
 
-        // Init subsystem data for Spark Plug, PCC, Valve tabs
         for(let i=1; i&lt;=12; i++) {
             this.engineHoursData[i] = { total: 20000 + (i * 1500), weekly: 168 };
             this.sparkPlugData[i] = { A: {}, B: {} };
@@ -271,7 +284,7 @@
 </template>
 </div>
 </div>
-<!-- Running Hours Tab (Detailed 100-Row Table) -->
+<!-- Running Hours Tab -->
 <div class="space-y-6" x-show="currentView === 'running-hours'">
 <div class="flex items-center justify-between bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
 <div>
@@ -289,7 +302,7 @@
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
 <div class="overflow-x-auto no-scrollbar max-h-[calc(100vh-320px)]">
-<template x-for="w in 8">
+<template x-for="w in weeksCount">
 </template><template x-for="(item, index) in runningHoursList">
 </template><template x-if="item.isHeader">
 </template><template x-if="!item.isHeader">
@@ -297,29 +310,27 @@
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
 </template><template x-if="!item.isHeader">
-<template x-for="wIdx in 8">
-</template></template><template x-if="!item.isHeader">
-</template><table class="w-full text-[10px] border-collapse min-w-[2000px]">
+<template x-for="(wVal, wIdx) in item.weeks">
+</template></template><table class="w-full text-[10px] border-collapse min-w-[2000px]">
 <thead class="sticky top-0 z-40 shadow-sm bg-slate-50">
 <tr class="h-12 border-b border-slate-200 uppercase text-slate-500 font-bold">
 <th class="sticky-col-1 px-4 text-left border-r border-slate-200 w-[350px]">Equipment Description</th>
 <th class="sticky-col-2 px-2 text-center border-r border-slate-200 w-[160px]">Serial No</th>
-<th class="sticky-col-3 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Total Hours</th>
+<th class="sticky-col-3 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Total R.HRS</th>
 <th class="sticky-col-4 px-2 text-center border-r border-slate-200 text-sky-900 w-[120px]">Last Hours</th>
 <th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]" x-text="'Week ' + w"></th>
-<th class="px-2 text-center border-r border-slate-200 header-historical w-[80px]">...</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<tr :class="item.isHeader ? 'bg-slate-100/80' : 'hover:bg-sky-50 transition-colors group'">
+<tr :class="item.isHeader ? 'bg-slate-100/80 sticky top-12 z-30' : 'hover:bg-sky-50 transition-colors group'">
 <!-- Header Row -->
-<td class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest sticky left-0 z-30 bg-slate-100/80 border-r border-slate-200" colspan="13" x-text="item.label"></td>
+<td :colspan="weeksCount + 4" class="px-4 py-2 font-black text-slate-500 text-[9px] uppercase tracking-widest bg-slate-100/80 border-b border-slate-200" x-text="item.label"></td>
 <!-- Equipment Row -->
 <td class="sticky-col-1 p-0 border-r border-slate-200">
-<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Manual Equipment Entry..." type="text" x-model="item.desc"/>
+<input class="px-4 py-3 text-left font-bold text-sky-950 placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Equipment Name..." type="text" x-model="item.desc"/>
 </td>
 <td class="sticky-col-2 p-0 border-r border-slate-200">
-<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="S/N..." type="text" x-model="item.sn"/>
+<input class="px-2 py-3 text-center text-slate-400 font-mono placeholder:text-slate-200 focus:bg-white w-full border-none outline-none group-hover:bg-sky-50" placeholder="Serial No..." type="text" x-model="item.sn"/>
 </td>
 <td class="sticky-col-3 p-0 border-r border-slate-200">
 <input class="py-3 font-black text-sky-900 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.total"/>
@@ -328,10 +339,7 @@
 <input class="py-3 font-bold text-sky-700 text-center w-full border-none outline-none focus:bg-white bg-transparent" type="number" x-model="item.last"/>
 </td>
 <td class="p-0 border-r border-slate-200 historical-cell">
-<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50 bg-transparent" type="number" x-model="item.weeks[wIdx-1]"/>
-</td>
-<td class="p-0 border-r border-slate-200 historical-cell">
-<div class="py-3 text-slate-300">...</div>
+<input class="py-3 font-medium text-emerald-700 text-center w-full border-none outline-none focus:bg-emerald-100/50 bg-transparent" type="number" x-model="item.weeks[wIdx]"/>
 </td>
 </tr>
 </tbody>
