@@ -105,11 +105,20 @@
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .nav-link.active {
+            background-color: white;
+            color: #1e3a8a; /* blue-900 */
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            font-weight: 700;
+        }
+        
+        #main-app { display: none; }
     </style>
 </head>
 <body class="bg-background text-on-surface font-body selection:bg-primary-fixed-dim">
 <!-- LOGIN SCREEN OVERLAY -->
-<div class="fixed inset-0 z-[100] bg-surface flex items-center justify-center p-6 hidden" id="login-screen">
+<div class="fixed inset-0 z-[100] bg-surface flex items-center justify-center p-6" id="login-screen">
 <div class="w-full max-w-md bg-surface-container-lowest rounded-xl shadow-2xl overflow-hidden border border-outline-variant/10">
 <div class="p-8 space-y-6">
 <div class="text-center space-y-2">
@@ -119,16 +128,17 @@
 <h1 class="text-2xl font-black tracking-tighter text-primary">KPS8 OSMAN BEY PMS</h1>
 <p class="text-secondary text-sm">Industrial Asset Management System</p>
 </div>
-<form class="space-y-4">
+<form class="space-y-4" id="login-form">
 <div>
 <label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Username</label>
-<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" placeholder="Enter username" type="text" value="KPS8"/>
+<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" id="username" placeholder="Enter username" type="text" value="KPS8"/>
 </div>
 <div>
 <label class="block text-xs font-bold uppercase tracking-widest text-outline mb-1">Password</label>
-<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" placeholder="Enter password" type="password" value="umut"/>
+<input class="w-full industrial-input px-4 py-3 rounded-lg text-primary font-medium" id="password" placeholder="Enter password" type="password" value="umut"/>
 </div>
-<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-lg font-bold shadow-lg active:scale-95 transition-transform" onclick="document.getElementById('login-screen').classList.add('hidden')" type="button">
+<div class="hidden text-error text-xs font-bold text-center" id="login-error">Invalid credentials.</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-white py-4 rounded-lg font-bold shadow-lg active:scale-95 transition-transform" type="submit">
                     ACCESS SYSTEM
                 </button>
 </form>
@@ -139,7 +149,7 @@
 <div class="h-1.5 w-full bg-gradient-to-r from-primary via-primary-container to-surface-tint"></div>
 </div>
 </div>
-<div class="flex min-h-screen">
+<div class="flex min-h-screen" id="main-app">
 <!-- SIDENAVBAR -->
 <aside class="sidebar-glass h-screen w-64 fixed left-0 top-0 flex flex-col p-4 border-r border-slate-200/50 z-50">
 <div class="px-2 mb-8">
@@ -147,66 +157,66 @@
 <p class="text-[10px] uppercase font-bold text-outline tracking-[0.1em]">Engine Management System</p>
 </div>
 <nav class="flex-1 overflow-y-auto space-y-1 pr-2">
-<a class="flex items-center gap-3 px-3 py-2 bg-white text-blue-900 shadow-sm font-bold rounded-lg group" href="#">
-<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<a class="nav-link active flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="dashboard" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
 <span class="text-sm">Dashboard</span>
 </a>
 <div class="pt-4 pb-2">
 <span class="px-3 text-[10px] font-black text-outline uppercase tracking-widest">Maintenance Groups</span>
 </div>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="spark-plug" href="#">
 <span class="material-symbols-outlined text-xl">electrical_services</span>
 <span class="text-sm">Spark Plug</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="pcc-valve" href="#">
 <span class="material-symbols-outlined text-xl">settings_input_component</span>
 <span class="text-sm">PCC Valve</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="valve-measurement" href="#">
 <span class="material-symbols-outlined text-xl">straighten</span>
 <span class="text-sm">Valve Measurement</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="starting-air" href="#">
 <span class="material-symbols-outlined text-xl">air</span>
 <span class="text-sm">Starting Air</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="service-air" href="#">
 <span class="material-symbols-outlined text-xl">compress</span>
 <span class="text-sm">Service Air</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="control-air" href="#">
 <span class="material-symbols-outlined text-xl">valve</span>
 <span class="text-sm">Control Air</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="denox" href="#">
 <span class="material-symbols-outlined text-xl">eco</span>
 <span class="text-sm">Denox</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="fwg" href="#">
 <span class="material-symbols-outlined text-xl">water_drop</span>
 <span class="text-sm">FWG</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="sw-pumps" href="#">
 <span class="material-symbols-outlined text-xl">cyclone</span>
 <span class="text-sm">SW Pumps</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="lube-oil" href="#">
 <span class="material-symbols-outlined text-xl">oil_barrel</span>
 <span class="text-sm">Lube Oil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="cleaning" href="#">
 <span class="material-symbols-outlined text-xl">cleaning_services</span>
 <span class="text-sm">Cleaning</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="boiler" href="#">
 <span class="material-symbols-outlined text-xl">rebase_edit</span>
 <span class="text-sm">Boiler</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="shutdowns" href="#">
 <span class="material-symbols-outlined text-xl text-error">report_problem</span>
 <span class="text-sm">Shutdowns</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" href="#">
+<a class="nav-link flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-100 rounded-lg group transition-all" data-section="reports" href="#">
 <span class="material-symbols-outlined text-xl">analytics</span>
 <span class="text-sm">Reports</span>
 </a>
@@ -241,11 +251,14 @@
 </button>
 <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
 <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">help</span></button>
+<button class="hover:text-error transition-colors" id="logout-btn"><span class="material-symbols-outlined">logout</span></button>
 </div>
 </div>
 </header>
 <!-- CANVAS -->
-<div class="p-8 space-y-8">
+<div class="p-8 space-y-8" id="content-area">
+<!-- DASHBOARD SECTION (Default) -->
+<section class="space-y-8" id="dashboard-section">
 <!-- 12-ENGINE DASHBOARD SUMMARY -->
 <div class="grid grid-cols-12 gap-6">
 <div class="col-span-12 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-6">
@@ -256,7 +269,7 @@
 </div>
 <button class="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">sync</span> SYNC DATA
-                        </button>
+                            </button>
 </div>
 <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
 <!-- 12 Engine Blocks -->
@@ -317,7 +330,7 @@
 <h2 class="text-sm font-black text-primary uppercase tracking-[0.15em]">Detailed Maintenance Registry - Fleet Inventory</h2>
 <div class="flex gap-2">
 <button class="bg-white text-primary text-[10px] font-bold px-3 py-1.5 rounded border border-outline-variant/30 hover:bg-slate-50 transition-colors uppercase">Previous Month</button>
-<button class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-primary-container transition-colors uppercase">Export CSV</button>
+<button class="bg-primary text-white text-[10px] font-bold px-3 py-1.5 rounded hover:bg-primary-container transition-colors uppercase">Save Changes</button>
 </div>
 </div>
 <div class="overflow-x-auto">
@@ -334,69 +347,70 @@
 </tr>
 </thead>
 <tbody class="divide-y divide-slate-100">
-<!-- Data from Image_49 sequence -->
+<!-- Engine Rows 1-12 -->
 <tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.1 18V51/60G GTS</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145116</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2575</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">168</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
 </tr>
-<tr class="hover:bg-slate-50/50 bg-slate-50/20">
+<tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.2 18V51/60G GTS</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145117</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2450</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">160</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">162</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">158</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">155</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="160"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="162"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="158"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="155"/></td>
 </tr>
 <tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NO.3 18V51/60G GTS</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">1145118</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2289</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">0</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">12</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs text-error font-bold">Maintenance</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">0</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="0"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="12"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center text-error font-bold text-xs uppercase">MTNC</td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="0"/></td>
 </tr>
+<!-- Add other equipment -->
 <tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">STARTING AIR COMPRESSOR UNIT NO.1 (P)</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">73/20</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">1246</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">14</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">15</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">12</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">14</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="14"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="15"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="12"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="14"/></td>
 </tr>
 <tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">SEA WATER PUMP 1</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">458226-07-01</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">2674</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">168</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">168</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="168"/></td>
 </tr>
-<tr class="hover:bg-slate-50/50 bg-slate-50/20">
+<tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">NOX CONTROL AIR COMPRESSOR NO.1</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">TRD132994</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">7907</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">48</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">45</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">50</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">42</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="48"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="45"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="50"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="42"/></td>
 </tr>
 <tr class="hover:bg-slate-50/50">
 <td class="px-4 py-3 font-bold text-primary text-sm border-r border-slate-100 uppercase">SG PRE-LUB PUMP 1</td>
 <td class="px-4 py-3 text-xs text-secondary border-r border-slate-100">512255</td>
 <td class="px-4 py-3 border-r border-slate-100 text-sm font-black text-right pr-2">542</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">1</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">1</td>
-<td class="px-4 py-3 border-r border-slate-100 text-center text-xs">1</td>
-<td class="px-4 py-3 bg-surface-container-low/30 text-center text-xs">1</td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
+<td class="px-4 py-3 border-r border-slate-100 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
+<td class="px-4 py-3 text-center"><input class="w-16 p-1 text-center text-xs industrial-input rounded" type="number" value="1"/></td>
 </tr>
 </tbody>
 </table>
@@ -535,6 +549,15 @@
 </div>
 </div>
 </div>
+</section>
+<!-- GENERIC SECTION PLACEHOLDER -->
+<section class="hidden min-h-[400px] flex items-center justify-center bg-surface-container-lowest rounded-xl border border-dashed border-outline-variant" id="generic-section">
+<div class="text-center space-y-4">
+<span class="material-symbols-outlined text-6xl text-outline-variant">construction</span>
+<h2 class="text-xl font-bold text-primary uppercase" id="section-title">Section Name</h2>
+<p class="text-secondary text-sm">Detailed maintenance logs and tracking for this component are currently being synchronized.</p>
+</div>
+</section>
 </div>
 <!-- FOOTER SYSTEM INFO -->
 <footer class="mt-auto p-6 bg-surface-container flex flex-col md:flex-row justify-between items-center text-[10px] text-secondary font-medium border-t border-slate-200">
@@ -559,4 +582,58 @@
         LOG NEW ENTRY
     </div>
 </button>
+<script>
+    // Security Login Logic
+    const loginForm = document.getElementById('login-form');
+    const loginScreen = document.getElementById('login-screen');
+    const mainApp = document.getElementById('main-app');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+
+        if (user === 'KPS8' && pass === 'umut') {
+            loginScreen.classList.add('hidden');
+            mainApp.style.display = 'flex';
+            loginError.classList.add('hidden');
+        } else {
+            loginError.classList.remove('hidden');
+        }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+        mainApp.style.display = 'none';
+        loginScreen.classList.remove('hidden');
+    });
+
+    // Navigation Section Switching Logic
+    const navLinks = document.querySelectorAll('.nav-link');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const genericSection = document.getElementById('generic-section');
+    const sectionTitle = document.getElementById('section-title');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = link.getAttribute('data-section');
+            
+            // UI State Update
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+
+            // View Switching
+            if (section === 'dashboard') {
+                dashboardSection.classList.remove('hidden');
+                genericSection.classList.add('hidden');
+            } else {
+                dashboardSection.classList.add('hidden');
+                genericSection.classList.remove('hidden');
+                sectionTitle.innerText = link.querySelector('.text-sm').innerText;
+            }
+        });
+    });
+</script>
 </body></html>
