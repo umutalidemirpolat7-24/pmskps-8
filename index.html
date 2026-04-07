@@ -87,27 +87,27 @@
 <nav class="flex-1 space-y-1 overflow-y-auto custom-scrollbar pr-2">
 <button :class="currentSection === 'dashboard' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'dashboard'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">dashboard</span>
-                        Dashboard
-                    </button>
+                    Dashboard
+                </button>
 <div class="pt-6 pb-2 px-4">
 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Main Engine</span>
 </div>
 <button :class="currentSection === 'running_hours' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'running_hours'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">schedule</span>
-                        Running Hours
-                    </button>
+                    Running Hours
+                </button>
 <button :class="currentSection === 'spark_plug' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'spark_plug'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">electrical_services</span>
-                        Spark Plug
-                    </button>
+                    Spark Plug
+                </button>
 <button :class="currentSection === 'pcc_valve' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'pcc_valve'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">settings_input_component</span>
-                        PCC Valve
-                    </button>
+                    PCC Valve
+                </button>
 <button :class="currentSection === 'valve_measurement' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'valve_measurement'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">straighten</span>
-                        Valve Measurement
-                    </button>
+                    Valve Measurement
+                </button>
 <div class="pt-6 pb-2 px-4">
 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">System Modules</span>
 </div>
@@ -122,12 +122,12 @@
 </div>
 <button :class="currentSection === 'reports' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'reports'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">analytics</span>
-                        Reports
-                    </button>
+                    Reports
+                </button>
 <button :class="currentSection === 'shutdowns' ? 'bg-primary text-white' : 'text-slate-600 hover:bg-slate-100'" @click="currentSection = 'shutdowns'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm">
 <span class="material-symbols-outlined text-lg">report_problem</span>
-                        Shutdowns
-                    </button>
+                    Shutdowns
+                </button>
 </nav>
 <div class="mt-auto p-4 bg-slate-50 rounded-2xl flex items-center gap-3 border border-slate-100">
 <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-primary font-black border-2 border-white shadow-sm">U</div>
@@ -177,17 +177,17 @@
 <div class="xl:col-span-12 bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
 <div>
-<h3 class="text-lg font-black text-primary uppercase tracking-tighter">GAS TURBINE ENGINES (GTS) FLEET STATUS</h3>
+<h3 class="text-lg font-black text-primary uppercase tracking-tighter">GTS ENGINES RUNNING HOURS</h3>
 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real-time Running Hours &amp; Maintenance State</p>
 </div>
 <button class="bg-primary text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">sync</span> Sync Ship Data
-                                </button>
+                            </button>
 </div>
-<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-12 gap-3">
-<div :class="n === 3 ? 'border-error bg-red-50/50' : 'border-emerald-500 bg-slate-50'" :key="n" class="p-3 rounded-xl border-b-4 text-center transition-transform hover:scale-105 cursor-pointer" v-for="n in 12">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-3">
+<div :class="n === 3 ? 'border-error bg-red-50/50' : 'border-emerald-500 bg-slate-50'" :key="n" class="p-3 rounded-xl border-b-4 text-center transition-transform hover:scale-105" v-for="n in 12">
 <p class="text-[8px] font-black text-slate-400 uppercase">GTS {{ n.toString().padStart(2, '0') }}</p>
-<p class="text-sm font-black text-primary mt-1">{{ getGtsHours(n) }}</p>
+<input class="w-full bg-transparent border-none text-center text-sm font-black text-primary mt-1 focus:ring-0 p-0" type="number" v-model="gtsRunningHours[n-1]"/>
 <p class="text-[7px] font-bold text-slate-400 mt-1 uppercase">{{ n === 3 ? 'Stopped' : 'Running' }}</p>
 </div>
 </div>
@@ -196,16 +196,25 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
 <div class="flex items-center gap-2 mb-2">
-<span class="material-symbols-outlined text-primary">oil_barrel</span>
-<h4 class="text-xs font-black text-primary uppercase tracking-widest">Lube Oil Levels</h4>
+<span class="material-symbols-outlined text-primary">gas_meter</span>
+<h4 class="text-xs font-black text-primary uppercase tracking-widest">GAS SPECIFICATION</h4>
 </div>
-<div class="space-y-4">
-<div class="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-<span class="text-slate-400">Daily Service Tank</span>
-<span class="text-primary">4,250 / 6,000 L</span>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-slate-50">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Supply Pressure</span>
+<span class="text-xs font-black text-primary">3.2 Bar</span>
 </div>
-<div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-<div class="h-full bg-primary" style="width: 70%"></div>
+<div class="flex justify-between items-center py-2 border-b border-slate-50">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Temperature</span>
+<span class="text-xs font-black text-primary">15.4 °C</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-50">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Calorific Value</span>
+<span class="text-xs font-black text-primary">38.4 MJ/m³</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Methane Number</span>
+<span class="text-xs font-black text-primary">94.2</span>
 </div>
 </div>
 </div>
@@ -379,8 +388,8 @@
 <div class="xl:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
 <div :key="unit.id" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4 relative overflow-hidden" v-for="unit in currentGroupAssets">
 <div class="absolute top-0 right-0 px-3 py-1 bg-error text-white text-[8px] font-black uppercase tracking-widest rounded-bl-lg" v-if="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).level === 'critical'">
-                                    Maintenance Due
-                                </div>
+                                Maintenance Due
+                            </div>
 <div class="flex justify-between items-start">
 <div class="space-y-1">
 <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ unit.sn }}</p>
@@ -391,14 +400,17 @@
 <div class="grid grid-cols-2 gap-4 pt-2">
 <div class="p-3 bg-slate-50 rounded-xl">
 <p class="text-[8px] font-black text-slate-400 uppercase mb-1">Current Hours</p>
-<p :class="getMaintenanceStatus(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).color" class="text-sm font-black">
-                                            {{ (unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}
-                                        </p>
+<input class="w-full bg-transparent border-none text-sm font-black text-primary focus:ring-0 p-0" type="number" v-model.number="unit.total"/>
 </div>
 <div class="p-3 bg-slate-50 rounded-xl">
 <p class="text-[8px] font-black text-slate-400 uppercase mb-1">Next Service</p>
 <p class="text-sm font-black text-primary">{{ getNextService(unit.total + unit.weekly.reduce((a,b) =&gt; a+b, 0)).toLocaleString() }}</p>
 </div>
+</div>
+<!-- Boiler Specific Field -->
+<div class="pt-2" v-if="currentSection === 'boiler'">
+<label class="block text-[8px] font-black text-slate-400 uppercase mb-1">Kazan Damper Kontrolü</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 text-[10px] font-bold focus:ring-primary" type="date"/>
 </div>
 <div class="space-y-1">
 <div class="flex justify-between text-[8px] font-black uppercase text-slate-400">
@@ -440,8 +452,7 @@
 </div>
 <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
 <div class="overflow-x-auto custom-scrollbar">
-<template v-for="bank in ['A', 'B']">
-</template><table class="w-full text-center border-collapse">
+<table class="w-full text-center border-collapse">
 <thead class="bg-slate-50 border-b border-slate-100">
 <tr>
 <th class="px-4 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest sticky left-0 bg-slate-50">Cyl</th>
@@ -452,7 +463,25 @@
 </thead>
 <tbody class="divide-y divide-slate-50">
 <tr class="hover:bg-slate-50/50" v-for="cyl in 9">
-<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">{{ bank }}{{ cyl }}</td>
+<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">A{{ cyl }}</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
+</td>
+<td class="px-2 py-2 border-r border-slate-100 bg-blue-50/10">
+<input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-surface-tint rounded" type="text" value="0.80"/>
+</td>
+<td class="px-4 py-2">
+<input class="w-full border-none bg-transparent text-[10px] focus:ring-0 italic" placeholder="Add remark..." type="text"/>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50" v-for="cyl in 9">
+<td class="px-4 py-3 text-xs font-black text-primary bg-slate-50/30 sticky left-0 border-r border-slate-100">B{{ cyl }}</td>
 <td class="px-2 py-2 border-r border-slate-100">
 <input class="w-16 border-none bg-transparent text-center text-xs font-medium focus:ring-1 focus:ring-primary rounded" type="text" value="0.40"/>
 </td>
@@ -486,8 +515,8 @@
 </div>
 <div class="flex justify-center gap-4">
 <label class="px-8 py-4 bg-primary text-white text-xs font-black rounded-xl uppercase tracking-widest cursor-pointer hover:bg-surface-tint shadow-lg shadow-primary/20 transition-all">
-                                Browse Files
-                                <input class="hidden" type="file"/>
+                            Browse Files
+                            <input class="hidden" type="file"/>
 </label>
 <button class="px-8 py-4 bg-white border border-slate-200 text-primary text-xs font-black rounded-xl uppercase tracking-widest hover:bg-slate-50 transition-colors">Generate PDF</button>
 </div>
@@ -527,6 +556,8 @@
             const currentPage = ref(1);
             const pageSize = 20;
 
+            const gtsRunningHours = ref(Array(12).fill(12000).map((h, i) => h + (i * 150)));
+
             const login = ref({
                 shipId: 'KPS8-TR',
                 username: '',
@@ -537,7 +568,7 @@
             const pccLog = ref({ lastDate: '2023-11-01', lastHrs: 12500 });
 
             const calculateLife = (lastHrs) => {
-                const currentTotal = 13500; // Mock current engine total
+                const currentTotal = 13500;
                 return Math.max(0, currentTotal - (lastHrs || 0));
             };
 
@@ -563,14 +594,15 @@
                 const specificNames = [
                     "NO.1 18V5160 GTS", "NO.2 18V5160 GTS", "NO.3 18V5160 GTS", "NO.4 18V5160 GTS", "NO.5 18V5160 GTS", "NO.6 18V5160 GTS", "NO.7 18V5160 GTS", "NO.8 18V5160 GTS", "NO.9 18V5160 GTS", "NO.10 18V5160 GTS", "NO.11 18V5160 GTS", "NO.12 18V5160 GTS",
                     "STARTING AIR COMPRESSOR UNIT NO:1 (P)", "STARTING AIR COMPRESSOR UNIT NO:2 (STB)", "STARTING AIR COMPRESSOR UNIT NO:3 (P)", "STARTING AIR COMPRESSOR UNIT NO:4 (STB)",
-                    "CONTROL AIR COMPRESSOR UNIT NO:1", "CONTROL AIR COMPRESSOR UNIT NO:2",
+                    "CONTROL AIR COMPRESSOR 1", "CONTROL AIR COMPRESSOR 2",
                     "SERVICE AIR COMPRESSOR UNIT NO:1", "SERVICE AIR COMPRESSOR UNIT NO:2",
                     "NOX CONTROL AIR COMPRESSOR NO:1", "NOX CONTROL AIR COMPRESSOR NO:2", "NOX CONTROL AIR COMPRESSOR NO:3", "NOX CONTROL AIR COMPRESSOR NO:4", "NOX CONTROL AIR COMPRESSOR NO:5", "NOX CONTROL AIR COMPRESSOR NO:6", "NOX CONTROL AIR COMPRESSOR NO:7", "NOX CONTROL AIR COMPRESSOR NO:8", "NOX CONTROL AIR COMPRESSOR NO:9", "NOX CONTROL AIR COMPRESSOR NO:10", "NOX CONTROL AIR COMPRESSOR NO:11", "NOX CONTROL AIR COMPRESSOR NO:12",
                     "SEA WATER PUMP 1", "SEA WATER PUMP 2", "SEA WATER PUMP 3", "SEA WATER PUMP 4", "SEA WATER PUMP 5", "SEA WATER PUMP 6", "SEA WATER PUMP 7", "SEA WATER PUMP 8", "SEA WATER PUMP 9", "SEA WATER PUMP 10", "SEA WATER PUMP 11", "SEA WATER PUMP 12", "SEA WATER PUMP 13", "SEA WATER PUMP 14", "SEA WATER PUMP 15", "SEA WATER PUMP 16",
                     "AUX.MACH.COOLER SW PUMP 1", "AUX.MACH.COOLER SW PUMP 2",
-                    "FWG SW  PUMP 1 (SG 5)", "FWG SW  PUMP 2 (SG 6)", "FWG SW  PUMP 3 (SG 7)", "FWG SW  PUMP 4 (SG8)",
+                    "FWG 1", "FWG 2", "FWG 3", "FWG 4",
                     "BİLGE-FIRE PUMP", "FOAM-FIRE PUMP", "EMG.FIRE PUMP",
                     "SG HT PREHEATING  PUMP 1", "SG HT PREHEATING  PUMP 2", "SG HT PREHEATING  PUMP 3", "SG HT PREHEATING  PUMP 4", "SG HT PREHEATING  PUMP 5", "SG HT PREHEATING  PUMP 6", "SG HT PREHEATING  PUMP 7", "SG HT PREHEATING  PUMP 8", "SG HT PREHEATING  PUMP 9", "SG HT PREHEATING  PUMP 10", "SG HT PREHEATING  PUMP 11", "SG HT PREHEATING  PUMP 12",
+                    "BOILER UNIT 1", "BOILER UNIT 2", "BOILER UNIT 3", "BOILER UNIT 4", "BOILER UNIT 5", "BOILER UNIT 6", "BOILER UNIT 7", "BOILER UNIT 8", "BOILER UNIT 9", "BOILER UNIT 10", "BOILER UNIT 11", "BOILER UNIT 12",
                     "CW FILLING PUMP 1", "CW FILLING PUMP 2", "CW FILLING PUMP 3", "CW FILLING PUMP 4",
                     "FW TRANSFER PUMP 1", "FW TRANSFER PUMP 2",
                     "BOILER FW PUMP 1", "BOILER FW PUMP 2",
@@ -578,19 +610,11 @@
                     "REGAS UNITE FW PUMP 1", "REGAS UNITE FW PUMP 2",
                     "SG PRELUB. PUMP 1", "SG PRELUB. PUMP 2", "SG PRELUB. PUMP 3", "SG PRELUB. PUMP 4", "SG PRELUB. PUMP 5", "SG PRELUB. PUMP 6", "SG PRELUB. PUMP 7", "SG PRELUB. PUMP 8", "SG PRELUB. PUMP 9", "SG PRELUB. PUMP 10", "SG PRELUB. PUMP 11", "SG PRELUB. PUMP 12",
                     "SG LO PREHEATING PUMP 1", "SG LO PREHEATING PUMP 2", "SG LO PREHEATING PUMP 3", "SG LO PREHEATING PUMP 4", "SG LO PREHEATING PUMP 5", "SG LO PREHEATING PUMP 6", "SG LO PREHEATING PUMP 7", "SG LO PREHEATING PUMP 8", "SG LO PREHEATING PUMP 9", "SG LO PREHEATING PUMP 10", "SG LO PREHEATING PUMP 11", "SG LO PREHEATING PUMP 12",
-                    "SG FINE FILTER  PUMP 1", "SG FINE FILTER  PUMP 2", "SG FINE FILTER  PUMP 3", "SG FINE FILTER  PUMP 4", "SG FINE FILTER  PUMP 5", "SG FINE FILTER  PUMP 6", "SG FINE FILTER  PUMP 7", "SG FINE FILTER  PUMP 8", "SG FINE FILTER  PUMP 9", "SG FINE FILTER  PUMP 10", "SG FINE FILTER  PUMP 11", "SG FINE FILTER  PUMP 12",
                     "NDE JACKING PUMP 1", "NDE JACKING PUMP 2", "NDE JACKING PUMP 3", "NDE JACKING PUMP 4", "NDE JACKING PUMP 5", "NDE JACKING PUMP 6", "NDE JACKING PUMP 7", "NDE JACKING PUMP 8", "NDE JACKING PUMP 9", "NDE JACKING PUMP 10", "NDE JACKING PUMP 11", "NDE JACKING PUMP 12",
-                    "DE JACKING PUMP 1", "DE JACKING PUMP 2", "DE JACKING PUMP 3", "DE JACKING PUMP 4", "DE JACKING PUMP 5", "DE JACKING PUMP 6", "DE JACKING PUMP 7", "DE JACKING PUMP 8", "DE JACKING PUMP 9", "DE JACKING PUMP 10", "DE JACKING PUMP 11", "DE JACKING PUMP 12",
-                    "NDE SIDE BEARING PUMP 1", "NDE SIDE BEARING PUMP 2", "NDE SIDE BEARING PUMP 3", "NDE SIDE BEARING PUMP 4", "NDE SIDE BEARING PUMP 5", "NDE SIDE BEARING PUMP 6", "NDE SIDE BEARING PUMP 7", "NDE SIDE BEARING PUMP 8", "NDE SIDE BEARING PUMP 9", "NDE SIDE BEARING PUMP 10", "NDE SIDE BEARING PUMP 11", "NDE SIDE BEARING PUMP 12",
-                    "DE SIDE BEARING  PUMP 1", "DE SIDE BEARING  PUMP 2", "DE SIDE BEARING  PUMP 3", "DE SIDE BEARING  PUMP 4", "DE SIDE BEARING  PUMP 5", "DE SIDE BEARING  PUMP 6", "DE SIDE BEARING  PUMP 7", "DE SIDE BEARING  PUMP 8", "DE SIDE BEARING  PUMP 9", "DE SIDE BEARING  PUMP 10", "DE SIDE BEARING  PUMP 11", "DE SIDE BEARING  PUMP 12",
                     "NO 1 SG VENT.FAN", "NO 2 SG VENT.FAN", "NO 3 SG VENT.FAN", "NO 4 SG VENT.FAN", "NO 5 SG VENT.FAN", "NO 6 SG VENT.FAN", "NO 7 SG VENT.FAN", "NO 8 SG VENT.FAN", "NO 9 SG VENT.FAN", "NO 10 SG VENT.FAN", "NO 11 SG VENT.FAN", "NO 12 SG VENT.FAN",
                     "ALTERNATOR FAN 1-1", "ALTERNATOR FAN 1-2", "ALTERNATOR FAN 2-1", "ALTERNATOR FAN 2-2", "ALTERNATOR FAN 3-1", "ALTERNATOR FAN 3-2", "ALTERNATOR FAN 4-1", "ALTERNATOR FAN 4-2", "ALTERNATOR FAN 5-1", "ALTERNATOR FAN 5-2", "ALTERNATOR FAN 6-1", "ALTERNATOR FAN 6-2", "ALTERNATOR FAN 7-1", "ALTERNATOR FAN 7-2", "ALTERNATOR FAN 8-1", "ALTERNATOR FAN 8-2", "ALTERNATOR FAN 9-1", "ALTERNATOR FAN 9-2", "ALTERNATOR FAN 10-1", "ALTERNATOR FAN 10-2", "ALTERNATOR FAN 11-1", "ALTERNATOR FAN 11-2", "ALTERNATOR FAN 12-1", "ALTERNATOR FAN 12-2",
-                    "STG ROOM FAN NO:1", "STG ROOM FAN NO:2", "PUMP ROOM FORE SUPPLY FAN", "PUMP ROOM FORE EXHAUST FAN", "PUMP ROOM AFT SUPPLY FAN", "PUMP ROOM AFT EXHAUST FAN", "STG PUMP ROOM SUPPLY FAN", "STG PUMP ROOM EXHAUST FAN", "SPARE PARTS & AUX MACH ROOM STB SUPPLY FAN", "CONTROL ROOM SUPPLY FAN", "LV&HV ROOM SUPPLY FAN  1", "LV&HV ROOM SUPPLY FAN 2", "TRANSFORMER ROOM SUPPLY FAN", "MV ROOM SUPPLY FAN", "WORKSHOP SUPPLY FAN", "WORKSHOP EXHAUST FAN", "GALLEY EXHAUST FAN", "AUX.ROOM SUPPLY FAN 1", "AUX.ROOM EXHAUST FAN 2",
-                    "DAILY BILGE PUMP 1", "DAILY BILGE PUMP 2", "DAILY BILGE PUMP 3", "DAILY BILGE PUMP 4", "DAILY BILGE PUMP 5", "DAILY BILGE PUMP 6", "DAILY BILGE PUMP 7", "DAILY BILGE PUMP 8", "DAILY BILGE PUMP 9", "DAILY BILGE PUMP 10", "DAILY BILGE PUMP 11",
-                    "SEWAGE TRANSFER 1", "SEWAGE TRANSFER 2", "BILGE TRANSFER 1", "BILGE TRANSFER 2", "SLUDGE TRANSFER 1", "SLUDGE TRANSFER 2", "LEAK OIL TRANSFER 1", "LEAK OIL TRANSFER 2", "TRANSFORMER OIL", "MAINT. OIL TRANSFER 1", "MAINT. OIL TRANSFER 2", "LUBE OIL FILLING 1", "LUBE OIL FILLING 2",
                     "MDO TRANS.PUMP 1", "MDO TRANS.PUMP 2", "VOLVO PENTA EMG. GEN.",
-                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4", "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8", "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12",
-                    "FWG SW PUMP 1", "FWG SW PUMP 2", "FWG SW PUMP 3", "FWG SW PUMP 4"
+                    "Exhaust Vent Blower No:1", "Exhaust Vent Blower No:2", "Exhaust Vent Blower No:3", "Exhaust Vent Blower No:4", "Exhaust Vent Blower No:5", "Exhaust Vent Blower No:6", "Exhaust Vent Blower No:7", "Exhaust Vent Blower No:8", "Exhaust Vent Blower No:9", "Exhaust Vent Blower No:10", "Exhaust Vent Blower No:11", "Exhaust Vent Blower No:12"
                 ];
 
                 return specificNames.map((name, i) => {
@@ -639,12 +663,6 @@
                 return Math.round(((hours % interval) / interval) * 100);
             };
 
-            const getGtsHours = (n) => {
-                const gtsName = `NO.${n} 18V5160 GTS`;
-                const gts = assetData.value.find(a => a.name.includes(gtsName));
-                return gts ? (gts.total + gts.weekly.reduce((a,b) => a+b, 0)).toLocaleString() : '---';
-            };
-
             const currentGroupAssets = computed(() => {
                 const group = systemGroups.find(g => g.id === currentSection.value);
                 if (!group) return [];
@@ -681,10 +699,10 @@
                 getMaintenanceStatus,
                 getNextService,
                 getWearPercent,
-                getGtsHours,
                 sparkPlugLog,
                 pccLog,
-                calculateLife
+                calculateLife,
+                gtsRunningHours
             };
         }
     }).mount('#app');
